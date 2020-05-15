@@ -19,6 +19,10 @@ import addlimitactive from '@/views/marketing/addlimitactive'//新建限时活�
 import clockdaybackground from '@/views/templatemanage/clockdaybackground'//白天打卡背景
 import clocknightbackground from '@/views/templatemanage/clocknightbackground'//晚上打卡背景
 import posterbackground from '@/views/templatemanage/posterbackground'//专属海报背景
+
+import activityposter from '@/views/templatemanage/activityposter'//活动海报
+
+
 import dynamicmanage from '@/views/communitymanage/dynamicmanage'//动态管理
 import topicmanage from '@/views/communitymanage/topicmanage'//话题管理
 import publisherlist from '@/views/communitymanage/publisherlist'//发布者查询
@@ -37,11 +41,12 @@ export default new Router({
             name: 'home',
             component: home
         },
-        // {
-        //     path: '/communitymanage/dynamicmanage',
-        //     name: 'dynamicmanage',
-        //     component: dynamicmanage
-        // },
+        {
+            path: '/templatemanage/activityposter',
+            name: 'activityposter',
+            component: activityposter
+        },
+        
         {
             path: '/customer/visitlist',
             name: 'visitlist',

@@ -400,6 +400,50 @@ export default {
     },
     poster(){
         return {
+            getactivetyposterList(data,key){
+                //获取活动海报列表
+                return getResource({
+                    url: `/lanmao/admin/community/activity/poster`,
+                    method: 'get'
+                }, data)
+            },
+            sortactivitypost(data,key){
+                //排列海报
+                return getResource({
+                    url: `/lanmao/admin/community/activity/poster/sort`,
+                    method: 'post'
+                }, data)
+            },
+            addactivitypost(data,key){
+                //添加活动海报
+                return getResource({
+                    url: `lanmao/admin/community/activity/poster`,
+                    method: 'post'
+                }, data)
+            },
+            getactivitypostinfo(data,key){
+                //获取活动海报详情
+                return getResource({
+                    url: `lanmao/admin/community/activity/poster/${key}`,
+                    method: 'get'
+                }, data)
+            },
+            editoractivitypost(data,key){
+                //编辑活动海报
+                return getResource({
+                    url: `lanmao/admin/community/activity/poster/${key}`,
+                    method: 'post'
+                }, data)
+            },
+            deleteactivitypost(data,key){
+                //删除活动海报
+                return getResource({
+                    url: `lanmao/admin/community/activity/poster//${key}`,
+                    method: 'DELETE'
+                }, data)
+            },
+
+
             getposterList(data,key){
                 //获取海报列表
                 return getResource({

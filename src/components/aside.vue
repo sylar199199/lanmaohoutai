@@ -326,7 +326,19 @@
                                 isSubShow: false,
                                 router:'posterbackground',
                                 thirditems: []
+                            },
+                            {
+                                title: '活动海报',
+                                secTitlte: '',
+                                isdelete: false,
+                                secgreyIcon: '',
+                                secgreenIcon: '',
+                                name: '活动海报',
+                                isSubShow: false,
+                                router:'activityposter',
+                                thirditems: []
                             }
+                            
                         ]
                     },
                       {
