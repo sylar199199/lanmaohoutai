@@ -266,7 +266,7 @@
                 orderField: 'saleStartDate',
                 orderType: 'desc',
                 sortDatas:[
-                    {orderType:'',name: '編号',showBlue: false,orderField: ''},
+                    {orderType:'',name: '编号',showBlue: false,orderField: ''},
                     {orderType:'',name: '图片',showBlue: false,orderField: ''},
                     {orderType:'',name: '创建时间',showBlue: false,orderField: ''},
                     {orderType:'',name: '编辑',showBlue: false,orderField: ''}

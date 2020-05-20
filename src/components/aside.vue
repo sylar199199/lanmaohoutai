@@ -337,6 +337,17 @@
                                 isSubShow: false,
                                 router:'activityposter',
                                 thirditems: []
+                            },
+                             {
+                                title: '新人引导页',
+                                secTitlte: '',
+                                isdelete: false,
+                                secgreyIcon: '',
+                                secgreenIcon: '',
+                                name: '新人引导页',
+                                isSubShow: false,
+                                router:'guidebackground',
+                                thirditems: []
                             }
                             
                         ]

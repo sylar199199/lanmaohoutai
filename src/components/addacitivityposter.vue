@@ -120,7 +120,7 @@
                     <el-date-picker
                                 @change="enddateChange"
                                 v-model="insuranceDate"
-                                type="daterange"
+                                type="datetimerange"
                                 unlink-panels
                                 range-separator="至"
                                 start-placeholder="开始日期"
@@ -132,7 +132,7 @@
                     <span class="searchLable colorGrey font14">活动海报： </span>
                     <div class="applicaninfo">
                          <i class="iconfont iconcuowu cursor deleteIcon"  v-if="imgBase64" @click="delectImg()"></i>
-                         <img class="bannerImg" :src="imgBase64" v-if="imgBase64">
+                         <img class="bannerImg" :src="imgBase64" v-if="imgBase64" crossorigin="anonymous">
                         <el-upload
                                 class="upload-demo imgBox"
                                 name="file"
@@ -152,6 +152,8 @@
                                 </div>
                         </el-upload>
                      </div>
+                        <span  class="font12 colorGrey" style="margin-left: 10px;margin-top:110px;">图片格式要求（682*290），大小不超过2M</span>
+
                </div>
                   <div class="searchBox flex">
                     <span class="searchLable colorGrey font14">添加链接： </span>
@@ -172,7 +174,7 @@
                </div>
                 <div class="searchBox flexCenter margintop30">
                     <div class="borderButton marginright20" @click="cancleButton()">取消</div>
-                     <div class="bacButton marginleft20">保存</div>
+                     <div class="bacButton marginleft20" @click="savePoster()">保存</div>
                 </div>
             </div>
         </div>
@@ -191,7 +193,7 @@
         props:{
            
             posterId:{
-                type: String
+                type: Number 
             }
         },
         data() {
@@ -202,7 +204,7 @@
                 headers: null,
                 startDate: '',
                 endDate: '',
-                insuranceDate: '',
+                insuranceDate: [],
                 linkUrl:'',
                 imgBase64: ''
             };
@@ -211,7 +213,7 @@
             var  tokenVal = Util.localStorageUtil.get('access_token');
             this.headers = {token: tokenVal};
             if(this.posterId){
-                  this.getPoserInfo()
+                this.getPoserInfo()
             }
         },
         watch:{
@@ -221,15 +223,115 @@
             // this.upFileAction = Global.requestUrl+"/lanmao/admin/upload/file";
         },
         methods: {
-           changeLinkUrl(){
+             insertImg (imgurl) {
+                let _this = this
+                let image = new Image()
+                image.src = imgurl + '?v=' + Math.random()
+                   image.crossOrigin = 'Anonymous';//外网访问必须加否则会报错
+                    image.onload = function(){
+                    let base64 = _this.getBase64Image(image)
+                    _this.imgBase64  = base64;
+                }
+            },
+            getBase64Image (img) {
+                let canvas = document.createElement("canvas")
+                canvas.width = img.width
+                canvas.height = img.height
+                let ctx = canvas.getContext("2d")
+                ctx.drawImage(img, 0, 0, img.width, img.height)
+                let dataURL = canvas.toDataURL("image/png")
+                return dataURL
+            },
+      
+            savePoster(){
+                if(this.name.length < 2 || this.name.length >20){
+                    this.$message.error('请输入不少于2个字或者不大于20个字的活动名称');
+                    return
+                }
+                if(!this.startDate || !this.endDate){   
+                    this.$message.error('请选择活动开始时间');
+                    return
+                }
+                var endDate = '',startDate = '';
+                if(this.endDate || this.startDate){
+                    endDate = Date.parse(new Date(this.endDate.replace(/-/g, "/")));
+                    startDate = Date.parse(new Date(this.startDate.replace(/-/g, "/")));
+                }
+                if(!this.imgBase64){
+                     this.$message.error('请上传活动海报');
+                    return
+                }
+                if(this.linkType == 1){
+                    if(!this.changeLinkUrl('submit')){
+                        return
+                    }
+                }else {
+                    this.linkUrl = '';
+                }
+                if(this.imgBase64.indexOf('http') >= 0){
+                    var Base64 = '';
+                    var imgUrl = this.imgBase64;
+                }else{
+                    var Base64 = this.imgBase64.split(',')[1];
+                }
+                Store.commit("setIsLoading", true);
+                if(!this.posterId){
+                    Service.poster().addactivitypost({
+                        name: this.name,
+                        endTime: endDate,
+                        startTime: startDate,
+                        imgBase64: Base64,
+                        linkUrl: this.linkUrl,
+                        sort: ''
+                    }).then(response => {
+                        Store.commit("setIsLoading", false);
+                        if (response.errorCode == 0) {
+                            this.$emit('closeDialog', 'sure');
+                        } else {
+                            this.$message.error(response.message)
+                        }
+                    }, err => {
+                    })
+                }else{
+                    Service.poster().editoractivitypost({
+                        name: this.name,
+                        imgUrl: imgUrl,
+                        endTime: endDate,
+                        startTime: startDate,
+                        imgBase64: Base64,
+                        linkUrl: this.linkUrl,
+                        sort: this.sort
+                    },this.posterId).then(response => {
+                        Store.commit("setIsLoading", false);
+                        if (response.errorCode == 0) {
+                            this.name = '';
+                            this.linkType = 1;
+                            this.linkUrl = '';
+                            this.imgBase64 = '';
+                            this.endDate = '';
+                            this.startDate = '';
+                            this.$emit('closeDialog', 'sure');
+                        } else {
+                            this.$message.error(response.message)
+                        }
+                    }, err => {
+                    })
+                }
+            },
+           changeLinkUrl(type){
+               var on = true;
                var reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
                 if(!reg.test(this.linkUrl) &&(this.linkUrl != '')){
                     this.$message.error('请输入正确的链接地址');
-                    return
+                    on = false;
                 }
+                if(type == 'submit'){
+                    return on;
+                }
+
            },
             delectImg(){
-                this.linkUrl = '';
+                this.imgBase64 = '';
             },
              beforeAvatarUpload(file) {
                 
@@ -271,25 +373,35 @@
                         this.endDate = '';
                     }
                 },
-                timetrans(timestamp) {
-                    var getSeconds = '', getMinutes = '', getHours = '';
-                    var d = new Date(timestamp);
-                    getHours = d.getHours() < 10 ? '0' + d.getHours() : d.getHours();
-                    getMinutes = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();;
-                    getSeconds = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();;
-                    var newTime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + getHours + ':' + getMinutes + ':' + getSeconds;
-                    return newTime
-                },
-           
-           
+            timetrans(timestamp) {
+                var getSeconds = '', getMinutes = '', getHours = '';
+                var d = new Date(timestamp);
+                getHours = d.getHours() < 10 ? '0' + d.getHours() : d.getHours();
+                getMinutes = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();;
+                getSeconds = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();;
+                var newTime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + getHours + ':' + getMinutes + ':' + getSeconds;
+                return newTime
+            },
             getPoserInfo(){
-            
                 Store.commit("setIsLoading", true);
-                Service.post().getactivitypostinfo({
-                   
+                Service.poster().getactivitypostinfo({
                 },this.posterId).then(response => {
                     Store.commit("setIsLoading", false);
                     if(response.errorCode == 0){
+                        this.sort = response.data.sort;
+                        this.name = response.data.name;
+                        this.linkUrl =  response.data.linkUrl;
+                        if(this.linkUrl){
+                            this.linkType = 1;
+                        }else{
+                            this.linkType = 0;
+                        }
+                        this.imgBase64 = response.data.imgUrl
+                        // this.insertImg(response.data.imgUrl)
+                        this.startDate = this.timetrans(response.data.startTime);
+                        this.endDate = this.timetrans(response.data.endTime);
+                        this.insuranceDate.push(new Date(response.data.startTime));
+                        this.insuranceDate.push(new Date(response.data.endTime))
                       
                     }else{
                         this.$message.error(response.message);
@@ -303,26 +415,7 @@
            
           
          
-            sureButton(){
-               
-                Store.commit("setIsLoading", true);
-                Service.poster().addactivitypost({
-                    companyName: this.leadsInfo.companyName,
-                    contact: this.leadsInfo.contact,
-                    phone: this.leadsInfo.phone,
-                    email: null,
-                    remark: this.leadsInfo.remark,
-                    source: this.leadsInfo.source
-                }).then(response => {
-                    Store.commit("setIsLoading", false);
-                    if (response.errorCode == 0) {
-                        this.$emit('closeDialog', 'sure');
-                    } else {
-                        this.$message.error(response.message)
-                    }
-                }, err => {
-                })
-            },
+         
             cancleButton(){
                 this.$emit('closeDialog', 'cancle')
             },

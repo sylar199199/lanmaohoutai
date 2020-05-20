@@ -21,6 +21,7 @@ import clocknightbackground from '@/views/templatemanage/clocknightbackground'//
 import posterbackground from '@/views/templatemanage/posterbackground'//专属海报背景
 
 import activityposter from '@/views/templatemanage/activityposter'//活动海报
+import guidebackground from '@/views/templatemanage/guidebackground'//引导页
 
 
 import dynamicmanage from '@/views/communitymanage/dynamicmanage'//动态管理
@@ -52,11 +53,11 @@ export default new Router({
             name: 'visitlist',
             component: visitlist
         },
-        // {
-        //     path: '/communitymanage/topicmanage',
-        //     name: 'topicmanage',
-        //     component: topicmanage
-        // },
+        {
+            path: '/templatemanage/guidebackground',
+            name: 'guidebackground',
+            component: guidebackground
+        },
         {
             path: '/order/revenuequery',
             name: 'revenuequery',

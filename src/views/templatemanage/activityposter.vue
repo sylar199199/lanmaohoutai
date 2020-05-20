@@ -210,6 +210,8 @@
                                     <i class='iconfont fontIcongrey iconjiang' v-if="index==(tableData.length-1)"></i>
                                 </td>
                                 <td>
+                                    <span class="color2087 font12 fontWeight cursor"  @click="editorPoster(item.id)">编辑</span>
+                                    <span class="line"></span>
                                     <span class="color2087 font12  fontWeight" @click="delectCommodity(item.id)">删除</span>
                                 </td>
                             </tr>
@@ -247,7 +249,7 @@
         data() {
             return {
                 posterId: '',
-                showDialog: true,
+                showDialog: false,
                 title: null,
                 bigImg: null,
                 centerDialogVisible: false,
@@ -308,9 +310,14 @@
             this.getactiveityposter('');//获取海报列表
         },
         methods: {
+            editorPoster(id){
+                this.posterId = id;
+                this.showDialog = true;
+            },
             getbackData(str){
                 if(str == 'sure'){
                     this.showDialog = false;
+                     this.getactiveityposter('');//获取海报列表
                 }
                 if(str == 'cancle'){
                     this.showDialog = false;
@@ -387,12 +394,12 @@
                 });
             },
             delectCommodity(id){
-                this.$confirm( '删除海报请谨慎操作，确定删除?', '', {
+                this.$confirm( '删除活动海报请谨慎操作，确定删除?', '', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    Service.poster().deletepost({
+                    Service.poster().deleteactivitypost({
                     },id).then(response => {
                         if(response.errorCode == 0){
                             this.$message({

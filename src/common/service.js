@@ -398,6 +398,38 @@ export default {
             
         }
     },
+    guide(){
+        return {
+               //获取引导页列表
+            getguideList(data,key){
+                return getResource({
+                    url: `/lanmao/admin/guide/reg/img`,
+                    method: 'get'
+                }, data)
+            },
+            addguidepost(data,key){
+                //添加引导页
+                return getResource({
+                    url: `lanmao/admin/guide/reg/img`,
+                    method: 'post'
+                }, data)
+            },
+            deleteguidepost(data,key){
+                //删除引导页
+                return getResource({
+                    url: `lanmao/admin/guide/reg/img/${key}`,
+                    method: 'DELETE'
+                }, data)
+            },
+            enableguidepost(data,key){
+                //启用引导页
+                return getResource({
+                    url: `lanmao/admin/guide/reg/img/${key}/enable`,
+                    method: 'post'
+                }, data)
+            },
+        }
+    },
     poster(){
         return {
             getactivetyposterList(data,key){
