@@ -339,11 +339,11 @@ input:-ms-input-placeholder { /* Internet Explorer 10+ */
     /*margin-right: 15px;*/
     border-radius: 4px;
 }
-p{
+/* p{
     font-size: 12px;
     margin: 0;
     line-height: 22px;
-}
+} */
 .dialogcontent{
     left: 50%;
     top: 50%;

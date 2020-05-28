@@ -180,6 +180,8 @@
                                         :default-time="['00:00:00','23:59:59']">
                                 </el-date-picker>
                             </div>
+
+                            <div class="curson" @click="deleteuser()">删除用户</div>
                             <div class="bacButtonone bacButton cursor" :download="download" :href="href" @click="daochu()">导出</div>
                             <div class="bacButton cursor" @click="getcommodityData('search')">筛选 </div>
                         </div>
@@ -340,6 +342,20 @@
             this.getcommodityData('');//获取订单列表
         },
         methods: {
+            deleteuser(){
+                 Service.customer().deleteuser({
+                   
+                },this.id).then(response => {
+                    if(response.errorCode == 0){
+                        this.$message.success('删除成功');
+                        
+                    }else{
+                        this.$message.error(response.message)
+                    }
+
+                }, err => {
+                });
+            },
             shipGoods(){
                 if(!this.changeValue('expressName','submit')){
                     return;

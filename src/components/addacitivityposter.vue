@@ -9,7 +9,7 @@
         z-index: 1000;
         .dialogcontent{
             position: relative;
-            height: 496px;
+            height: 536px;
             background: #fff;
             width: 640px;
             display: flex;
@@ -54,7 +54,7 @@
                     }
                      .applicaninfo{
                             width: 130px;
-                            height: 130px;
+                            height: 90px;
                             background-color: #f9f9f9;
                             border-radius: 4px;
                             text-align: center;
@@ -69,14 +69,14 @@
                             }
                             .bannerImg{
                                  width: 130px;
-                                 height: 130px;
+                                 height: 90px;
                                  position: absolute;
                                  
                             }
                             .imgBox{
                                 display: inline-block;
                                 width: 130px;
-                                height: 130px;
+                                height: 90px;
                                 .uploadtext{
                                     color: #979797;
                                     position: relative;
@@ -92,6 +92,20 @@
                                         right: 55px;
                                     }
                                 }
+                            }
+                        }
+                         .applicaninfo1 {
+                            width: 130px;
+                            height: 119px;
+                             .bannerImg{
+                                 width: 130px;
+                                 height: 119px;
+                                 position: absolute;
+                                 
+                            }
+                            .imgBox{
+                                 width: 130px;
+                                height: 119px;
                             }
                         }
                 }
@@ -129,10 +143,10 @@
                     </el-date-picker>
                </div>
                <div class="searchBox flex">
-                    <span class="searchLable colorGrey font14">活动海报： </span>
-                    <div class="applicaninfo">
+                    <span class="searchLable colorGrey font14">展示图： </span>
+                    <div class="applicaninfo ">
                          <i class="iconfont iconcuowu cursor deleteIcon"  v-if="imgBase64" @click="delectImg()"></i>
-                         <img class="bannerImg" :src="imgBase64" v-if="imgBase64" crossorigin="anonymous">
+                         <img class="bannerImg" :src="imgBase64" v-if="imgBase64" >
                         <el-upload
                                 class="upload-demo imgBox"
                                 name="file"
@@ -152,10 +166,37 @@
                                 </div>
                         </el-upload>
                      </div>
-                        <span  class="font12 colorGrey" style="margin-left: 10px;margin-top:110px;">图片格式要求（682*290），大小不超过2M</span>
+                        <span  class="font12 colorGrey" style="margin-left: 10px;margin-top:73px;">图片格式要求（672*464），大小不超过2M</span>
 
                </div>
-                  <div class="searchBox flex">
+                <div class="searchBox flex">
+                    <span class="searchLable colorGrey font14">模板图： </span>
+                    <div class="applicaninfo applicaninfo1">
+                         <i class="iconfont iconcuowu cursor deleteIcon"  v-if="imgBase641" @click="delectImg1()"></i>
+                         <img class="bannerImg" :src="imgBase641" v-if="imgBase641">
+                        <el-upload
+                                class="upload-demo imgBox"
+                                name="file"
+                                :action="upFileAction"
+                                :headers="headers"
+                                :on-change="handleChange1"
+                                :on-success="handleAvatarSuccess1"
+                                :before-upload="beforeAvatarUpload1"
+                                :on-error="errphoto1"
+                                :show-file-list="false"
+                                accept="">
+                                <div  class="uploadtext" v-if="imgBase641">
+                                </div>
+                                <div  class="uploadtext" v-if="!imgBase641">
+                                    <i class="iconfont iconiconjia color2087 uploadIcon"></i>
+                                    <span>上传图片</span>
+                                </div>
+                        </el-upload>
+                     </div>
+                        <span  class="font12 colorGrey" style="margin-left: 10px;margin-top:92px;">图片格式要求（672*620），大小不超过2M</span>
+
+               </div>
+                  <!-- <div class="searchBox flex">
                     <span class="searchLable colorGrey font14">添加链接： </span>
                      <div class="radioBox marginLeft10" >
                          <p class="aligncenter flex" style="height: 30px;">  
@@ -171,7 +212,7 @@
                         </p>
                     </div>
                    
-               </div>
+               </div> -->
                 <div class="searchBox flexCenter margintop30">
                     <div class="borderButton marginright20" @click="cancleButton()">取消</div>
                      <div class="bacButton marginleft20" @click="savePoster()">保存</div>
@@ -198,6 +239,7 @@
         },
         data() {
             return {
+                imgBase641: '',
                 linkType: 1,
                 name: '',
                 upFileAction: '',
@@ -220,7 +262,7 @@
 
         },
         mounted(){
-            // this.upFileAction = Global.requestUrl+"/lanmao/admin/upload/file";
+            this.upFileAction = Global.requestUrl+"/lanmao/admin/upload/file";
         },
         methods: {
              insertImg (imgurl) {
@@ -258,30 +300,23 @@
                     startDate = Date.parse(new Date(this.startDate.replace(/-/g, "/")));
                 }
                 if(!this.imgBase64){
-                     this.$message.error('请上传活动海报');
+                     this.$message.error('请上传活动海报展示图');
                     return
                 }
-                if(this.linkType == 1){
-                    if(!this.changeLinkUrl('submit')){
-                        return
-                    }
-                }else {
-                    this.linkUrl = '';
+                if(!this.imgBase641){
+                     this.$message.error('请上传活动海报模板图');
+                    return
                 }
-                if(this.imgBase64.indexOf('http') >= 0){
-                    var Base64 = '';
-                    var imgUrl = this.imgBase64;
-                }else{
-                    var Base64 = this.imgBase64.split(',')[1];
-                }
+               
                 Store.commit("setIsLoading", true);
                 if(!this.posterId){
                     Service.poster().addactivitypost({
                         name: this.name,
                         endTime: endDate,
                         startTime: startDate,
-                        imgBase64: Base64,
-                        linkUrl: this.linkUrl,
+                        imgUrl: this.imgBase64,
+                        tempImgUrl: this.imgBase641,
+                        linkUrl: '',
                         sort: ''
                     }).then(response => {
                         Store.commit("setIsLoading", false);
@@ -295,11 +330,11 @@
                 }else{
                     Service.poster().editoractivitypost({
                         name: this.name,
-                        imgUrl: imgUrl,
+                        imgUrl: this.imgBase64,
+                        tempImgUrl: this.imgBase641,
                         endTime: endDate,
                         startTime: startDate,
-                        imgBase64: Base64,
-                        linkUrl: this.linkUrl,
+                        linkUrl: '',
                         sort: this.sort
                     },this.posterId).then(response => {
                         Store.commit("setIsLoading", false);
@@ -308,6 +343,7 @@
                             this.linkType = 1;
                             this.linkUrl = '';
                             this.imgBase64 = '';
+                            this.imgBase641 = '';
                             this.endDate = '';
                             this.startDate = '';
                             this.$emit('closeDialog', 'sure');
@@ -342,6 +378,7 @@
                 Store.commit("setIsLoading", false);
                 if(res.data){
                     console.log(res.data)
+                     this.imgBase64 = res.data
                     // this.postPoster(res.data)
                 }else{
                     this.$message.error(res.message);
@@ -356,13 +393,46 @@
                     this.$message.error('上传文件大小不能超过2M!');
                     return
                 }
-                let reader = new FileReader()
-                reader.onload = () => {
-                    // var base64Str = reader.result.split(',')[1];
-                        this.imgBase64 = reader.result
+                // let reader = new FileReader()
+                // reader.onload = () => {
+                //         this.imgBase64 = reader.result
 
+                // }
+                // reader.readAsDataURL(file.raw)
+         },
+          delectImg1(){
+                this.imgBase641 = '';
+            },
+             beforeAvatarUpload1(file) {
+                
+            },
+            errphoto1(err, file, fileList){
+            },
+            handleAvatarSuccess1(res, file) {
+                Store.commit("setIsLoading", false);
+                if(res.data){
+                    console.log(res.data)
+                    this.imgBase641 = res.data;
+                    // this.postPoster(res.data)
+                }else{
+                    this.$message.error(res.message);
                 }
-                reader.readAsDataURL(file.raw)
+            },
+            handleChange1(file, fileList) {
+               const isLt2M = file.size / 1024 / 1024 < 2;
+                var index = file.name.indexOf('.');
+               
+                if (!isLt2M) {
+                    Store.commit("setIsLoading", false);
+                    this.$message.error('上传文件大小不能超过2M!');
+                    return
+                }
+                // let reader = new FileReader()
+                // reader.onload = () => {
+                //         this.imgBase641 = reader.result
+
+                // }
+                // reader.readAsDataURL(file.raw)
          },
             enddateChange(val){
                     if(val){
@@ -390,14 +460,14 @@
                     if(response.errorCode == 0){
                         this.sort = response.data.sort;
                         this.name = response.data.name;
-                        this.linkUrl =  response.data.linkUrl;
-                        if(this.linkUrl){
-                            this.linkType = 1;
-                        }else{
-                            this.linkType = 0;
-                        }
-                        this.imgBase64 = response.data.imgUrl
-                        // this.insertImg(response.data.imgUrl)
+                        // this.linkUrl =  response.data.linkUrl;
+                        // if(this.linkUrl){
+                        //     this.linkType = 1;
+                        // }else{
+                        //     this.linkType = 0;
+                        // }
+                        this.imgBase64 = response.data.imgUrl;
+                        this.imgBase641 = response.data.tempImgUrl;
                         this.startDate = this.timetrans(response.data.startTime);
                         this.endDate = this.timetrans(response.data.endTime);
                         this.insuranceDate.push(new Date(response.data.startTime));

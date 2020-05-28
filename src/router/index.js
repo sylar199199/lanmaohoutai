@@ -6,6 +6,10 @@ import editorcommondity from '@/views/commodity/editorcommondity'//编辑，新�
 import commoditydetail from '@/views/commodity/commoditydetail'//商品详情
 import accountpermission from '@/views/account/accountpermission'//账号权限
 import adressset from '@/views/baseset/adressset'//地址设置
+import baseInfo from '@/views/baseset/baseInfo'//基础信息
+import baseinfoDetail from '@/views/baseset/baseinfoDetail'//基础信息
+
+
 import questionmanage  from '@/views/helpcenter/questionmanage'//问答管理
 import customerlist from '@/views/customer/customerlist'//客户列表
 import customerdetail from '@/views/customer/customerdetail'///客户详情
@@ -142,6 +146,16 @@ export default new Router({
             path:'/commodity/commoditydetail',
             name: 'commoditydetail',
             component: commoditydetail
+        },
+        {
+            path:'/baseset/baseinfoDetail',
+            name: 'baseinfoDetail',
+            component: baseinfoDetail
+        },
+        {
+            path:'/baseset/baseInfo',
+            name: 'baseInfo',
+            component: baseInfo
         },
         {
             path:'/baseset/adressset',

@@ -818,6 +818,28 @@ export default {
             }
         }
     },
+    protocol(){
+        return {
+            protocolList:function (data, key) {//协议列表
+                return getResource({
+                    url: `/lanmao//admin/protocol`,
+                    method: 'get'
+                }, data)
+            },
+            protocolDetail:function (data, key) {//协议详情
+                return getResource({
+                    url: `/lanmao//admin/protocol/${key}`,
+                    method: 'get'
+                }, data)
+            },
+            editorprotocol:function (data, key) {//编辑协议详情
+                return getResource({
+                    url: `/lanmao//admin/protocol/${key}`,
+                    method: 'post'
+                }, data)
+            },
+        }
+    },
     customer(){
         return {
             customerdaochu:function (data, key) {//客户列表daochu
@@ -848,6 +870,12 @@ export default {
                 return getResource({
                     url: `/lanmao/admin/customer/visitor/export`,
                     method: 'post'
+                }, data)
+            },
+            deleteuser: function (data, key) {//删除客户
+                return getResource({
+                    url: `/lanmao/admin/customer/${key}`,
+                    method: 'DELETE'
                 }, data)
             },
 

@@ -112,7 +112,7 @@
     <div style="background: #fff;">
         <div id="aside">
             <ul class="firstAside">
-                <li  class='cursor firstLi' v-for="(item,index) in items" :key="item.name" v-if="item.name != '设置' && item.name != '退出' && (item.isdelete == false)"  >
+                <li  class='cursor firstLi' v-for="(item,index) in items" :key="item.name" v-if="item.name != '退出' && (item.isdelete == false)"  >
                     <div class="firstTitle" :class="{liactive:item.isSubShow}" @click="showToggle(item,index)" >
                         <i :class='item.greyIcon' v-if="!item.showIcon" ></i>
                         <i  v-if="item.showIcon" :class="item.greenIcon"></i>
@@ -395,7 +395,29 @@
                                 thirditems: []
                             }
                         ]
-                    }
+                    },
+                     {
+                        name: '设置',
+                        greyIcon: 'iconshezhi iconfont fontIcongrey',
+                        greenIcon: 'iconshezhi iconfont fontIconwhite',
+                        isSubShow: false,
+                        showIcon: false,
+                        isShow: false,
+                        isdelete: false,
+                        subItems: [
+                            {
+                                title: '基础信息',
+                                secTitlte: '',
+                                isdelete: false,
+                                secgreyIcon: '',
+                                secgreenIcon: '',
+                                name: '基础信息',
+                                isSubShow: false,
+                                router:'baseInfo',
+                                thirditems: []
+                            }
+                        ]
+                    },
                 ],
                 hasChannel: '',
                 hasCommodity: '',

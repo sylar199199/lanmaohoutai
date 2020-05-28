@@ -40,6 +40,8 @@
                                 }
                             }
                         }
+
+                      
                     .searchContent{
                         flex-wrap: wrap;
                         position: relative;
@@ -88,8 +90,8 @@
                         margin: 10px  20px;
                         width: 937px;
                         .imgUrl{
-                            width: 38px;
-                            height: 66px;
+                            max-width: 58px;
+                            max-height: 40px;
                         }
                         tr{
                             border-bottom:1px solid #f6f6f6;
@@ -143,11 +145,17 @@
         }
     }
     .bigImg{
-        height: 460px;
         width: 258px;
         margin: 0 auto;
-        img{
-              height: 460px;
+        .margintop10{
+            margin-top:10px;
+        }
+        .img1{
+            height: 195px;
+            width: 258px;
+        }
+        .img2{
+            height: 238px;
             width: 258px;
         }
     }
@@ -163,18 +171,23 @@
                 width="30%"
                 center>
                 <div class='bigImg'>
-                    <img :src="bigImg">
+                    <div class="colorblack ">展示图：</div>
+                    <img class="img1 margintop10" :src="bigImg1">
+                </div>
+                <div class='bigImg'>
+                    <div class="colorblack ">模板图：</div>
+                    <img class="img2 margintop10" :src="bigImg2">
                 </div>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="centerDialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="centerDialogVisible = false;title='';bigImg = ''">确 定</el-button>
+                    <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
                 </span>
                 </el-dialog>
             <div class="content">
                 <div class="contanternews">
                     <div class="dataGeneral backWhite padding20">
                         
-                        <div class="borderButton" @click="showDialog = true">新建活动海报</div>
+                        <div class="borderButton" @click="showDialog = true;posterId = '';">新建活动海报</div>
                        
                     </div>
                     <div class="dataGeneral bannerTable">
@@ -251,7 +264,8 @@
                 posterId: '',
                 showDialog: false,
                 title: null,
-                bigImg: null,
+                bigImg1: null,
+                bigImg2: null,
                 centerDialogVisible: false,
                 upFileAction: '',
                 headers: null,
@@ -317,22 +331,24 @@
             getbackData(str){
                 if(str == 'sure'){
                     this.showDialog = false;
+                    this.posterId = ''
                      this.getactiveityposter('');//获取海报列表
                 }
                 if(str == 'cancle'){
+                     this.posterId = ''
                     this.showDialog = false;
                 }
             },
             showBig(item){
-                this.title = '编号：'+item.id;
-                this.bigImg = item.imgUrl;
+                this.title = item.name;
+                this.bigImg1 = item.imgUrl;
+                 this.bigImg2 = item.tempImgUrl;
                 this.centerDialogVisible = true;
             },
             beforeAvatarUpload(file) {
                 Store.commit("setIsLoading", true);
                 const isLt2M = file.size / 1024 / 1024 < 2;
                 var index = file.name.indexOf('.');
-               
                 if (!isLt2M) {
                     Store.commit("setIsLoading", false);
                     this.$message.error('上传文件大小不能超过2M!');
