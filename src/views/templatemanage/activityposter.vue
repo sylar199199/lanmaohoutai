@@ -180,7 +180,25 @@
                 </div>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="centerDialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+                    <!-- <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button> -->
+                </span>
+                </el-dialog>
+                 <el-dialog
+                :title="title"
+                :visible.sync="centerDialogVisible1"
+                width="30%"
+                center>
+                <div class='bigImg'>
+                    <div class="colorblack ">展示图：</div>
+                    <img class="img1 margintop10" :src="bigImg1">
+                </div>
+                <div class='bigImg'>
+                    <div class="colorblack ">模板图：</div>
+                    <img class="img2 margintop10" :src="bigImg2">
+                </div>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="centerDialogVisible1 = false">取 消</el-button>
+                    <el-button type="primary" @click="delectCommodity()">删除</el-button>
                 </span>
                 </el-dialog>
             <div class="content">
@@ -225,7 +243,7 @@
                                 <td>
                                     <span class="color2087 font12 fontWeight cursor"  @click="editorPoster(item.id)">编辑</span>
                                     <span class="line"></span>
-                                    <span class="color2087 font12  fontWeight" @click="delectCommodity(item.id)">删除</span>
+                                    <span class="color2087 font12  fontWeight" @click="showdeleteBig(item)">删除</span>
                                 </td>
                             </tr>
                         </table>
@@ -261,11 +279,13 @@
         },
         data() {
             return {
+                deleteid: '',
                 posterId: '',
                 showDialog: false,
                 title: null,
                 bigImg1: null,
                 bigImg2: null,
+                centerDialogVisible1: false,
                 centerDialogVisible: false,
                 upFileAction: '',
                 headers: null,
@@ -345,6 +365,12 @@
                  this.bigImg2 = item.tempImgUrl;
                 this.centerDialogVisible = true;
             },
+             showdeleteBig(item){
+                this.deleteid = item.id;
+                this.bigImg1 = item.imgUrl;
+                this.bigImg2 = item.tempImgUrl;
+                this.centerDialogVisible1 = true;
+            },
             beforeAvatarUpload(file) {
                 Store.commit("setIsLoading", true);
                 const isLt2M = file.size / 1024 / 1024 < 2;
@@ -409,7 +435,29 @@
                 }, err => {
                 });
             },
-            delectCommodity(id){
+            delectCommodity(){
+                 Service.poster().deleteactivitypost({
+                    },this.deleteid).then(response => {
+                        if(response.errorCode == 0){
+                            this.deleteid = '';
+                            this.bigImg1 = '';
+                            this.bigImg2 = '';
+                            this.centerDialogVisible1 = false;
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            this.getactiveityposter('');//获取海报列表
+                        }else{
+                            this.$message.error(response.message)
+                        }
+
+                    }, err => {
+                    });
+
+                    return;
+
+
                 this.$confirm( '删除活动海报请谨慎操作，确定删除?', '', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
