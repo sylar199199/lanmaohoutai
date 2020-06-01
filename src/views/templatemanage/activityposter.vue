@@ -366,6 +366,7 @@
                 this.centerDialogVisible = true;
             },
              showdeleteBig(item){
+                this.title = item.name;
                 this.deleteid = item.id;
                 this.bigImg1 = item.imgUrl;
                 this.bigImg2 = item.tempImgUrl;

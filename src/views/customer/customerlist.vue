@@ -181,7 +181,7 @@
                                 </el-date-picker>
                             </div>
 
-                            <div class="curson" @click="deleteuser()">删除用户</div>
+                            <!-- <div class="curson" @click="deleteuser()">删除用户</div> -->
                             <div class="bacButtonone bacButton cursor" :download="download" :href="href" @click="daochu()">导出</div>
                             <div class="bacButton cursor" @click="getcommodityData('search')">筛选 </div>
                         </div>
