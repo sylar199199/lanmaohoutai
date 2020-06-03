@@ -177,7 +177,7 @@
                                     <span class="font12 colorblack">累计发放积分</span>
                                     <!--<i @mouseover="showThree = true" @mouseout="showThree = false" class="iconfont iconwenhao cursor color2087 font16"></i>-->
                                 </p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumDistPoints">{{getoverviewCount.accumDistPoints}}</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumDistPoints">{{tranNumber(getoverviewCount.accumDistPoints,1)}}</p>
                                 <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumDistPoints">0</p>
                                 <p class="colorGrey font12" v-if="getoverviewCount.yesterdayDistPoints">昨日 {{getoverviewCount.yesterdayDistPoints}}</p>
                                 <p class="colorGrey font12" v-if="!getoverviewCount.yesterdayDistPoints">昨日 0</p>
@@ -191,7 +191,7 @@
                                     <span class="font12 colorblack">累计消耗积分</span>
                                     <!--<i  @mouseover="showFour = true" @mouseout="showFour = false"  class="iconfont iconwenhao cursor  color2087 font16"></i>-->
                                 </p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumConsPoints">{{getoverviewCount.accumConsPoints}}</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumConsPoints">{{tranNumber(getoverviewCount.accumConsPoints,1)}}</p>
                                 <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumConsPoints">0</p>
                                 <p class="colorGrey font12" v-if="getoverviewCount.yesterdayConsPoints">昨日 {{getoverviewCount.yesterdayConsPoints}}</p>
                                 <p class="colorGrey font12" v-if="!getoverviewCount.yesterdayConsPoints">昨日 0</p>
@@ -374,6 +374,23 @@
             // this.gettodo();
         },
         methods:{
+             tranNumber(num, point) {
+                let numStr = num.toString()
+                // 十万以内直接返回 
+                if (numStr.length < 6) {
+                    return numStr;
+                }
+                //大于8位数是亿
+                else if (numStr.length > 8) {
+                    let decimal = numStr.substring(numStr.length - 8, numStr.length - 8 + point);
+                    return parseFloat(parseInt(num / 100000000) + '.' + decimal) + '亿';
+                }
+                //大于6位数是十万 (以10W分割 10W以下全部显示)
+                else if (numStr.length > 5) {
+                    let decimal = numStr.substring(numStr.length - 4, numStr.length - 4 + point)
+                    return parseFloat(parseInt(num / 10000) + '.' + decimal) + 'w';
+                }
+            },
             timetrans(timestamp) {
                 var getSeconds = '', getMinutes = '', getHours = '';
                 var d = timestamp;
