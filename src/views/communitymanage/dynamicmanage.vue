@@ -246,7 +246,7 @@
                                 </th>
                             </tr>
                             <tr v-for="(item,index) in tableData" :key='item.id' :index="index">
-                             <td class="cursor" @click="getId(item)"><i v-if='!item.reported' :class="item.select?'iconfont iconxuanzeyixuanze':'iconfont iconxuanzeweixuanze'"></i></td>
+                             <td class="cursor" @click="getId(item)"><i  :class="item.select?'iconfont iconxuanzeyixuanze':'iconfont iconxuanzeweixuanze'"></i></td>
                                 <td>
                                     <div class="flex">
                                          <img @click='openBig(item)' :src="item.imgUrl" class="imgUrl">
