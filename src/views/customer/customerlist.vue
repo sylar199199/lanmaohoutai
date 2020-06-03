@@ -90,13 +90,16 @@
                                 max-width: 60px;
                             }
                             td:nth-child(2){
-                                max-width: 70px;
+                                max-width: 80px;
+                                 min-width: 80px;
                             }
                             td:nth-child(3){
                                 max-width: 70px;
+                                 min-width: 73px;
                             }
                             td:nth-child(4){
                                 max-width: 50px;
+                                 min-width: 50px;
                             }
                             td:nth-child(5){
                                 max-width: 64px;
@@ -106,7 +109,8 @@
                                 min-width: 80px;
                             }
                             td:nth-child(10){
-                                max-width: 100px;
+                                max-width: 80px;
+                                 min-width: 80px;
                             }
                             th:nth-child(11){
                                 min-width: 100px;
@@ -119,7 +123,7 @@
                             }
                             td{
                                 text-align: center;
-                                padding: 20px 16px;
+                                padding: 20px 12px;
                             }
                         }
                     }
