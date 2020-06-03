@@ -180,6 +180,27 @@ export default {
     },
     community(){
         return{
+            deletecommunity(data,key){
+                //删除动态
+                return getResource({
+                    url: `/lanmao/admin/community/post/batch/delete`,
+                    method: 'post'
+                }, data)
+            },
+            cancelebanPost(data,key){
+                //取消禁言
+                return getResource({
+                    url: `/lanmao/admin/community/user/banPost/cancel?userId=${key}`,
+                    method: 'post'
+                }, data)
+            },
+            reportbatchcommunity(data,key){
+                //批量举报动态
+                return getResource({
+                    url: `/lanmao/admin/community/post/batch/report`,
+                    method: 'post'
+                }, data)
+            },
             getcommunityList(data,key){
                 //获取动态列表
                 return getResource({

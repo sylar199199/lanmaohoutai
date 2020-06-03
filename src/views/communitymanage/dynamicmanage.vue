@@ -48,6 +48,12 @@
                     background: #fff;
                     margin-top: 15px;
                     padding: 10px 0 100px;
+                    .selectBox{
+                        margin: 10px 22px 15px;
+                    }
+                    .iconfont{
+                        font-size: 18px;
+                    }
                     .noData{
                         width: 100%;
                         text-align: center;
@@ -76,6 +82,11 @@
                         margin: 10px  20px;
                         width: 937px;
                         tr{
+                            .imgUrl{
+                                height: 35px;
+                                width: 40px;
+                                margin-right: 6px;
+                            }
                              .line{
                                     display: inline-block;
                                     height: 8px;
@@ -97,7 +108,8 @@
                                 max-width: 60px;
                             }
                             td:nth-child(2){
-                                max-width: 70px;
+                                max-width: 120px;
+                                text-align: center;
                             }
                             td:nth-child(3){
                                 max-width: 70px;
@@ -117,6 +129,10 @@
                                 min-width: 62px;
                             }
                             td:nth-child(10){
+                                max-width: 62px;
+                                min-width: 62px;
+                            }
+                             td:nth-child(11){
                                 max-width: 110px;
                                 min-width: 110px;
                             }
@@ -137,12 +153,30 @@
             }
         }
     }
+      .bigImg{
+        width: 160px;
+        height: 200px;
+        margin: 0 auto;
+        img{
+             max-width: 160px;
+            max-height: 200px;
+        }
+    }
 </style>
 <template>
     <div class="general">
         <KlTop></KlTop>
         <div class="salecustomercontent contaner">
             <Aside></Aside>
+            <el-dialog :title="title" :visible.sync="centerDialogVisible" width="30%"  center>
+                <div class='bigImg'>
+                    <img :src="bigImg">
+                </div>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="centerDialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="centerDialogVisible = false;title='';bigImg = ''">确 定</el-button>
+                </span>
+            </el-dialog>
             <div class="content">
                 <div class="contanternews">
                     <div class="dataGeneral backWhite">
@@ -199,6 +233,12 @@
 
                     </div>
                     <div class="dataGeneral bannerTable">
+                          <div class="selectBox flex alignCenter" >
+                                <i @click="changeallSelect" :class="allSelect?'iconfont cursor iconxuanzeyixuanze':'iconfont cursor iconxuanzeweixuanze'"></i>
+                                <span class="font14 marginLeft10 marginright10">当页全选</span>
+                                <div class=' curson bacButton marginLeft10' @click="jubao()">举报</div>
+                                <div class='jubao curson bacButton marginLeft10' @click="deleteAll()">删除</div>
+                            </div>
                         <table  v-if="noData" class="table">
                             <tr>
                                 <th v-for="item in sortDatas" :key='item.name'>
@@ -206,8 +246,14 @@
                                 </th>
                             </tr>
                             <tr v-for="(item,index) in tableData" :key='item.id' :index="index">
+                             <td class="cursor" @click="getId(item)"><i v-if='!item.reported' :class="item.select?'iconfont iconxuanzeyixuanze':'iconfont iconxuanzeweixuanze'"></i></td>
                                 <td>
-                                    {{item.title}}
+                                    <div class="flex">
+                                         <img @click='openBig(item)' :src="item.imgUrl" class="imgUrl">
+                                         <span>{{item.title}}</span>
+                                    </div>
+                                   
+
                                  </td>
                                 <td>
                                     {{item.topicName}}
@@ -253,7 +299,7 @@
                                     @current-change="handleCurrentChange"
                                     :current-page="page"
                                     :page-size="size"
-                                    :page-sizes="[5,10]"
+                                    :page-sizes="[5,10,20]"
                                     layout="total,sizes,prev, pager, next,jumper"
                                     :total="total">
                             </el-pagination>
@@ -279,9 +325,14 @@
         },
         data() {
             return {
+                centerDialogVisible: false,
+                bigImg: "",
+                title: '',
+                allSelect: false,
                 id: '',
                 sortDatas:[
-                    {orderType:'',name: '动态标题',showBlue: false,orderField: ''},
+                     {orderType:'',name: '',showBlue: false,orderField: ''},
+                    {orderType:'',name: '动态',showBlue: false,orderField: ''},
                     {orderType:'',name: '参与话题',showBlue: false,orderField: ''},
                     {orderType:'',name: '发布者ID',showBlue: false,orderField: ''},
                     {orderType:'',name: '发布者',showBlue: false,orderField: ''},
@@ -299,7 +350,7 @@
                 page: 1,
                 reported: '',
                 shareCount: '',
-                size: 10,
+                size: 20,
                 title: "",
                 topicId: '',
                 userId: '',
@@ -310,6 +361,7 @@
                 tableData: [],
                 noData: true,
                 statusTitle: "",
+                selectId: [],
             };
         },
         created(){
@@ -327,9 +379,68 @@
         watch:{
         },
         mounted(){
-            this.getcommunityList('');//获取订单列表
+            this.getcommunityList('');//获取列表
         },
         methods: {
+            openBig(item){
+                this.title = '动态：'+item.title;
+                this.bigImg = item.imgUrl;
+                this.centerDialogVisible = true;
+            },
+             getId(item){
+                item.select = !item.select;
+                if(item.select){
+                    this.selectId.push(item.id);
+                }else{
+                    var index =  this.selectId.indexOf(item.id)
+                    this.selectId.splice(index, 1);
+                }
+                this.$forceUpdate()
+
+            },
+            deleteAll(){
+                 this.$confirm('所选动态将被删除，请谨慎操作！', '删除动态?', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    Service.community().deletecommunity(
+                       this.selectId ).then(response => {
+                        if(response.errorCode == 0){
+                            this.$message.success('已删除')
+                            this.getcommunityList();
+                        }else{
+                            this.$message.error(response.message)
+                        }
+                    }, err => {
+                    });
+                }).catch(() => {
+
+                });
+            },
+            jubao(){
+                 console.log(this.selectId )
+                this.$confirm('所选动态存在违规行为，举报后将对所有用户不可见，发布者将被禁言3日', '举报动态?', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    Service.community().reportbatchcommunity(
+                       this.selectId 
+                    
+                    ).then(response => {
+                        if(response.errorCode == 0){
+                            this.$message.success('已举报')
+                            this.getcommunityList();
+                        }else{
+                            this.$message.error(response.message)
+                        }
+                    }, err => {
+                    });
+                }).catch(() => {
+
+                });
+            },
             topCommunity(id){
                     this.$confirm('置顶该动态?', '', {
                     confirmButtonText: '确定',
@@ -458,6 +569,21 @@
                 }
                 return new Blob([u8arr],{type : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
             },
+             changeallSelect(){
+                this.allSelect = !this.allSelect;
+                if(this.allSelect){
+                    this.selectId = [];
+                    for(var i = 0;i< this.tableData.length; i++){
+                        this.tableData[i].select = true;
+                        this.selectId.push(this.tableData[i].id)
+                    }
+                }else{
+                    this.selectId = [];
+                    for(var i = 0;i< this.tableData.length; i++){
+                        this.tableData[i].select = false;
+                    }
+                }
+            },
             
             getcommunityList(str){
                 if(str == 'search'){
@@ -491,6 +617,7 @@
                             this.total = response.data.total;
                             for(let i in  response.data.records){
                                 response.data.records[i].isshowDes = false;
+                                response.data.records[i].select = false;
                             }
                             this.$nextTick(()=>{
                                 this.tableData = response.data.records;

@@ -86,6 +86,9 @@
                                     margin-left: 5px;
                                 }
                             }
+                            .cancleBan{
+                                margin-left: 10px;
+                            }
                             th:nth-child(1){
                                 max-width: 60px;
                             }
@@ -208,7 +211,14 @@
                                 <td>
                                   {{item.shareCount}}
                                 </td>
-                                
+                                <td>
+                                    <span v-if="(!item.banPostTime) || (item.banPostTime <= Date.parse(new Date()))">正常</span>
+                                    <span v-if="(item.banPostTime > Date.parse(new Date()))">禁言</span>
+                                </td>
+                                <td>
+                                     <span v-if="(item.banPostTime > Date.parse(new Date()))">{{timetrans(item.banPostTime)}}</span>
+                                     <span v-if="(item.banPostTime > Date.parse(new Date()))" @click='cancleBan(item.id)' class="cancleBan  fontWeight curson font12 color2087" >取消禁言</span>
+                                </td>
                                 <td>
                                     <span class="color2087 font12 fontWeight cursor" @click="goDetail(item.id)">发布的动态</span>
                                 </td>
@@ -267,6 +277,8 @@
                     {orderType:'',name: '获赞',showBlue: true,orderField: ''},
                     {orderType:'',name: '关注',showBlue: false,orderField: ''},
                     {orderType:'',name: '动态被转发',showBlue: false,orderField: ''},
+                    {orderType:'',name: '状态',showBlue: false,orderField: ''},
+                    {orderType:'',name: '禁言时间',showBlue: false,orderField: ''},
                     {orderType:'',name: '操作',showBlue: false,orderField: ''}
                 ],
                 total: 0,
@@ -285,6 +297,28 @@
             this.getpublisher('');//获取发布者列表
         },
         methods: {
+            cancleBan(id){
+                this.$confirm('该用户的禁言功能将会取消，请确认！', '取消禁言?', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                     Service.community().cancelebanPost({
+                        },id).then(response => {
+                            if(response.errorCode == 0){
+                                this.$message.success('取消禁言成功');
+                                this.getpublisher('');
+                            }else{
+                                this.$message.error(response.message)
+                            }
+
+                        }, err => {
+                        });
+                }).catch(() => {
+
+                });
+                
+            },
             shipGoods(){
                 if(!this.changeValue('expressName','submit')){
                     return;

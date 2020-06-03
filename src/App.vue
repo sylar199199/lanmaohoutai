@@ -200,8 +200,10 @@ export default {
 .el-date-table td span:hover{
     color: #0d2c4b;
 }
-.el-message-box__title{
+.el-message-box__title span{
     text-align: center;
+    font-size: 15px;
+  
 }
     .el-textarea__inner:hover{
         border: solid 1px #e5e5e5;
