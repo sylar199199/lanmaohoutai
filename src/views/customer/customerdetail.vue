@@ -223,8 +223,8 @@
                                     <div class="infoBox">
                                         <i class="iconfont iconnvsheng colore6 font14 timeSpan" v-if="custormerData.sex == '2'"></i>
                                         <i class="iconfont iconnansheng color2087 font14 timeSpan" v-if="custormerData.sex == '1'"></i>
-                                        <span class="colorGrey font12 timeSpan">{{custormerData.province}}</span>
-                                        <span class="colorGrey font12 timeSpan">{{custormerData.city}}</span>
+                                        <span class="colorGrey font12 timeSpan" v-if="custormerData.province">{{custormerData.province}}</span>
+                                        <span class="colorGrey font12 timeSpan" v-if="custormerData.city">{{custormerData.city}}</span>
                                         <span class="colorGrey font12 ">手机号：</span>
                                         <span class="colorblack font12 timeSpan">{{custormerData.phone}}</span>
                                         <span class="colorGrey font12 ">成为客户时间：</span>

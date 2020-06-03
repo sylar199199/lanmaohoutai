@@ -29,7 +29,7 @@
                                 margin-right: 6px;
                             }
                             .serchInput{
-                                width: 200px;
+                                width: 188px;
                                 height: 30px;
                                 line-height: 30px;
                                 border: 1px solid #e5e5e5;
@@ -163,6 +163,17 @@
                                 <span class="searchLable colorGrey font12">推荐人id </span>
                                 <input type="text" v-model="inviteUserId" class="serchInput font12 colorblack" placeholder="推荐人id"/>
                             </div>
+                            <div class="searchBox flex">
+                                <span class="searchLable searchName colorGrey font12">推荐类型</span>
+                                <el-select v-model="inviteType" placeholder="">
+                                    <el-option
+                                            v-for="item in inviteTypeoption"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </div>
                             <div class="searchBox">
                                 <span class="searchLable colorGrey font12">ID</span>
                                 <input type="text" v-model="id" class="serchInput font12 colorblack" placeholder="ID"/>
@@ -205,13 +216,10 @@
                                     {{item.phone}}
                                 </td>
                                 <td v-if="item.sex">
-                                    <span v-if="item.sex == 1">男</span>
-                                    <span v-if="item.sex == 2">女</span>
+                                    <span v-if="item.inviteType == 1">打卡推荐</span>
+                                    <span v-if="item.inviteType == 2">商品推荐</span>
+                                    <span v-if="item.inviteType == 3">动态推荐</span>
                                     <!--{{afsresetTitle(item.afsStatus)}}-->
-                                </td>
-
-                                <td>
-                                    {{item.city}}
                                 </td>
                                 <td>
                                     <span v-if="item.points"> {{item.points.totalPoints}}</span>
@@ -278,6 +286,8 @@
         },
         data() {
             return {
+                inviteType:'',
+                inviteTypeoption: [{name: '全部',id: ''},{name:'打卡推荐',id:1},{name:'商品推荐',id:2},{name:'动态推荐',id:3}],
                 download: '',
                 href: '',
                 minTotalPoints: '',
@@ -301,8 +311,7 @@
                     {orderType:'',name: 'ID',showBlue: false,orderField: ''},
                     {orderType:'',name: '微信昵称',showBlue: false,orderField: ''},
                     {orderType:'',name: '手机号',showBlue: false,orderField: ''},
-                    {orderType:'',name: '性别',showBlue: false,orderField: ''},
-                    {orderType:'',name: '城市',showBlue: true,orderField: ''},
+                    {orderType:'',name: '推荐类型',showBlue: false,orderField: ''},
                     {orderType:'',name: '现有积分',showBlue: false,orderField: ''},
                     {orderType:'',name: '累计积分',showBlue: false,orderField: ''},
                     {orderType:'',name: '兑换次数',showBlue: false,orderField: ''},
@@ -481,6 +490,7 @@
                     startDate = this.startDate;
                 }
                 Service.customer().customerdaochu({
+                    inviteType: this.inviteType,
                     'minTotalPoints': this.minTotalPoints,
                     'minAccumPoints': this.minAccumPoints,
                     'id': this.id,
@@ -532,6 +542,7 @@
                 // }
 
                 Service.customer().getcustomer({
+                    inviteType: this.inviteType,
                     minTotalPoints: this.minTotalPoints,
                     minAccumPoints: this.minAccumPoints,
                     'id': this.id,
