@@ -168,13 +168,13 @@
         <KlTop></KlTop>
         <div class="salecustomercontent contaner">
             <Aside></Aside>
-            <el-dialog :title="title" :visible.sync="centerDialogVisible" width="30%"  center>
+            <el-dialog :title="showtitle" :visible.sync="centerDialogVisible" width="30%"  center>
                 <div class='bigImg'>
                     <img :src="bigImg">
                 </div>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="centerDialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="centerDialogVisible = false;title='';bigImg = ''">确 定</el-button>
+                    <el-button type="primary" @click="centerDialogVisible = false;showtitle='';bigImg = ''">确 定</el-button>
                 </span>
             </el-dialog>
             <div class="content">
@@ -327,7 +327,7 @@
             return {
                 centerDialogVisible: false,
                 bigImg: "",
-                title: '',
+                showtitle: '',
                 allSelect: false,
                 id: '',
                 sortDatas:[
@@ -383,7 +383,7 @@
         },
         methods: {
             openBig(item){
-                this.title = '动态：'+item.title;
+                this.showtitle = '动态：'+item.title;
                 this.bigImg = item.imgUrl;
                 this.centerDialogVisible = true;
             },
