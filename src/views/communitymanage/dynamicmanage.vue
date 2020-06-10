@@ -153,7 +153,7 @@
             }
         }
     }
-      .bigImg{
+    .bigImg{
         width: 160px;
         height: 200px;
         margin: 0 auto;
@@ -399,47 +399,59 @@
 
             },
             deleteAll(){
-                 this.$confirm('所选动态将被删除，请谨慎操作！', '删除动态?', {
+                if(this.selectId.length != 0){
+                    this.$confirm('所选动态将被删除，请谨慎操作！', '删除动态?', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(() => {
-                    Service.community().deletecommunity(
-                       this.selectId ).then(response => {
-                        if(response.errorCode == 0){
-                            this.$message.success('已删除')
-                            this.getcommunityList();
-                        }else{
-                            this.$message.error(response.message)
-                        }
-                    }, err => {
-                    });
-                }).catch(() => {
+                    }).then(() => {
+                        Service.community().deletecommunity(
+                        this.selectId ).then(response => {
+                            if(response.errorCode == 0){
+                                this.$message.success('已删除')
+                                this.selectId = [];
+                                this.getcommunityList();
+                            }else{
+                                this.$message.error(response.message)
+                            }
+                        }, err => {
+                        });
+                    }).catch(() => {
 
-                });
+                    });
+                }else{
+                    this.$message.error('请勾选需要删除的动态')
+                }
+                 
             },
             jubao(){
                  console.log(this.selectId )
-                this.$confirm('所选动态存在违规行为，举报后将对所有用户不可见，发布者将被禁言3日', '举报动态?', {
+                 if(this.selectId.length != 0){
+                     this.$confirm('所选动态存在违规行为，举报后将对所有用户不可见，发布者将被禁言3日', '举报动态?', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(() => {
-                    Service.community().reportbatchcommunity(
-                       this.selectId 
-                    
-                    ).then(response => {
-                        if(response.errorCode == 0){
-                            this.$message.success('已举报')
-                            this.getcommunityList();
-                        }else{
-                            this.$message.error(response.message)
-                        }
-                    }, err => {
-                    });
-                }).catch(() => {
+                    }).then(() => {
+                        Service.community().reportbatchcommunity(
+                        this.selectId 
+                        
+                        ).then(response => {
+                            if(response.errorCode == 0){
+                                this.$message.success('已举报')
+                                this.selectId = [];
+                                this.getcommunityList();
+                            }else{
+                                this.$message.error(response.message)
+                            }
+                        }, err => {
+                        });
+                    }).catch(() => {
 
-                });
+                    });
+                 }else{
+                      this.$message.error('请勾选需要举报的动态')
+                 }
+                
             },
             topCommunity(id){
                     this.$confirm('置顶该动态?', '', {
