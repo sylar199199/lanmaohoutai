@@ -81,7 +81,7 @@
                         }
                         .scrollContent{
                             width: 330px;
-                            height: 400px;
+                            height: 470px;
                             margin: 16px;
                             overflow-y: auto;
                             flex-wrap: wrap;
@@ -250,6 +250,9 @@
             }
         }
     }
+    .marginbottom{
+        margin-bottom: 8px;
+    }
 </style>
 <template>
     <div class="general">
@@ -333,14 +336,24 @@
                                         </div>
                                     </div>
                                      <div class="searchBox flex">
-                                        <span class="searchLable searchName colorGrey font12">新人设置 </span>
-                                        <div class="radioBox marginLeft10" >
-                                            <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="isuserRegDaysLimit"></i>
-                                            <i class="iconfont iconxuanze  font20 cursor" v-if="!isuserRegDaysLimit" @click="isuserRegDaysLimit = true"></i>
-                                            <span class="typeText colorblack font12 marginright10">微信授权<input type="text" class="inputBox" v-model="userRegDaysLimit" />天以内</span>
-                                            <i class="iconfont iconxuanzhong color2087 font20 cursor marginLeft10" v-if="!isuserRegDaysLimit"></i>
-                                            <i class="iconfont iconxuanze  font20 cursor marginLeft10" v-if="isuserRegDaysLimit" @click="isuserRegDaysLimit = false"></i>
-                                            <span class="typeText colorblack font12">不限购</span>
+                                        <span class="searchLable  colorGrey font12">人群设置 </span>
+                                        <div class="radioBox marginLeft10">
+                                              <div class="marginbottom">
+                                                <i class="iconfont iconxuanzhong color2087 font20 cursor " v-if="!isuserRegDaysLimit"></i>
+                                                <i class="iconfont iconxuanze  font20 cursor " v-if="isuserRegDaysLimit" @click="isuserRegDaysLimit = false"></i>
+                                                <span class="typeText colorblack font12">不限购</span>
+                                            </div>
+                                            <div class="marginbottom">
+                                                <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="isuserRegDaysLimit"></i>
+                                                <i class="iconfont iconxuanze  font20 cursor" v-if="!isuserRegDaysLimit" @click="isuserRegDaysLimit = true"></i>
+                                                <span class="typeText colorblack font12 marginright10">新用户微信授权<input type="text" class="inputBox" v-model="userRegDaysLimit" />天以内</span>
+                                            </div>
+                                             <div >
+                                                <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="isuserRegDaysLimit"></i>
+                                                <i class="iconfont iconxuanze  font20 cursor" v-if="!isuserRegDaysLimit" @click="isuserRegDaysLimit = true"></i>
+                                                <span class="typeText colorblack font12 marginright10">老用户微信授权<input type="text" class="inputBox" v-model="userRegDaysLimit" />天以内</span>
+                                            </div>
+                                           
                                         </div>
                                     </div>
 
