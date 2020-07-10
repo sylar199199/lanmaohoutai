@@ -159,7 +159,7 @@
                         padding-top: 30px;
                     }
                     .tableBox{
-                        margin: 0 20px;
+                        margin: 0 40px;
                     }
                     .tableScrollBox{
                         height: 300px;
@@ -269,44 +269,8 @@
                     <div class="dataGeneral bannerTable">
                         <div class="tableTitle colorblack font14"  >活动信息</div>
                         <div class="flex contentFlex">
-                            <div class="previewBox">
-                                <div class="previewTitle">活动效果浏览</div>
-                                <div class="previewContent">
-                                    <div class="contentTitle font14 colorblack">限时兑换</div>
-                                    <div class="scrollContent flex">
-                                        <div class="productContent" v-for="item in goodsdata">
-                                            <div class="productLeft">
-                                                <img :src="item.imgUrl" class="productImg" />
-                                            </div>
-                                            <div class="productRight">
-                                                <p class="productName font12 colorblack">{{item.name}}</p>
-                                                <div class="flexBetween">
-                                                    <div></div>
-                                                    <span class="colorGrey font12 fr" v-if="item.salesVolume">已抢{{item.salesVolume}}件</span>
-                                                    <span class="colorGrey font12 fr" v-if="!item.salesVolume">已抢0件</span>
-                                                </div>
-                                                <div class="percent">
-                                                    <div class="percentNumber font12 colorGrey" :style="{'width':getPercent(item.salesVolume,item.stock)}">{{getPercent(item.salesVolume,item.stock)}}</div>
-                                                </div>
-                                                <div class="flexBetween">
-                                                    <div>
-                                                        <p class="colorblack font12">
-                                                            <img class="gouqiicon" src="https://oss.ifxj.com/lanmao/health/gouqi.png">
-                                                            <span class="colorBlack font12">{{item.points}}+</span>
-                                                            <span class="'priceText">¥{{item.price}}</span>
-                                                        </p>
-                                                        <p class="colorblack font12"><span class="textLinethrough colorGrey font12">¥{{item.marketPrice}}</span></p>
-                                                    </div>
-                                                    <div class="borderSmallButton">马上抢</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
                             <div class="tableBox">
-                                <div class="searchContent flex clear">
+                                <div class="searchContent clear">
                                     <div class="searchBox">
                                         <span class="searchLable colorGrey font12">活动名称</span>
                                         <input type="text" v-model="name" class="serchInput font12 colorblack" placeholder="请填写活动名称"/>
@@ -325,84 +289,35 @@
                                         </el-date-picker>
                                     </div>
                                     <div class="searchBox flex">
-                                        <span class="searchLable searchName colorGrey font12">限购设置 </span>
+                                        <span class="searchLable searchName colorGrey font12">规则 </span>
                                         <div class="radioBox marginLeft10" >
                                             <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="shelvesType==1"></i>
                                             <i class="iconfont iconxuanze  font20 cursor" v-if="shelvesType != 1" @click="shelvesType = 1"></i>
-                                            <span class="typeText colorblack font12 marginright10">每人每种商品限购<input type="text" class="inputBox" v-model="purchaseNumber" />件</span>
+                                            <span class="typeText colorblack font12 marginright10">限制参与人数<input type="text" class="inputBox" v-model="purchaseNumber" />人</span>
                                             <i class="iconfont iconxuanzhong color2087 font20 cursor marginLeft10" v-if="shelvesType==0"></i>
                                             <i class="iconfont iconxuanze  font20 cursor marginLeft10" v-if="shelvesType !=0" @click="shelvesType = 0"></i>
                                             <span class="typeText colorblack font12">不限购</span>
                                         </div>
                                     </div>
                                      <div class="searchBox flex">
-                                        <span class="searchLable  colorGrey font12">人群设置 </span>
-                                        <div class="radioBox marginLeft10">
-                                              <div class="marginbottom">
-                                                <i class="iconfont iconxuanzhong color2087 font20 cursor " v-if="!isuserRegDaysLimit"></i>
-                                                <i class="iconfont iconxuanze  font20 cursor " v-if="isuserRegDaysLimit" @click="isuserRegDaysLimit = false"></i>
-                                                <span class="typeText colorblack font12">不限购</span>
-                                            </div>
-                                            <div class="marginbottom">
-                                                <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="isuserRegDaysLimit"></i>
-                                                <i class="iconfont iconxuanze  font20 cursor" v-if="!isuserRegDaysLimit" @click="isuserRegDaysLimit = true"></i>
-                                                <span class="typeText colorblack font12 marginright10">新用户微信授权<input type="text" class="inputBox" v-model="userRegDaysLimit" />天以内</span>
-                                            </div>
-                                             <div >
-                                                <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="isuserRegDaysLimit"></i>
-                                                <i class="iconfont iconxuanze  font20 cursor" v-if="!isuserRegDaysLimit" @click="isuserRegDaysLimit = true"></i>
-                                                <span class="typeText colorblack font12 marginright10">老用户微信授权<input type="text" class="inputBox" v-model="userRegDaysLimit" />天以内</span>
-                                            </div>
-                                           
+                                        <span class="searchLable searchName colorGrey font12"> </span>
+                                         <div class="radioBox marginLeft10" >
+                                            <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="shelvesType==1"></i>
+                                            <i class="iconfont iconxuanze  font20 cursor" v-if="shelvesType != 1" @click="shelvesType = 1"></i>
+                                            <span class="typeText colorblack font12 marginright10">奖励积分<input type="text" class="inputBox" v-model="purchaseNumber" />分</span>
+                                            <i class="iconfont iconxuanzhong color2087 font20 cursor marginLeft10" v-if="shelvesType==0"></i>
+                                            <i class="iconfont iconxuanze  font20 cursor marginLeft10" v-if="shelvesType !=0" @click="shelvesType = 0"></i>
+                                            <span class="typeText colorblack font12">不奖励积分</span>
                                         </div>
                                     </div>
-
-                                </div>
-                                <div class="flex" style="line-height: 40px;">
-                                    <div class="bacButton cursor" @click="getRecList()">添加活动商品</div>
-                                    <span class="colorblack font12 marginLeft10">共{{goodsdata.length}}个商品</span>
-                                </div>
-                                <div class="tableScrollBox">
-                                    <table  v-if="noData" class="table">
-                                        <tr>
-                                            <th v-for="item in sortDatas" :key="item.name">
-                                                {{item.name}}
-                                            </th>
-                                        </tr>
-                                        <tr v-for="(item,index) in goodsdata" :key="item.id">
-                                            <td>
-                                                <div class="flex">
-                                                    <img class="productImg" :src="item.imgUrl">
-                                                    <div class="productBox">
-                                                        <p class="colorblack font12 productText">{{item.name}}</p>
-                                                        <p class="colore6 font12 productText">￥{{item.price}}</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <i class="cursor iconfont iconshangsheng fontIcongreen" v-if="index!=0" @click='upSort(index,item)'></i>
-                                                <i class="iconfont iconshangsheng fontIcongrey"  v-if="index==0"></i>
-                                                <i class='cursor iconfont fontIcongreen iconjiang' @click='downSort(index,item)' v-if="index!=(goodsdata.length-1)"></i>
-                                                <i class='iconfont fontIcongrey iconjiang' v-if="index==(goodsdata.length-1)"></i>
-                                            </td>
-                                            <td>
-                                                {{item.stock}}
-                                            </td>
-                                            <td>
-                                                <span class="color2087 font12 cursor" @click="delectCommodity(item)">删除</span>
-                                            </td>
-
-                                        </tr>
-                                    </table>
-                                    <div v-if="!noData" class="noData">
-                                        <img class="nodataImg" src="../../assets/images/nodatalist.png"/>
-                                        <p>暂无数据~</p>
+                                    <div class="searchBox">
+                                        <span class="searchLable colorGrey font12">URL链接</span>
+                                        <input type="text" v-model="name" class="serchInput font12 colorblack" placeholder="请输入URL链接"/>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-                        <div class="bacButton" @click="addActiveProduct()" v-if="noData" style="margin: 10px auto">
+                        <div class="bacButton" @click="addActiveProduct()"  style="margin: 20px 140px">
                             保存
                         </div>
                     </div>

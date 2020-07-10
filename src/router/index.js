@@ -33,6 +33,10 @@ import topicmanage from '@/views/communitymanage/topicmanage'//话题管理
 import publisherlist from '@/views/communitymanage/publisherlist'//发布者查询
 import visitlist from '@/views/customer/visitlist'//访客查询
 import dynamicDetail from '@/views/communitymanage/dynamicDetail'//动态详情
+import insurancelist from '@/views/insurance/insurancelist'//赠险活动列表
+import addinsurance from '@/views/insurance/addinsurance'//新建赠险活动
+import insuranceOrderlist from '@/views/order/insuranceOrderlist'//赠险订单
+import insuranceOrderdetail from '@/views/order/insuranceOrderdetail'//赠险订单详情
 
 import home from '@/views/home/home'
 import login from '@/views/login'
@@ -41,6 +45,26 @@ Vue.use(Router);;
 export default new Router({
     mode: 'history',
     routes: [
+        {
+            path: '/order/insuranceOrderlist',
+            name: 'insuranceOrderlist',
+            component: insuranceOrderlist
+        },
+        {
+            path: '/order/insuranceOrderdetail',
+            name: 'insuranceOrderdetail',
+            component: insuranceOrderdetail
+        },
+        {
+            path: '/insurance/insurancelist',
+            name: 'insurancelist',
+            component: insurancelist
+        },
+        {
+            path: '/insurance/addinsurance',
+            name: 'addinsurance',
+            component: addinsurance
+        },
         {
             path: '/home/home',
             name: 'home',

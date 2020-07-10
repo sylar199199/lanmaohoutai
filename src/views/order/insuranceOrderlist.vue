@@ -165,16 +165,6 @@
                                     margin-right: 20px;
                                 }
                             }
-                            td:nth-of-type(6){
-                                min-width: 90px;
-                                max-width: 90px;
-                                text-align: center;
-                            }
-                             td:nth-of-type(7){
-                                min-width: 70px;
-                                max-width: 70px;
-                                text-align: center;
-                            }
                             td:last-child{
                                 padding: 10px;
                                 width: 80px;
@@ -286,11 +276,39 @@
                     <div class="dataGeneral backWhite">
                         <div class="searchContent flex clear">
                             <div class="searchBox">
-                                <span class="searchLable colorGrey font12">订单编号 </span>
-                                <input type="text" v-model="orderNo" class="serchInput font12 colorblack" placeholder="订单编号"/>
+                                <span class="searchLable colorGrey font12">ID </span>
+                                <input type="text" v-model="orderNo" class="serchInput font12 colorblack" placeholder="ID"/>
+                            </div>
+                           
+                            <div class="searchBox">
+                                <span class="searchLable colorGrey font12">微信昵称 </span>
+                                <input type="text" v-model="goodsName" class="serchInput font12 colorblack" placeholder="微信昵称"/>
                             </div>
                             <div class="searchBox flex">
-                                <span class="searchLable searchName colorGrey font12">订单状态</span>
+                                <span class="searchLable searchName colorGrey font12">提交时间</span>
+                                <el-date-picker
+                                        @change="enddateChange"
+                                        v-model="insuranceDate"
+                                        type="daterange"
+                                        unlink-panels
+                                        range-separator="至"
+                                        start-placeholder="开始日期"
+                                        end-placeholder="结束日期"
+                                        :picker-options="pickerOptions0"
+                                        :default-time="['00:00:00','23:59:59']">
+                                </el-date-picker>
+                            </div>
+                           
+                             <div class="searchBox">
+                                <span class="searchLable colorGrey font12">姓名 </span>
+                                <input type="text" v-model="userName" class="serchInput font12 colorblack" placeholder="姓名"/>
+                            </div>
+                            <div class="searchBox">
+                                <span class="searchLable colorGrey font12">手机号 </span>
+                                <input type="text" v-model="userId" class="serchInput font12 colorblack" placeholder="手机号"/>
+                            </div>
+                            <div class="searchBox flex">
+                                <span class="searchLable searchName colorGrey font12">积分活动</span>
                                 <el-select v-model="status" placeholder="">
                                     <el-option
                                             v-for="item in statusOption"
@@ -300,43 +318,6 @@
                                     </el-option>
                                 </el-select>
                             </div>
-                            <div class="searchBox">
-                                <span class="searchLable colorGrey font12">商品名称 </span>
-                                <input type="text" v-model="goodsName" class="serchInput font12 colorblack" placeholder="商品名称"/>
-                            </div>
-                            <div class="searchBox flex">
-                                <span class="searchLable searchName colorGrey font12">下单时间</span>
-                                <el-date-picker
-                                        @change="enddateChange"
-                                        v-model="insuranceDate"
-                                        type="daterange"
-                                        unlink-panels
-                                        range-separator="至"
-                                        start-placeholder="开始日期"
-                                        end-placeholder="结束日期"
-                                        :default-time="['00:00:00','23:59:59']">
-                                </el-date-picker>
-                            </div>
-                            <div class="searchBox searchBoxone flex">
-                                <span class="searchLable searchName colorGrey font12">快递信息</span>
-                                <el-select v-model="consigneeType" placeholder="">
-                                    <el-option
-                                            v-for="item in userOption"
-                                            :key="item.value"
-                                            :label="item.name"
-                                            :value="item.value">
-                                    </el-option>
-                                </el-select>
-                                <input type="text" v-model="userValue" class="serchInput font12 colorblack  marginLeft10" placeholder="快递信息"/>
-                            </div>
-                             <div class="searchBox">
-                                <span class="searchLable colorGrey font12">用户昵称 </span>
-                                <input type="text" v-model="userName" class="serchInput font12 colorblack" placeholder="用户昵称"/>
-                            </div>
-                            <div class="searchBox">
-                                <span class="searchLable colorGrey font12">用户id </span>
-                                <input type="text" v-model="userId" class="serchInput font12 colorblack" placeholder="用户id"/>
-                            </div>
                             <div class="bacButtonone bacButton cursor" :download="download" :href="href" @click="daochu()">导出</div>
                             <div class="bacButton cursor" @click="getcommodityData('search')">筛选</div>
                         </div>
@@ -345,11 +326,11 @@
                     <div class="dataGeneral bannerTable">
                         <table  v-if="noData" class="table">
                             <tr>
-                                <th v-for="item in sortDatas">
+                                <th v-for="item in sortDatas" :key="item.name">
                                     {{item.name}}
                                 </th>
                             </tr>
-                            <tr v-for="(item,index) in tableData">
+                            <tr v-for="(item,index) in tableData" :key="item.orderNo">
                                 <td>
                                     {{item.orderNo}}
                                 </td>
@@ -359,7 +340,6 @@
                                         <div class="productBox">
                                             <p class="colorGrey font12 productText">{{item.goodsName}}</p>
                                             <p class="colorblack font12 productText"><span class="colore6">￥{{item.goodsPrice}}</span></p>
-                                             <!-- <p class="colorblack font12 productText"><span class="colore6">￥{{item.goodsPrice}}</span></p> -->
                                         </div>
                                     </div>
                                 </td>
@@ -386,9 +366,7 @@
                                     <span v-if="item.status == 4">交易成功</span>
                                 </td>
                                 <td>
-                                    <span class="color2087 font12 fontWeight cursor" v-if="item.status == 2" @click="ship(item)">发货</span>
-                                    <span class="line" v-if="item.status == 2"></span>
-                                    <span class="color2087 font12 fontWeight cursor"  @click="goDetail(item.id)">详情</span>
+                                     {{timetrans(item.createDate)}}
                                 </td>
                             </tr>
                         </table>
@@ -463,6 +441,11 @@
         },
         data() {
             return {
+                 pickerOptions0: { 
+                    disabledDate(time) {
+                        return time.getTime() > Date.now()
+                    }
+                },
                 shiporderNo: '',
                 consigneename: '',
                 userName: '',
@@ -483,14 +466,14 @@
                 userOption: [{name:'运单号',value: 0},{name: '收货人姓名',value: 1},{name: '收货人手机号',value: 2}],
                 consigneeOption: [{name:'姓名',value: 0},{name: '手机号',value: 1}],
                 sortDatas:[
-                    {orderType:'',name: '订单编号',showBlue: false,orderField: ''},
-                    {orderType:'',name: '商品',showBlue: false,orderField: ''},
-                    {orderType:'',name: '买家/收货人',showBlue: true,orderField: ''},
-                    {orderType:'',name: '实收金额',showBlue: true,orderField: ''},
-                    {orderType:'',name: '积分消耗',showBlue: false,orderField: ''},
-                    {orderType:'',name: '下单时间',showBlue: false,orderField: ''},
-                    {orderType:'',name: '订单状态',showBlue: false,orderField: ''},
-                    {orderType:'',name: '操作',showBlue: false,orderField: ''}
+                    {orderType:'',name: 'ID',showBlue: false,orderField: ''},
+                    {orderType:'',name: '微信昵称',showBlue: false,orderField: ''},
+                    {orderType:'',name: '姓名',showBlue: true,orderField: ''},
+                    {orderType:'',name: '手机号',showBlue: true,orderField: ''},
+                    {orderType:'',name: '身份证',showBlue: false,orderField: ''},
+                    {orderType:'',name: '邮箱',showBlue: false,orderField: ''},
+                    {orderType:'',name: '参与活动',showBlue: false,orderField: ''},
+                    {orderType:'',name: '提交时间',showBlue: false,orderField: ''}
                 ],
                 endDate: "",
                 consigneeType: 0,

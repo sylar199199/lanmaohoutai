@@ -442,6 +442,15 @@
                             <!--</div>-->
                         </div>
                     </div>
+                      <div class="dataGeneral backWhite">
+                        <div class="">
+                            <span class="colorblack font16 fontWeight marginright10">订单备注</span>
+                        </div>
+                          <div class="infoBox padding20">
+                                    <span class="colorGrey font12 marginright10">买家备注</span>
+                                    <span class="colorblack font12">{{orderDetail.userName}}</span>
+                                </div>
+                      </div>
                     <div class="dataGeneral backWhite">
                         <!--<div class="">-->
                             <!--<span class="colorblack font16 fontWeight marginright10">订单信息</span>-->
