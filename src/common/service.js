@@ -538,6 +538,13 @@ export default {
                     method: 'post'
                 }, data)
             },
+            copyGoods(data,key){
+                //复制商品
+                return getResource({
+                    url: `/lanmao/admin/goods/${key}/copy`,
+                    method: 'post'
+                }, data)
+            },
             onshelfGoods(data,key){
                 //上架商品
                 return getResource({

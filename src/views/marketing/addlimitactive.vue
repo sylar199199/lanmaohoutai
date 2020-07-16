@@ -339,19 +339,19 @@
                                         <span class="searchLable  colorGrey font12">人群设置 </span>
                                         <div class="radioBox marginLeft10">
                                               <div class="marginbottom">
-                                                <i class="iconfont iconxuanzhong color2087 font20 cursor " v-if="!isuserRegDaysLimit"></i>
-                                                <i class="iconfont iconxuanze  font20 cursor " v-if="isuserRegDaysLimit" @click="isuserRegDaysLimit = false"></i>
+                                                <i class="iconfont iconxuanzhong color2087 font20 cursor " v-if="isuserRegDaysLimit == 1"></i>
+                                                <i class="iconfont iconxuanze  font20 cursor " v-if="isuserRegDaysLimit != 1" @click="isuserRegDaysLimit = 1"></i>
                                                 <span class="typeText colorblack font12">不限购</span>
                                             </div>
                                             <div class="marginbottom">
-                                                <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="isuserRegDaysLimit"></i>
-                                                <i class="iconfont iconxuanze  font20 cursor" v-if="!isuserRegDaysLimit" @click="isuserRegDaysLimit = true"></i>
-                                                <span class="typeText colorblack font12 marginright10">新用户微信授权<input type="text" class="inputBox" v-model="userRegDaysLimit" />天以内</span>
+                                                <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="isuserRegDaysLimit == 2"></i>
+                                                <i class="iconfont iconxuanze  font20 cursor" v-if="isuserRegDaysLimit != 2" @click="isuserRegDaysLimit = 2"></i>
+                                                <span class="typeText colorblack font12 marginright10">新用户微信授权<input type="text" class="inputBox" v-model="maxRegDays" />天以内</span>
                                             </div>
                                              <div >
-                                                <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="isuserRegDaysLimit"></i>
-                                                <i class="iconfont iconxuanze  font20 cursor" v-if="!isuserRegDaysLimit" @click="isuserRegDaysLimit = true"></i>
-                                                <span class="typeText colorblack font12 marginright10">老用户微信授权<input type="text" class="inputBox" v-model="userRegDaysLimit" />天以内</span>
+                                                <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="isuserRegDaysLimit == 3"></i>
+                                                <i class="iconfont iconxuanze  font20 cursor" v-if="isuserRegDaysLimit != 3" @click="isuserRegDaysLimit = 3"></i>
+                                                <span class="typeText colorblack font12 marginright10">老用户微信授权<input type="text" class="inputBox" v-model="minRegDays" />天以内</span>
                                             </div>
                                            
                                         </div>
@@ -432,7 +432,9 @@
         },
         data() {
             return {
-                isuserRegDaysLimit: false,
+                maxRegDays: '',
+                minRegDays: '',
+                isuserRegDaysLimit: 1,
                 userRegDaysLimit: null,
                 purchaseNumber: '',
                 goodsid: '',
@@ -548,7 +550,6 @@
                 var endDate = Date.parse(new Date(this.endDate.replace(/-/g, "/")));
                 var startDate = Date.parse(new Date(this.startDate.replace(/-/g, "/")));
                 var purchaseLimit = '';
-                var userRegDaysLimit = '';
                 if(this.shelvesType == 0){
                     purchaseLimit = 0
                 }
@@ -561,16 +562,24 @@
                         purchaseLimit = this.purchaseNumber;
                     }
                 }
-                if(this.isuserRegDaysLimit){
-                     var reg1 = /^[1-9]\d*$/;
-                    if(!reg1.test(this.userRegDaysLimit)){
-                        this.$message.warning('请输入合理的限购数量');
+                  var reg1 = /^[1-9]\d*$/;
+                if(this.isuserRegDaysLimit == 1){
+                    this.maxRegDays = 0;
+                    this.minRegDays = 0;
+                }
+                if(this.isuserRegDaysLimit == 2){
+                    if(!reg1.test(this.maxRegDays)){
+                        this.$message.warning('请输入合理的注册天数');
                         return;
-                    }else{
-                        userRegDaysLimit = this.userRegDaysLimit;
                     }
-                }else{
-                    userRegDaysLimit = 0
+                    this.minRegDays = 0; 
+                }
+                if(this.isuserRegDaysLimit == 3){
+                    if(!reg1.test(this.minRegDays)){
+                        this.$message.warning('请输入合理的注册天数');
+                        return;
+                    }
+                    this.maxRegDays = 0;
                 }
                 if(this.goodsdata.length == 0){
                     this.$message.warning('请添加活动商品');
@@ -587,7 +596,8 @@
                         "name": this.name,
                         "purchaseLimit": purchaseLimit,
                         "startTime": startDate,
-                        userRegDaysLimit: userRegDaysLimit
+                        maxRegDays: this.maxRegDays,
+                        minRegDays: this.minRegDays
                     },this.goodsid).then(response => {
                         if(response.errorCode == 0){
                             this.$message.success('添加成功')
@@ -635,7 +645,6 @@
                 }else{
                     this.noData = false;
                 }
-                console.log(this.goodsdata)
             },
             getbackData(str){
                 if(str == 'sure'){
@@ -682,8 +691,8 @@
                 var getSeconds = '', getMinutes = '', getHours = '';
                 var d = new Date(timestamp);
                 getHours = d.getHours() < 10 ? '0' + d.getHours() : d.getHours();
-                getMinutes = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();;
-                getSeconds = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();;
+                getMinutes = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();
+                getSeconds = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();
                 var newTime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + getHours + ':' + getMinutes + ':' + getSeconds;
                 return newTime
             },
@@ -702,11 +711,15 @@
                                 this.shelvesType = 1;
                                 this.purchaseNumber = response.data.purchaseLimit;
                             }
-                             if(response.data.userRegDaysLimit == 0){
-                                this.isuserRegDaysLimit = false;
-                            }else{
-                                this.isuserRegDaysLimit = true;
-                                this.userRegDaysLimit = response.data.userRegDaysLimit;
+                             if(response.data.minRegDays == 0 && (response.data.maxRegDays == 0)){
+                                this.isuserRegDaysLimit = 1;
+                                
+                            }else  if(response.data.minRegDays == 0 && (response.data.maxRegDays != 0)){
+                                 this.isuserRegDaysLimit = 2;
+                                 this.maxRegDays = response.data.maxRegDays;
+                            }else  if(response.data.minRegDays != 0 && (response.data.maxRegDays == 0)){
+                                  this.isuserRegDaysLimit = 3;
+                                   this.minRegDays = response.data.minRegDays;
                             }
                             this.name =  response.data.name;
                             this.startDate = this.timetrans(response.data.startTime);

@@ -227,6 +227,8 @@
                                 <td>{{timetrans(item.createDate)}}</td>
                                 <td>
                                     <span class="color2087 font12 cursor" @click="goDetail(item.id)">编辑</span>
+                                    <span class="line"  v-if="activeIndex == 0"></span>
+                                     <span class="color2087 font12 cursor"  v-if="activeIndex == 0" @click="copyCommodity(item.id)">复制</span>
                                     <span class="line"></span>
                                     <span class="color2087 font12 cursor" @click="undercarriage(item.id,item.activityId)" v-if="activeIndex == 0">下架</span>
                                     <span class="line"  v-if="activeIndex == 0"></span>
@@ -363,6 +365,30 @@
                     }
                 }
                 this.$forceUpdate();
+            },
+            copyCommodity(id){
+                this.$confirm('确认复制商品?', '', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    Service.goods().copyGoods({
+                    },id).then(response => {
+                        if(response.errorCode == 0){
+                            this.$message({
+                                type: 'success',
+                                message: '复制成功!'
+                            });
+                        }else{
+                            this.$message.error(response.message)
+                        }
+
+                    }, err => {
+                    });
+
+                }).catch(() => {
+
+                });
             },
             undercarriage(id,activityId) {
                 this.$confirm('确认下架?', '', {

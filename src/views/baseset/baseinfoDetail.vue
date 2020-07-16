@@ -159,6 +159,13 @@
                         }
                     }
                     .editorBox{
+                        .noticecontent{
+                            height: 300px;
+                            width: 400px;
+                            text-indent: 10px;
+                            font-size: 14px;
+                            line-height: 22px;
+                        }
                         .preview{
                             margin-right: 20px;
                             width: 267px;
@@ -314,7 +321,7 @@
                             <span class="searchLable colorGrey font12">名称</span>
                             <input type="text" v-model="title" class="serchInput font12 colorblack" placeholder="名称"/>
                         </div>
-                        <div class="editorBox flex">
+                        <div class="editorBox flex" v-if="contentType == 0">
                             <div class="preview">
                                 <span class="previewTitle">预览页面</span>
                                 <div class="previewcontentBox">
@@ -322,6 +329,9 @@
                                 </div>
                             </div>
                             <vue-ueditor-wrap v-model="description" :config="myConfig" @beforeInit="addCustomButtom" :key="1"></vue-ueditor-wrap>
+                        </div>
+                        <div class="editorBox" v-if="contentType == 1">
+                            <textarea class="noticecontent" v-model="description" placeholder="请输入不超过200字的通知信息"  @change="changeValue()"></textarea>
                         </div>
                        
                       
@@ -357,6 +367,7 @@
         },
         data() {
             return {
+                contentType: '',
                 productId: '',
                 expireTimeOption:{
                     disabledDate(date) {
@@ -379,8 +390,6 @@
         created(){
             var  tokenVal = Util.localStorageUtil.get('access_token');
             this.headers = {token:tokenVal};
-            
-
         },
         watch:{
             'description':function(){
@@ -400,6 +409,7 @@
         mounted(){
             if(this.$route.query){
                 this.productId = this.$route.query.id;
+                this.contentType = this.$route.query.contentType;
                 if(!this.productId){
                    
                 }else{
@@ -409,6 +419,15 @@
             this.upFileAction = Global.requestUrl+"/xunan/enterprise/account/auth/upload";
         },
         methods:{
+            changeValue(){
+                if(this.description.length > 200 || this.description.length < 2){
+                    this.description = this.description.substring(0,200);
+                    this.$message.error('请输入不超过200字或者不少于2个字的通知信息')
+                    return false
+                }else{
+                     return true
+                }
+            },
            getDetail(){
                   Service.protocol().protocolDetail({
                     },this.productId).then(response => {
@@ -424,6 +443,12 @@
            },
             submitCommodity(){
                console.log(this.description)
+               if(this.contentType == 1){
+                   if(!this.changeValue()){
+                       console.log(this.changeValue())
+                        return;
+                   }
+               }
                 if(this.productId){
                     Service.protocol().editorprotocol({
                         content: this.description,

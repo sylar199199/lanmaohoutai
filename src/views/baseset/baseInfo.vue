@@ -183,7 +183,7 @@
                                     {{timetrans(item.createDate)}}
                                 </td>
                                 <td>
-                                    <span class="color2087 font12  fontWeight" @click="goDetail(item.id)">编辑</span>
+                                    <span class="color2087 font12  fontWeight" @click="goDetail(item.id,item.contentType)">编辑</span>
                                 </td>
                             </tr>
                         </table>
@@ -245,8 +245,8 @@
                     }, err => {
                     });
             },
-            goDetail(id){
-                this.$router.push({'name':'baseinfoDetail',query:{"id":id}})
+            goDetail(id,contentType){
+                this.$router.push({'name':'baseinfoDetail',query:{"id":id,'contentType':contentType}})
             },
              timetrans(timestamp) {
                 var getSeconds = '', getMinutes = '', getHours = '';
