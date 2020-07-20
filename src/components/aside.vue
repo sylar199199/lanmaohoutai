@@ -237,18 +237,19 @@
                                 isSubShow: false,
                                 router:'revenuequery',
                                 thirditems: []
-                            },
-                             {
-                                title: '赠险订单',
-                                secTitlte: '',
-                                isdelete: false,
-                                secgreyIcon: '',
-                                secgreenIcon: '',
-                                name: '赠险订单',
-                                isSubShow: false,
-                                router:'insuranceOrderlist',
-                                thirditems: []
                             }
+                            // ,
+                            //  {
+                            //     title: '赠险订单',
+                            //     secTitlte: '',
+                            //     isdelete: false,
+                            //     secgreyIcon: '',
+                            //     secgreenIcon: '',
+                            //     name: '赠险订单',
+                            //     isSubShow: false,
+                            //     router:'insuranceOrderlist',
+                            //     thirditems: []
+                            // }
                         ]
                     },
                     {
@@ -293,18 +294,19 @@
                                 isSubShow: false,
                                 router:'limitactiveList',
                                 thirditems: []
-                            },
-                            {
-                                title: '赠险活动',
-                                secTitlte: '',
-                                isdelete: false,
-                                secgreyIcon: '',
-                                secgreenIcon: '',
-                                name: '赠险活动',
-                                isSubShow: false,
-                                router:'insurancelist',
-                                thirditems: []
                             }
+                            // ,
+                            // {
+                            //     title: '赠险活动',
+                            //     secTitlte: '',
+                            //     isdelete: false,
+                            //     secgreyIcon: '',
+                            //     secgreenIcon: '',
+                            //     name: '赠险活动',
+                            //     isSubShow: false,
+                            //     router:'insurancelist',
+                            //     thirditems: []
+                            // }
                         ]
                     },
                     {
