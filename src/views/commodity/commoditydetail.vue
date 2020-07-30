@@ -515,7 +515,6 @@
                 showSpecs: false,
                 uploadIndex: '',
                 imgUrlData:[{imgurl:'',hasUrl:false},{imgurl:'',hasUrl:false},{imgurl:'',hasUrl:false},{imgurl:'',hasUrl:false}],
-                upFileAction:'',
                 imageUrl: '',
                 headers: {},
                 selectData:[{'name':'图文详情',isSelect:true}],
@@ -609,7 +608,6 @@
                     }
                 }
             }
-            this.upFileAction = Global.requestUrl+"/xunan/enterprise/account/auth/upload";
         },
         methods:{
             goBack(){

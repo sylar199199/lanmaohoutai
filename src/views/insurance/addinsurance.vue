@@ -261,11 +261,6 @@
             <Aside></Aside>
             <div class="content">
                 <div class="contanternews">
-                    <!--<div class="dataGeneral backWhite contentHead">-->
-                        <!--<div class="dataGenetalTitle">-->
-                            <!--<span class="colorblack font14 fontWeight marginright10">限时兑换 / 新建限时兑换</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
                     <div class="dataGeneral bannerTable">
                         <div class="tableTitle colorblack font14"  >活动信息</div>
                         <div class="flex contentFlex">
@@ -293,7 +288,7 @@
                                         <div class="radioBox marginLeft10" >
                                             <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="shelvesType==1"></i>
                                             <i class="iconfont iconxuanze  font20 cursor" v-if="shelvesType != 1" @click="shelvesType = 1"></i>
-                                            <span class="typeText colorblack font12 marginright10">限制参与人数<input type="text" class="inputBox" v-model="purchaseNumber" />人</span>
+                                            <span class="typeText colorblack font12 marginright10">限制参与人数<input type="text" class="inputBox" v-model="limitNumber" />人</span>
                                             <i class="iconfont iconxuanzhong color2087 font20 cursor marginLeft10" v-if="shelvesType==0"></i>
                                             <i class="iconfont iconxuanze  font20 cursor marginLeft10" v-if="shelvesType !=0" @click="shelvesType = 0"></i>
                                             <span class="typeText colorblack font12">不限购</span>
@@ -302,18 +297,18 @@
                                      <div class="searchBox flex">
                                         <span class="searchLable searchName colorGrey font12"> </span>
                                          <div class="radioBox marginLeft10" >
-                                            <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="shelvesType==1"></i>
-                                            <i class="iconfont iconxuanze  font20 cursor" v-if="shelvesType != 1" @click="shelvesType = 1"></i>
-                                            <span class="typeText colorblack font12 marginright10">奖励积分<input type="text" class="inputBox" v-model="purchaseNumber" />分</span>
-                                            <i class="iconfont iconxuanzhong color2087 font20 cursor marginLeft10" v-if="shelvesType==0"></i>
-                                            <i class="iconfont iconxuanze  font20 cursor marginLeft10" v-if="shelvesType !=0" @click="shelvesType = 0"></i>
+                                            <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="rewardPointstype==1"></i>
+                                            <i class="iconfont iconxuanze  font20 cursor" v-if="rewardPointstype != 1" @click="rewardPointstype = 1"></i>
+                                            <span class="typeText colorblack font12 marginright10">奖励积分<input type="text" class="inputBox" v-model="rewardPoints" />分</span>
+                                            <i class="iconfont iconxuanzhong color2087 font20 cursor marginLeft10" v-if="rewardPointstype==0"></i>
+                                            <i class="iconfont iconxuanze  font20 cursor marginLeft10" v-if="rewardPointstype !=0" @click="rewardPointstype = 0"></i>
                                             <span class="typeText colorblack font12">不奖励积分</span>
                                         </div>
                                     </div>
-                                    <div class="searchBox">
+                                    <!-- <div class="searchBox">
                                         <span class="searchLable colorGrey font12">URL链接</span>
                                         <input type="text" v-model="name" class="serchInput font12 colorblack" placeholder="请输入URL链接"/>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -349,10 +344,13 @@
             return {
                 isuserRegDaysLimit: false,
                 userRegDaysLimit: null,
-                purchaseNumber: '',
+                limitNumber: '',
+                rewardPoints: '',
                 goodsid: '',
                 showSpecs: false,
+                name: '',
                 shelvesType: 1,
+                rewardPointstype: 1,
                 percent: '90%',
                 activeIndex: '1',
                 orderField: 'saleStartDate',
@@ -446,7 +444,6 @@
                 return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00) + "%";
             },
             addActiveProduct(){
-
                 this.name = this.name.replace(/^\s*|\s*$/g,"");
                 if(!this.name){
                     this.$message.warning('请输入活动名称');
@@ -462,68 +459,58 @@
                 }
                 var endDate = Date.parse(new Date(this.endDate.replace(/-/g, "/")));
                 var startDate = Date.parse(new Date(this.startDate.replace(/-/g, "/")));
-                var purchaseLimit = '';
-                var userRegDaysLimit = '';
+                var limitNumber = '';
+                var rewardPoints = '';
                 if(this.shelvesType == 0){
-                    purchaseLimit = 0
+                    limitNumber = 0
                 }
                 if(this.shelvesType == 1){
                     var reg = /^[1-9]\d*$/;
-                    if(!reg.test(this.purchaseNumber)){
-                        this.$message.warning('请输入合理的限购数量');
+                    if(!reg.test(this.limitNumber)){
+                        this.$message.warning('请输入合理的限购人数');
                         return;
                     }else{
-                        purchaseLimit = this.purchaseNumber;
+                        limitNumber = this.limitNumber;
                     }
                 }
-                if(this.isuserRegDaysLimit){
+                if(this.rewardPointstype == 1){
                      var reg1 = /^[1-9]\d*$/;
-                    if(!reg1.test(this.userRegDaysLimit)){
-                        this.$message.warning('请输入合理的限购数量');
+                    if(!reg1.test(this.rewardPoints)){
+                        this.$message.warning('请输入合理的奖励积分');
                         return;
                     }else{
-                        userRegDaysLimit = this.userRegDaysLimit;
+                        rewardPoints = this.rewardPoints;
                     }
                 }else{
-                    userRegDaysLimit = 0
-                }
-                if(this.goodsdata.length == 0){
-                    this.$message.warning('请添加活动商品');
-                    return;
-                }
-                var goodsIds = [];
-                for(var i = 0;i< this.goodsdata.length; i++){
-                    goodsIds.push(this.goodsdata[i].id);
+                    rewardPoints = 0
                 }
                 if(this.goodsid){
-                    Service.redeem().editorredeemGoods({
-                        "endTime": endDate,
-                        "goodsIds": goodsIds,
+                    Service.giftinsurance().editorinsurance({
+                       "endTime": endDate,
+                        "rewardPoints": rewardPoints,
                         "name": this.name,
-                        "purchaseLimit": purchaseLimit,
-                        "startTime": startDate,
-                        userRegDaysLimit: userRegDaysLimit
+                        "limitNumber": limitNumber,
+                        "startTime": startDate
                     },this.goodsid).then(response => {
                         if(response.errorCode == 0){
                             this.$message.success('添加成功')
-                            this.$router.push({name:'limitactiveList'})
+                            this.$router.push({name:'insurancelist'})
                         }else{
                             this.$message.error(response.message)
                         }
                     }, err => {
                     });
                 }else{
-                    Service.redeem().addredeemGoods({
+                    Service.giftinsurance().addinsurance({
                         "endTime": endDate,
-                        "goodsIds": goodsIds,
+                        "rewardPoints": rewardPoints,
                         "name": this.name,
-                        "purchaseLimit": purchaseLimit,
-                        "startTime": startDate,
-                         userRegDaysLimit: userRegDaysLimit
+                        "limitNumber": limitNumber,
+                        "startTime": startDate
                     }).then(response => {
                         if(response.errorCode == 0){
                             this.$message.success('添加成功');
-                            this.$router.push({name:'limitactiveList'})
+                            this.$router.push({name:'insurancelist'})
                         }else{
                             this.$message.error(response.message)
                         }
@@ -604,40 +591,26 @@
             },
 
             getcommodityData(){
-                Service.redeem().redeemList({
+                Service.giftinsurance().insuranceDetail({
                 },this.goodsid).then(response => {
                     if(response.errorCode == 0){
-                        if(response.data.goods.length == 0){
-                            this.noData = false;
-                        }else{
-                            this.noData = true;
-                            if(response.data.purchaseLimit == 0){
+                            if(response.data.limitNumber == 0){
                                 this.shelvesType = 0;
                             }else{
                                 this.shelvesType = 1;
-                                this.purchaseNumber = response.data.purchaseLimit;
+                                this.limitNumber = response.data.limitNumber;
                             }
-                             if(response.data.userRegDaysLimit == 0){
-                                this.isuserRegDaysLimit = false;
+                             if(response.data.rewardPoints == 0){
+                                this.rewardPointstype = 0;
                             }else{
-                                this.isuserRegDaysLimit = true;
-                                this.userRegDaysLimit = response.data.userRegDaysLimit;
+                                this.rewardPointstype = 1;
+                                this.rewardPoints = response.data.rewardPoints;
                             }
                             this.name =  response.data.name;
                             this.startDate = this.timetrans(response.data.startTime);
                             this.endDate = this.timetrans(response.data.endTime);
                             this.insuranceDate.push(new Date(response.data.startTime));
                             this.insuranceDate.push(new Date(response.data.endTime))
-                            var goodsData = response.data.goods;
-                            for(let i in goodsData){
-                                if(goodsData[i].name.length>15){
-                                    goodsData[i].name = goodsData[i].name.substring(0,15)+'...'
-                                }
-                            }
-                            this.$nextTick(()=>{
-                                this.goodsdata = response.data.goods;
-                            })
-                        }
                     }else{
                         this.$message.error(response.message)
                     }

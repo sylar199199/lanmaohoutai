@@ -277,12 +277,12 @@
                         <div class="searchContent flex clear">
                             <div class="searchBox">
                                 <span class="searchLable colorGrey font12">ID </span>
-                                <input type="text" v-model="orderNo" class="serchInput font12 colorblack" placeholder="ID"/>
+                                <input type="text" v-model="id" class="serchInput font12 colorblack" placeholder="ID"/>
                             </div>
                            
                             <div class="searchBox">
                                 <span class="searchLable colorGrey font12">微信昵称 </span>
-                                <input type="text" v-model="goodsName" class="serchInput font12 colorblack" placeholder="微信昵称"/>
+                                <input type="text" v-model="userNickname" class="serchInput font12 colorblack" placeholder="微信昵称"/>
                             </div>
                             <div class="searchBox flex">
                                 <span class="searchLable searchName colorGrey font12">提交时间</span>
@@ -301,17 +301,17 @@
                            
                              <div class="searchBox">
                                 <span class="searchLable colorGrey font12">姓名 </span>
-                                <input type="text" v-model="userName" class="serchInput font12 colorblack" placeholder="姓名"/>
+                                <input type="text" v-model="name" class="serchInput font12 colorblack" placeholder="姓名"/>
                             </div>
                             <div class="searchBox">
                                 <span class="searchLable colorGrey font12">手机号 </span>
-                                <input type="text" v-model="userId" class="serchInput font12 colorblack" placeholder="手机号"/>
+                                <input type="text" v-model="phone" class="serchInput font12 colorblack" placeholder="手机号"/>
                             </div>
                             <div class="searchBox flex">
                                 <span class="searchLable searchName colorGrey font12">积分活动</span>
                                 <el-select v-model="status" placeholder="">
                                     <el-option
-                                            v-for="item in statusOption"
+                                            v-for="item in activityoption"
                                             :key="item.id"
                                             :label="item.name"
                                             :value="item.id">
@@ -332,38 +332,24 @@
                             </tr>
                             <tr v-for="(item,index) in tableData" :key="item.orderNo">
                                 <td>
-                                    {{item.orderNo}}
+                                    {{item.id}}
                                 </td>
                                 <td>
-                                    <div class="flex">
-                                        <img class="productImg" :src="item.goodsImgUrl">
-                                        <div class="productBox">
-                                            <p class="colorGrey font12 productText">{{item.goodsName}}</p>
-                                            <p class="colorblack font12 productText"><span class="colore6">￥{{item.goodsPrice}}</span></p>
-                                        </div>
-                                    </div>
+                                        {{item.userNickname}}
                                 </td>
 
                                 <td>
-                                    {{item.userName}}/
-                                    {{item.consignee.name}}
+                                    {{item.name}}
                                 </td>
 
                                 <td>
-                                    {{item.goodsPrice}}
+                                    {{item.phone}}
                                 </td>
                                 <td>
-                                   {{item.points}}
+                                   {{item.idNumber}}
                                 </td>
                                 <td >
-                                    {{timetrans(item.createDate)}}
-                                </td>
-                                <td v-if="item.status">
-                                    <span v-if="item.status == 1">待支付</span>
-                                    <span v-if="item.status == 2">待发货</span>
-                                    <span v-if="item.status == 3">待收货</span>
-                                    <span v-if="item.status == 5">交易关闭</span>
-                                    <span v-if="item.status == 4">交易成功</span>
+                                    {{item.activityName}}
                                 </td>
                                 <td>
                                      {{timetrans(item.createDate)}}
@@ -441,7 +427,14 @@
         },
         data() {
             return {
-                 pickerOptions0: { 
+                activityId: '',
+                id: '',
+                name:'',
+                phone: '',
+                userId:'',
+                userNickname: '',
+                activityoption: [{name:'全部',id: ''}],
+                pickerOptions0: { 
                     disabledDate(time) {
                         return time.getTime() > Date.now()
                     }
@@ -471,7 +464,6 @@
                     {orderType:'',name: '姓名',showBlue: true,orderField: ''},
                     {orderType:'',name: '手机号',showBlue: true,orderField: ''},
                     {orderType:'',name: '身份证',showBlue: false,orderField: ''},
-                    {orderType:'',name: '邮箱',showBlue: false,orderField: ''},
                     {orderType:'',name: '参与活动',showBlue: false,orderField: ''},
                     {orderType:'',name: '提交时间',showBlue: false,orderField: ''}
                 ],
@@ -480,18 +472,12 @@
                 consigneeName: "",
                 consigneePhone: '',
                 startDate: "",
-                goodsName: '',
-                orderNo: '',
-                afsStatus: '',
                 total: 0,
                 size: 10,
                 page: 1,
-                channelId: '1',
-                channelsOption: [{name:'昆仑保险App',id:'1'}],
                 insuranceDate: '',
                 tableData: [],
                 noData: true,
-                statusTitle: "",
                 shipId: '',
             };
         },
@@ -527,9 +513,33 @@
             if(this.$route.query.status){
                 this.status = (this.$route.query.status).toString();
             }
+            this.getactivityData()
             this.getcommodityData('');//获取订单列表
         },
         methods: {
+             getactivityData(){
+                Service.giftinsurance().getinsurance({
+                    "status": '',
+                    'type': ''
+                }).then(response => {
+                    if(response.errorCode == 0){
+                        if(response.data.length == 0){
+                        }else{
+                            for(var i = 0;i< response.data.length;i++){
+                               var obj = {
+                                   name: response.data[i].name,
+                                   id: response.data[i].id
+                               }
+                               this.activityoption.push(obj)
+                            }
+                        }
+                    }else{
+                        this.$message.error(response.message)
+                    }
+                }, err => {
+                });
+
+            },
             isOther(x, arr){
                 for(var i = 0;i<arr.length;i++){
                     if(x === arr[i].id){
@@ -599,149 +609,16 @@
                     return on;
                 }
             },
-            afsresetTitle(status){
-                switch (status) {
-                    case 1:
-                        this.statusTitle = '待付款';
-                        break;
-                    case 2:
-                        this.statusTitle = '待发货';
-                        break;
-                    case 3:
-                        this.statusTitle = '待收货';
-                        break;
-                    case 4:
-                        this.statusTitle = '交易成功';
-                        break;
-                    case 5:
-                        this.statusTitle = '交易关闭';
-                        break;
-                    default:
-                        this.statusTitle = '其他';
-                        break
-                }
-                return this.statusTitle;
-            },
-            resetTitleone(status){
-                switch (status) {
-                    case 1:
-                        this.statusTitle = '待支付';
-                        break;
-                    case 2:
-                        this.statusTitle = '待发货';
-                        break;
-                    case 3:
-                        this.statusTitle = '待收货';
-                        break;
-                    case 4:
-                        this.statusTitle = '待激活';
-                        break;
-                    case 5:
-                        this.statusTitle = '已激活';
-                        break;
-
-                    case 6:
-                        this.statusTitle = '交易关闭';
-                        break;
-                    case 7:
-                        this.statusTitle = '交易成功';
-                        break;
-                    default:
-                        this.statusTitle = '其他';
-                        break
-                }
-                return this.statusTitle;
-            },
-            resetTitle(title){
-                switch (title) {
-                    case '待支付':
-                        this.status = '1';
-                        this.afsStatus = '';
-                        break;
-                    case '待发货':
-                        this.status = '2';
-                        this.afsStatus = '';
-                        break;
-                    case '待收货':
-                        this.status = '3';
-                        this.afsStatus = '';
-                        break;
-                    case '待激活':
-                        this.status = '4';
-                        this.afsStatus = '';
-                        break;
-                    case '已激活':
-                        this.status = '5';
-                        this.afsStatus = '';
-                        break;
-                    case '交易关闭':
-                        this.status = '6';
-                        this.afsStatus = '';
-                        break;
-                    case '交易成功':
-                        this.status = '7';
-                        this.afsStatus = '';
-                        break;
-                    case '退货中':
-                        this.status = '';
-                        this.afsStatus = '1';
-                        break;
-                    case '拒绝退货':
-                        this.status = '';
-                        this.afsStatus = '2';
-                        break;
-                    case '同意退货':
-                        this.status = '';
-                        this.afsStatus = '3';
-                        break;
-                    case '退款中':
-                        this.status = '';
-                        this.afsStatus = '4';
-                        break;
-                    case '拒绝退款':
-                        this.status = '';
-                        this.afsStatus = '5';
-                        break;
-                    case '已退款':
-                        this.status = '';
-                        this.afsStatus = '6';
-                        break;
-                    default:
-                        this.status = '';
-                        this.afsStatus = '';
-                        break
-                }
-            },
             closeDiologone() {
                 this.shiporderNo = '';
                 this.consigneename = '';
                 this.shipId = '';
                 $(".dialogone").css({"display":"none"})
             },
-            showDes(item){
-                if(item.statusDesc){
-                    for(let i in this.tableData){
-                        this.tableData[i].isshowDes = false;
-                    }
-                    item.isshowDes = true;
-                }
-                this.$forceUpdate();
-
-            },
-            hideDes(item){
-                if(item.statusDesc){
-                    for(let i in this.tableData){
-                        this.tableData[i].isshowDes = false;
-                    }
-                }
-                this.$forceUpdate();
-            },
             undercarriage(id) {
                 $(".dialogone").css({'display':'block'})
             },
-            goDetail(id){
-                this.$router.push({name:'orderDetail',query:{id:id}})
-            },
+           
             handleSizeChange(val) {
                 this.size = val;
                 this.getcommodityData('')
@@ -776,29 +653,7 @@
                 return new Blob([u8arr],{type : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
             },
             daochu(){
-                if(this.statusText){
-                    this.resetTitle(this.statusText);
-                }
-                if(this.consigneeType == 0){
-                    this.expressNo = this.userValue;
-                    this.consigneeName = ''
-                    this.consigneePhone = '';
-                }
-                if(this.consigneeType == 1){
-                    this.expressNo = '';
-                    this.consigneeName = this.userValue;
-                    this.consigneePhone = '';
-                }
-                if(this.consigneeType == 2){
-                    this.expressNo = '';
-                    this.consigneeName = '';
-                    this.consigneePhone = this.userValue;
-                }
-                // if(str == 'search'){
-                //     this.page = 1;
-                // }
                 var endDate = '',startDate = '';
-                console.log(this.endDate)
                 if(this.endDate || this.startDate){
                     endDate = Date.parse(new Date(this.endDate.replace(/-/g, "/")));
                     startDate = Date.parse(new Date(this.startDate.replace(/-/g, "/")));
@@ -810,19 +665,15 @@
                     this.userId = null
                 }
                 
-                Service.order().orderDaochu({
-                    userId: this.userId,
-                    userName: this.userName,
-                    "consigneeName": this.consigneeName,
-                    consigneePhone: this.consigneePhone,
-                    "page": this.page,
-                    "size": this.size,
+                Service.giftinsurance().orderexport({
+                    activityId: this.activityId,
+                    id: this.id,
+                    "name": this.name,
+                    phone: this.phone,
                     "startDate": startDate,
                     "endDate": endDate,
-                    expressNo: this.expressNo,
-                    goodsName: this.goodsName,
-                    "status": this.status,
-                    "orderNo": this.orderNo,
+                    userId: this.userId,
+                    userNickname: this.userNickname
                 }).then(response => {
                     if(response.errorCode == 0){
                         var blob = this.Decode(response.data);
@@ -841,24 +692,6 @@
                 });
             },
             getcommodityData(str){
-                if(this.statusText){
-                    this.resetTitle(this.statusText);
-                }
-                if(this.consigneeType == 0){
-                    this.expressNo = this.userValue;
-                    this.consigneeName = ''
-                    this.consigneePhone = '';
-                }
-                if(this.consigneeType == 1){
-                    this.expressNo = '';
-                    this.consigneeName = this.userValue;
-                    this.consigneePhone = '';
-                }
-                if(this.consigneeType == 2){
-                    this.expressNo = '';
-                    this.consigneeName = '';
-                    this.consigneePhone = this.userValue;
-                }
                 if(str == 'search'){
                     this.page = 1;
                 }
@@ -873,19 +706,17 @@
                     endDate = this.endDate;
                     startDate = this.startDate;
                 }
-                Service.order().orderList({
-                    userId: this.userId,
-                    userName: this.userName,
-                    "consigneeName": this.consigneeName,
-                    consigneePhone: this.consigneePhone,
+                Service.giftinsurance().getorderinsurance({
+                    activityId: this.activityId,
+                    id: this.id,
+                    "name": this.name,
+                    phone: this.phone,
                     "page": this.page,
                     "size": this.size,
                     "startDate": startDate,
                     "endDate": endDate,
-                    expressNo: this.expressNo,
-                    goodsName: this.goodsName,
-                    "status": this.status,
-                    "orderNo": this.orderNo,
+                    userId: this.userId,
+                    userNickname: this.userNickname
                 }).then(response => {
                     if(response.errorCode == 0){
                         if(response.data.records.length == 0){
@@ -893,9 +724,6 @@
                         }else{
                             this.noData = true;
                             this.total = response.data.total;
-                            for(let i in  response.data.records){
-                                response.data.records[i].isshowDes = false;
-                            }
                             this.$nextTick(()=>{
                                 this.tableData = response.data.records;
                             })

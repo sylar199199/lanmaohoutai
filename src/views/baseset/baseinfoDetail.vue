@@ -416,7 +416,6 @@
                   this.getDetail()
                 }
             }
-            this.upFileAction = Global.requestUrl+"/xunan/enterprise/account/auth/upload";
         },
         methods:{
             changeValue(){

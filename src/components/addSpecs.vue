@@ -199,11 +199,11 @@
                 <div class="dataGeneral bannerTable">
                     <table  v-if="noData" class="table">
                         <tr>
-                            <th v-for="item in sortDatas">
+                            <th v-for="item in sortDatas" :key="item.name">
                                 {{item.name}}
                             </th>
                         </tr>
-                        <tr v-for="(item,index) in tableData">
+                        <tr v-for="(item,index) in tableData" :key="item.name">
                             <td>
                                 <div class="flex">
                                     <i class='iconfont iconchecked color2087' @click="selectAdver(item)" v-if='item.isSelect &&(!item.hasSelect)' ></i>
@@ -367,60 +367,11 @@
                 }
                 return num
             },
-            deleteDoucument(item){
-                Store.commit("setIsLoading", true);
-                Service.enterprise().channelclientDelete({
-                    channelId: this.channelId,
-                    enterpriseId: item.id,
-                }).then(response => {
-                    Store.commit("setIsLoading", false);
-                    if(response.errorCode == 0){
-                        this.$message.success('删除成功');
-                        this.getClientList();
-                    }else{
-                        this.$message.error(response.message);
-                        if(response.errorCode == 5001){
-                            this.$router.push({"path":'/'})
-                        }
-                    }
-                }, err => {
-                });
-            },
+          
             getTimedate(timeStr){
                 return Filter.getTimedate(timeStr)
             },
-            addClients(){
-                if(!this.companyInfo){
-                    this.$message.error('请输入企业名称');
-                    return;
-                }
-                if(this.bindTime == ''){
-                    this.$message.error('请选择开始时间');
-                    return;
-                }
-                Store.commit("setIsLoading", true);
-                Service.enterprise().channelclientAdd({
-                    channelId: this.channelId,
-                    enterpriseId: this.companyInfo.id,
-                    startDate: this.bindTime,
-                }).then(response => {
-                    Store.commit("setIsLoading", false);
-                    if(response.errorCode == 0){
-                        this.$message.success('添加成功');
-                        this.companyInfo = '';
-                        this.showCompany = false;
-                        this.searchValue = '';
-                        this.bindTime = '';
-                        this.getClientList()
-                    }else{
-                        this.$message.error(response.message);
-                        if(response.errorCode == 5001){
-                            this.$router.push({"path":'/'})
-                        }
-                    }
-                }, err => {
-                });
-            },
+        
             getGuigeList(str){
                 if(str == 'chaxun'){
                     this.page = 1;
@@ -490,26 +441,7 @@
                 this.searchValue = '';
                 this.bindTime = '';
             },
-            search(){
-                if(this.searchValue){
-                    this.showSearchBox = true;
-                    Service.enterprise().channelclientQuery({
-                        id: '',
-                        page: 1,
-                        size: this.size,
-                        clientName: this.searchValue,
-                    }).then(response => {
-                        if (response.errorCode == 0) {
-                            this.searchOption = response.data.records;
-                        } else {
-                            this.$message.error(response.message)
-                        }
-                    }, err => {
-                    })
-                }else{
-                    this.showSearchBox = false;
-                }
-            },
+           
             blureInput(){
                 this.showSearchBox = false;
             },

@@ -161,13 +161,13 @@
                                 </td>
                              
                                 <td >
-                                   {{item.salesVolume}}
+                                   {{item.viewCount}}
                                 </td>
                                 <td>
-                                    {{item.consPoints}}
+                                    {{item.userCount}}
                                 </td>
                                 <td>
-                                    {{item.salesAmount}}
+                                    {{item.rewardPoints}}
                                 </td>
                                 <!-- <td v-if="activeIndex ==1">
                                     <i class="cursor iconfont iconshangsheng fontIcongreen" v-if="index!=0" @click='upSort(index,item)'></i>
@@ -176,13 +176,12 @@
                                     <i class='iconfont fontIcongrey iconjiang' v-if="index==(tableData.length-1)"></i>
                                 </td> -->
                                 <td>
-                                    <span class="color2087 font12 cursor fontWeight" @click="goDetail(item.id)">编辑</span>
-                                    <span class="line"></span>
-                                    <span class="color2087 font12 cursor fontWeight" @click="undercarriage(item.id)" v-if="(item.status == 0)">使失效</span>
-                                    <span class="line"  v-if="(item.status == 0)"></span>
+                                    <span class="color2087 font12 cursor fontWeight" v-if="(item.status == 0 && (item.startTime > Date.parse(new Date())))" @click="goDetail(item.id)">编辑</span>
+                                    <span class="line" v-if="(item.status == 0 && (item.startTime > Date.parse(new Date())))"></span>
+                                    <span class="color2087 font12 cursor fontWeight" @click="undercarriage(item.id)" v-if="(item.status == 0 && (item.startTime <= Date.parse(new Date()) && item.endTime > Date.parse(new Date())))">使失效</span>
                                     <span class="color2087 font12 cursor fontWeight" @click="enableGoods(item.id)" v-if="(item.status == 1)">使生效</span>
                                     <span class="line"  v-if="(item.status == 1)"></span>
-                                    <span class="color2087 font12  fontWeight" @click="delectCommodity(item.id)">删除</span>
+                                    <span class="color2087 font12  fontWeight" v-if="(item.status == 1) || (item.status == 0 && ((item.startTime > Date.parse(new Date())))|| (item.endTime <= Date.parse(new Date())))"   @click="delectCommodity(item.id)">删除</span>
                                 </td>
                             </tr>
                         </table>
@@ -190,7 +189,7 @@
                             <img class="nodataImg" src="../../assets/images/nodatalist.png"/>
                             <p>暂无数据~</p>
                         </div>
-                        <div class="block" v-if="noData">
+                        <!-- <div class="block" v-if="noData">
                             <el-pagination
                                     @size-change="handleSizeChange"
                                     @current-change="handleCurrentChange"
@@ -200,7 +199,7 @@
                                     layout="total,sizes, prev, pager, next,jumper"
                                     :total="total">
                             </el-pagination>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -232,7 +231,7 @@
                     {orderType:'',name: '活动名称',showBlue: false,orderField: ''},
                     {orderType:'',name: '有效时间',showBlue: false,orderField: ''},
                     {orderType:'',name: '活动状态',showBlue: false,orderField: ''},
-                    {orderType:'',name: '访客数',showBlue: false,orderField: ''},
+                    {orderType:'',name: '打开次数',showBlue: false,orderField: ''},
                     {orderType:'',name: '参与人数',showBlue: true,orderField: ''},
                     {orderType:'',name: '累计发放积分',showBlue: false,orderField: ''},
                     {orderType:'',name: '操作',showBlue: false,orderField: ''}
@@ -241,7 +240,7 @@
                    {orderType:'',name: '活动名称',showBlue: false,orderField: ''},
                     {orderType:'',name: '有效时间',showBlue: false,orderField: ''},
                     {orderType:'',name: '活动状态',showBlue: false,orderField: ''},
-                    {orderType:'',name: '访客数',showBlue: false,orderField: ''},
+                    {orderType:'',name: '打开次数',showBlue: false,orderField: ''},
                     {orderType:'',name: '参与人数',showBlue: true,orderField: ''},
                     {orderType:'',name: '累计发放积分',showBlue: false,orderField: ''},
                     {orderType:'',name: '操作',showBlue: false,orderField: ''}
@@ -374,7 +373,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    Service.redeem().enableGoods({
+                    Service.giftinsurance().enableinsurance({
                     },id).then(response => {
                         if(response.errorCode == 0){
                             this.$message({
@@ -397,7 +396,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    Service.redeem().disableGoods({
+                    Service.giftinsurance().disableinsurance({
                     },id).then(response => {
                         if(response.errorCode == 0){
                             this.$message({
@@ -419,7 +418,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    Service.redeem().deleteActive({
+                    Service.giftinsurance().deleteinsurance({
                     },id).then(response => {
                         if(response.errorCode == 0){
                             this.$message({
@@ -474,24 +473,21 @@
                 if(str == 'search'){
                     this.page = 1;
                 }
-                Service.redeem().getRedeemList({
-                    "page": this.page,
-                    "size": this.size,
+                Service.giftinsurance().getinsurance({
                     "status": this.status,
                     'type': this.type
                 }).then(response => {
                     if(response.errorCode == 0){
-                        if(response.data.records.length == 0){
+                        if(response.data.length == 0){
                             this.noData = false;
                         }else{
                             this.noData = true;
-                            this.total = response.data.total;
-                            for(var i = 0;i< response.data.records.length;i++){
-                                response.data.records[i].isshowDes = false;
-                                // item.startTime <= Date.parse(new Date()
-                            }
+                            // for(var i = 0;i< response.data.records.length;i++){
+                            //     response.data.records[i].isshowDes = false;
+                            //     // item.startTime <= Date.parse(new Date()
+                            // }
                             this.$nextTick(()=>{
-                                this.tableData = response.data.records;
+                                this.tableData = response.data;
                             })
                         }
                     }else{

@@ -196,7 +196,7 @@
                                 </el-date-picker>
                             </div>
 
-                            <!-- <div class="curson" @click="deleteuser()">删除用户</div> -->
+                            <div class="curson" @click="deleteuser()" v-if="showDelet">删除用户</div>
                             <div class="bacButtonone bacButton cursor" :download="download" :href="href" @click="daochu()">导出</div>
                             <div class="bacButton cursor" @click="getcommodityData('search')">筛选 </div>
                         </div>
@@ -281,6 +281,7 @@
     import Service from '@/common/service'
     import KlTop from '@/components/klTop'
     import Commodities from '@/components/commodities'
+     import global from '@/common/global'
     export default {
         name: "salecustomer",
         components:{
@@ -290,6 +291,7 @@
         },
         data() {
             return {
+                showDelet: false,
                 inviteType:'',
                 inviteTypeoption: [{name: '全部',id: ''},{name:'打卡推荐',id:1},{name:'商品推荐',id:2},{name:'动态推荐',id:3}],
                 download: '',
@@ -353,6 +355,11 @@
         },
         mounted(){
             this.getcommodityData('');//获取订单列表
+            if(global.env == "test" || global.env == "dev"){
+                this.showDelet = true;
+            }else{
+                this.showDelet = false;
+            }
         },
         methods: {
             deleteuser(){

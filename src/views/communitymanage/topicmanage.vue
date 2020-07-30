@@ -272,8 +272,8 @@
                                     <span class="color2087 font12 fontWeight cursor" @click="openTopic('编辑话题',item)">修改</span>
                                      <span class="line"></span>
                                      <span class="color2087 font12 fontWeight cursor" @click="godynamicmnage(item.id)">参与的动态</span>
-                                     <span class="line"></span>
-                                     <span class="color2087 font12 fontWeight cursor" @click="deleteTopic(item.id)">删除</span>
+                                     <!-- <span class="line"></span>
+                                     <span class="color2087 font12 fontWeight cursor" @click="deleteTopic(item.id)">删除</span> -->
                                 </td>
                             </tr>
                         </table>

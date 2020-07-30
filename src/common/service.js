@@ -1037,6 +1037,66 @@ export default {
             },
         }
     },
+    giftinsurance(){
+        return{
+            insuranceDetail: function (data,key) {//赠险详情
+                return getResource({
+                    url: `/lanmao/admin/gift/insurance/${key}`,
+                    method: 'get'
+                }, data)
+            },
+            editorinsurance: function (data,key) {//编辑活动
+                return getResource({
+                    url: `/lanmao/admin/gift/insurance/${key}`,
+                    method: 'post'
+                }, data)
+            },
+            deleteinsurance: function (data,key) {//删除活动
+                return getResource({
+                    url: `/lanmao/admin/gift/insurance/${key}`,
+                    method: 'DELETE'
+                }, data)
+            },
+            disableinsurance: function (data,key) {//失效活动
+                return getResource({
+                    url: `/lanmao/admin/gift/insurance/${key}/disable`,
+                    method: 'post'
+                }, data)
+            },
+            enableinsurance: function (data,key) {//生效活动
+                return getResource({
+                    url: `/lanmao/admin/gift/insurance/${key}/enable`,
+                    method: 'post'
+                }, data)
+            },
+            addinsurance: function (data) {//添加活动
+                return getResource({
+                    url: `/lanmao/admin/gift/insurance/activity`,
+                    method: 'post'
+                }, data)
+            },
+            getinsurance: function (data) {//查询活动
+                return getResource({
+                    url: `/lanmao/admin/gift/insurance/activity/query`,
+                    method: 'post'
+                }, data)
+            },
+            getorderinsurance: function (data) {//查询订单
+                return getResource({
+                    url: `/lanmao/admin/gift/insurance/order/query`,
+                    method: 'post'
+                }, data)
+            },
+            orderexport: function (data) {//查询订单导出
+                return getResource({
+                    url: `/lanmao/admin/gift/insurance/order/export`,
+                    method: 'post'
+                }, data)
+            },
+            
+            
+        }
+    },
     staf(){
       return{
           getstafs: function (data) {
@@ -1149,126 +1209,6 @@ export default {
         }
     },
 
-    enterprise(){
-        return{
-            channelSearch: function (data) {//搜索渠道
-                return getResource({
-                    url: '/xunan/admin/enterprise/channel/search',
-                    method: 'post'
-                }, data)
-            },
-            channelAdd: function (data) {//添加渠道
-                return getResource({
-                    url: '/xunan/admin/enterprise/channel/add',
-                    method: 'post'
-                }, data)
-            },
-            channelDelete: function (data,key) {//删除渠道
-                return getResource({
-                    url: `/xunan/admin/enterprise/channel/delete?id=${key}`,
-                    method: 'post'
-                }, data)
-            },
-            channelQuery: function (data) {//渠道查询
-                return getResource({
-                    url: '/xunan/admin/enterprise/channel/query',
-                    method: 'post'
-                }, data)
-            },
-
-            channelclientSearch: function (data,key) {//渠道客户搜索
-                return getResource({
-                    url: `/xunan/admin/enterprise/channel/client/search`,
-                    method: 'post'
-                }, data)
-            },
-            channeluserQuery: function (data) {//渠道个人客户查询
-                return getResource({
-                    url: '/xunan/admin/enterprise/channel/user/query',
-                    method: 'post'
-                }, data)
-            },
-            channelclientQuery: function (data) {//渠道客户查询
-                return getResource({
-                    url: '/xunan/admin/enterprise/channel/client/query',
-                    method: 'post'
-                }, data)
-            },
-            channelclientDelete: function (data,key) {//删除渠道客户
-                return getResource({
-                    url: `/xunan/admin/enterprise/channel/client/delete`,
-                    method: 'post'
-                }, data)
-            },
-            channelclientAdd: function (data,key) {//添加渠道客户
-                return getResource({
-                    url: `/xunan/admin/enterprise/channel/client/add`,
-                    method: 'post'
-                }, data)
-            },
-            enterpriseApprove: function (data) {//通过认证
-                return getResource({
-                    url: '/xunan/admin/enterprise/auth/approve',
-                    method: 'post'
-                }, data)
-            },
-            enterpriseReject: function (data) {//拒绝认证
-                return getResource({
-                    url: '/xunan/admin/enterprise/auth/reject',
-                    method: 'post'
-                }, data)
-            },
-            authenterpriseQuery: function (data) {//认证查询
-                return getResource({
-                    url: '/xunan/admin/enterprise/auth/query',
-                    method: 'post'
-                }, data)
-            },
-            authStats: function (data) {//认证统计
-                return getResource({
-                    url: '/xunan/admin/enterprise/auth/stats',
-                    method: 'get'
-                }, data)
-            },
-
-            enterpriseQuery: function (data) {//企业查询
-                return getResource({
-                    url: '/xunan/admin/enterprise/query',
-                    method: 'post'
-                }, data)
-            },
-            getenterpriseDetail: function (data,key) {//企业详情
-                return getResource({
-                    url: `/xunan/admin/enterprise/${key}`,
-                    method: 'GET'
-                }, data)
-            },
-            getenterpriseOrderStats: function (data,key) {//企业订单统计
-                return getResource({
-                    url: `/xunan/admin/enterprise/${key}/stats`,
-                    method: 'GET'
-                }, data)
-            },
-            getenterpriseStats: function (data,key) {//企业统计
-                return getResource({
-                    url: `/xunan/admin/enterprise/stats`,
-                    method: 'GET'
-                }, data)
-            },
-            ordergroupQuery: function (data) {//推广团单查询
-                return getResource({
-                    url: '/xunan/admin/enterprise/channel/order/group',
-                    method: 'post'
-                }, data)
-            },
-            ordergroupPersonal: function (data) {//推广个单查询
-                return getResource({
-                    url: '/xunan/admin/enterprise/channel/order/personal',
-                    method: 'post'
-                }, data)
-            },
-        }
-    },
     user(){
         return{
             userQuery: function (data) {//个人查询
