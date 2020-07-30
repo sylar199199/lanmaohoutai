@@ -351,7 +351,7 @@
                                              <div >
                                                 <i class="iconfont iconxuanzhong color2087 font20 cursor cursor" v-if="isuserRegDaysLimit == 3"></i>
                                                 <i class="iconfont iconxuanze  font20 cursor" v-if="isuserRegDaysLimit != 3" @click="isuserRegDaysLimit = 3"></i>
-                                                <span class="typeText colorblack font12 marginright10">老用户微信授权<input type="text" class="inputBox" v-model="minRegDays" />天以内</span>
+                                                <span class="typeText colorblack font12 marginright10">老用户微信授权<input type="text" class="inputBox" v-model="minRegDays" />天以上</span>
                                             </div>
                                            
                                         </div>
@@ -497,12 +497,14 @@
             downSort(index,item){//降序
                 this.goodsdata[index] = this.goodsdata[index+1];
                 this.goodsdata[index+1] = item;
-                this.sortRecData();
+                this.$forceUpdate()
+                // this.sortRecData();
             },
             upSort(index,item){//升序
                 this.goodsdata[index] = this.goodsdata[index-1];
                 this.goodsdata[index-1] = item;
-                this.sortRecData();
+                this.$forceUpdate()
+                // this.sortRecData();
             },
             sortRecData(){
                 var arrdata = [];
@@ -613,7 +615,8 @@
                         "name": this.name,
                         "purchaseLimit": purchaseLimit,
                         "startTime": startDate,
-                         userRegDaysLimit: userRegDaysLimit
+                        maxRegDays: this.maxRegDays,
+                        minRegDays: this.minRegDays
                     }).then(response => {
                         if(response.errorCode == 0){
                             this.$message.success('添加成功');

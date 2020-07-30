@@ -309,7 +309,7 @@
                             </div>
                             <div class="searchBox flex">
                                 <span class="searchLable searchName colorGrey font12">积分活动</span>
-                                <el-select v-model="status" placeholder="">
+                                <el-select v-model="activityId" placeholder="">
                                     <el-option
                                             v-for="item in activityoption"
                                             :key="item.id"

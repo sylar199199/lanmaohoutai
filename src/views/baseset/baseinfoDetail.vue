@@ -419,9 +419,9 @@
         },
         methods:{
             changeValue(){
-                if(this.description.length > 200 || this.description.length < 2){
+                if(this.description.length > 200){
                     this.description = this.description.substring(0,200);
-                    this.$message.error('请输入不超过200字或者不少于2个字的通知信息')
+                    this.$message.error('请输入不超过200字的通知信息')
                     return false
                 }else{
                      return true
