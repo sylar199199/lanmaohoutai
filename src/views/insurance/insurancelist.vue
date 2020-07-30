@@ -157,7 +157,7 @@
                                     <span  v-if="(item.endTime <= Date.parse(new Date()))">已结束</span>
                                 </td>
                                 <td v-if="item.status == 1">
-                                    <span >已失效</span>
+                                    <span>已失效</span>
                                 </td>
                              
                                 <td >

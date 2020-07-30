@@ -88,7 +88,7 @@
                                 }
                             }
                             th:nth-child(3){
-                                text-align: left;
+                                text-align: center;
                             }
                             td{
                                 text-align: center;
@@ -134,7 +134,7 @@
                             td:nth-of-type(2){
                                 min-width: 180px;
                                 max-width: 320px;
-                                text-align: left;
+                                text-align: center;
                             }
                             td:nth-of-type(3){
                                 text-align: left;
