@@ -167,7 +167,7 @@
                                     {{item.userCount}}
                                 </td>
                                 <td>
-                                    {{item.rewardPoints}}
+                                    {{item.distPoints}}
                                 </td>
                                 <!-- <td v-if="activeIndex ==1">
                                     <i class="cursor iconfont iconshangsheng fontIcongreen" v-if="index!=0" @click='upSort(index,item)'></i>

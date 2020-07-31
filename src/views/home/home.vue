@@ -202,46 +202,46 @@
                                 <p>
                                     <span class="font12 colorblack">今日播放次数</span>
                                 </p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.todayVisitors">{{getoverviewCount.todayVisitors}}</p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.todayVisitors">0</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.todayPlayCount">{{getoverviewCount.todayPlayCount}}</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.todayPlayCount">0</p>
                             </div>
                             <div class="generalBox">
                                 <p>
                                     <span class="font12 colorblack">累计播放次数</span>
                                 </p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.customerCount">{{getoverviewCount.customerCount}}</p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.customerCount">0</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumPlayCount">{{getoverviewCount.accumPlayCount}}</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumPlayCount">0</p>
                                 
                             </div>
                             <div class="generalBox">
                                 <p>
                                     <span class="font12 colorblack">累计7日勋章</span>
                                 </p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.todayOrders">{{getoverviewCount.todayOrders}}</p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.todayOrders">0</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumMedal7DayCount">{{getoverviewCount.accumMedal7DayCount}}</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumMedal7DayCount">0</p>
                              
                             </div>
                             <div class="generalBox">
                                 <p>
                                     <span class="font12 colorblack">累计15日勋章</span>
                                 </p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.todayOrderAmount">{{getoverviewCount.todayOrderAmount}}</p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.todayOrderAmount">0</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumMedal15DayCount">{{tranNumber(getoverviewCount.accumMedal15DayCount)}}</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumMedal15DayCount">0</p>
                             </div>
 
                             <div class="generalBox cursor" @click="goDetail()">
                                 <p>
                                     <span class="font12 colorblack">累计30日勋章</span>
                                 </p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumDistPoints">{{tranNumber(getoverviewCount.accumDistPoints,1)}}</p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumDistPoints">0</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumMedal30DayCount">{{tranNumber(getoverviewCount.accumMedal30DayCount,1)}}</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumMedal30DayCount">0</p>
                             </div>
                             <div class="generalBox">
                                 <p>
                                     <span class="font12 colorblack">累计60日勋章</span>
                                 </p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumConsPoints">{{tranNumber(getoverviewCount.accumConsPoints,1)}}</p>
-                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumConsPoints">0</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumMedal60DayCount">{{tranNumber(getoverviewCount.accumMedal60DayCount,1)}}</p>
+                                <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumMedal60DayCount">0</p>
                             </div>
                         </div>
                     </div>

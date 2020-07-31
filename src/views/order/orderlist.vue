@@ -192,6 +192,36 @@
             }
         }
     }
+    .fileBox{
+            .applicaninfo{
+                width: 120px;
+                height: 40px;
+                background-color: #f9f9f9;
+                border-radius: 4px;
+                text-align: center;
+                    position: relative;
+                 
+                .imgBox{
+                    display: inline-block;
+                    width: 120px;
+                    height: 68px;
+                   
+                    .uploadtext{
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        width: 120px;
+                        height: 40px;
+                        color: #fff;
+                        text-align: center;
+                        background-color: #0d2c4b;
+                        border-radius: 20px;
+                    }
+                }
+            }
+                   
+        }
     .dialogone::after {
         content: "";
         display: inline-block;
@@ -337,8 +367,32 @@
                                 <span class="searchLable colorGrey font12">用户id </span>
                                 <input type="text" v-model="userId" class="serchInput font12 colorblack" placeholder="用户id"/>
                             </div>
-                            <div class="bacButtonone bacButton cursor" :download="download" :href="href" @click="daochu()">导出</div>
-                            <div class="bacButton cursor" @click="getcommodityData('search')">筛选</div>
+                            
+                           
+                            <div class="searchBox flex">
+                                  <div class="bacButton cursor" @click="getcommodityData('search')">筛选</div>
+                                  <div class="bacButtonone bacButton cursor" :download="download" :href="href" @click="daochu()">导出</div>
+                                   <div class="fileBox" >
+                                        <div class="applicaninfo">
+                                            <el-upload
+                                                ref="upload" 
+                                                    class="upload-demo imgBox"
+                                                    name="file"
+                                                    :action="upFileAction"
+                                                    :headers="headers"
+                                                    :on-change="handleChange"
+                                                    :on-success="handleAvatarSuccess"
+                                                    :before-upload="beforeAvatarUpload"
+                                                    :on-error="errphoto"
+                                                    :show-file-list="false"
+                                                    accept="">
+                                                <div  class="uploadtext">
+                                                    <p>批量发货</p>
+                                                </div>
+                                            </el-upload>
+                                        </div>
+                                    </div>
+                             </div>
                         </div>
 
                     </div>
@@ -463,6 +517,8 @@
         },
         data() {
             return {
+                upFileAction: '',
+                headers: {},
                 shiporderNo: '',
                 consigneename: '',
                 userName: '',
@@ -513,10 +569,9 @@
             };
         },
         created(){
-
+            this.upFileAction = Global.requestUrl+"/lanmao/admin/order/ship/batch";
         },
         computed:{
-
         },
         watch:{
             'consigneeType':function(){
@@ -547,6 +602,30 @@
             this.getcommodityData('');//获取订单列表
         },
         methods: {
+              beforeAvatarUpload(file) {
+                 Store.commit("setIsLoading", true);
+                    var index = file.name.indexOf('.');
+                    const isExcel = file.name.substring(index+1) === 'xlsx';
+                    const isExcel1 = file.name.substring(index+1) === 'xls';
+                    if (!isExcel && !isExcel1) {
+                        this.$message.error('请上传正确的excel文件!');
+                    }
+                    return (isExcel || isExcel1);
+            },
+             handleChange(file, fileList) {
+            },
+             errphoto(err, file, fileList){
+               
+            },
+            handleAvatarSuccess(res, file) {
+                Store.commit("setIsLoading", false);
+                this.getcommodityData('');//获取订单列表
+                if(res.data){
+                    this.$message.success('批量发货成功');
+                }else{
+                    this.$message.success(res.message);
+                }
+            },
             isOther(x, arr){
                 for(var i = 0;i<arr.length;i++){
                     if(x === arr[i].id){
