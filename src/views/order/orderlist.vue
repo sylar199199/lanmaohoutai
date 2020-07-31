@@ -508,6 +508,7 @@
     import KlTop from '@/components/klTop'
     import Global from '@/common/global'
     import Commodities from '@/components/commodities'
+    import Util from '@/common/util'
     export default {
         name: "salecustomer",
         components:{
@@ -570,6 +571,9 @@
         },
         created(){
             this.upFileAction = Global.requestUrl+"/lanmao/admin/order/ship/batch";
+             var  tokenVal = Util.localStorageUtil.get('access_token');
+            this.headers = {token:tokenVal};
+            console.log(this.headers)
         },
         computed:{
         },
