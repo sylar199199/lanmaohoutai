@@ -265,8 +265,8 @@
                 sortDatas:[
                     {orderType:'',name: '编号',showBlue: false,orderField: ''},
                     {orderType:'',name: '图片',showBlue: false,orderField: ''},
-                    {orderType:'',name: '打开数',showBlue: false,orderField: ''},
-                    {orderType:'',name: '注册数',showBlue: false,orderField: ''},
+                    {orderType:'',name: '打开人数',showBlue: false,orderField: ''},
+                    {orderType:'',name: '注册人数',showBlue: false,orderField: ''},
                     {orderType:'',name: '创建时间',showBlue: false,orderField: ''},
                     {orderType:'',name: '编辑',showBlue: false,orderField: ''}
                 ],
