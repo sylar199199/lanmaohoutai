@@ -184,7 +184,7 @@
                                     <span class="line"  v-if="(item.status == 0)"></span>
                                     <span class="color2087 font12 cursor fontWeight" @click="enableGoods(item.id)" v-if="(item.status == 1)">使生效</span>
                                     <span class="line"  v-if="(item.status == 1)"></span>
-                                    <span class="color2087 font12  fontWeight" @click="delectCommodity(item.id)">删除</span>
+                                    <span class="color2087 font12 cursor fontWeight" @click="delectCommodity(item.id)">删除</span>
                                 </td>
                             </tr>
                         </table>
