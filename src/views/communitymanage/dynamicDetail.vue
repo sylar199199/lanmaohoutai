@@ -32,8 +32,8 @@
                                 max-height: 200px;
                             }
                         }
-                        
-                       
+
+
                         .flexinfoLeft{
                             margin-right: 10px;
                             .headImg{
@@ -187,10 +187,10 @@
                                 <div class="infoBox">
                                     <span class="colorblack font14 timeSpan">{{custormerData.userNickname}}</span>
                                 </div>
-                                
+
                             </div>
                         </div>
-                    
+
                     </div>
                     <div class="dataGeneral backWhite padding20">
                         <div class="colorblack font16 fontWeight marginright10 marginbottom">
@@ -201,13 +201,13 @@
                                 <img class='imgUrl' :src="item.imgUrl">
                             </div>
                         </div>
-                        <div class="orderInfo flex alignCenter marginbottom" style="margin-left: 0;">
+                      <!--  <div class="orderInfo flex alignCenter marginbottom" style="margin-left: 0;">
                             <span class="colorblack font16 fontWeight marginright10">发布的标题：</span>
                             <span class="colorblack font14 timeSpan">{{custormerData.title}}</span>
-                        </div>
+                        </div>-->
                           <div class="orderInfo flex alignCenter marginbottom" style="margin-left: 0;">
                             <span class="colorblack font16  fontWeight marginright10">发布的话题：</span>
-                            <span class="colorblack font14 timeSpan">#{{custormerData.topicName}}</span>
+                            <span class="colorblack font14 timeSpan">#{{custormerData.topicName}}#</span>
                         </div>
                         <div class="orderInfo flex alignCenter marginbottom" style="margin-left: 0;">
                             <span class="colorblack font16  fontWeight marginright10">发布的内容：</span>
@@ -278,14 +278,14 @@
                 ).then(response => {
                     if(response.errorCode == 0){
                         this.custormerData = response.data;
-                        
+
                     }else{
                         this.$message.error(response.message)
                     }
                 }, err => {
                 });
             },
-        
+
             timetrans(time) {
                 var getSeconds = '', getMinutes = '', getHours = '';
                 var d = new Date(time);
@@ -336,7 +336,7 @@
             });
         }
     },
-       
+
 
 }
 </script>

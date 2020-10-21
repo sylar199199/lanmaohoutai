@@ -327,23 +327,9 @@
       <Aside></Aside>
       <div class="content">
         <div class="contanternews">
-          <div class="dataGeneral backWhite">
-            <div class="searchContent flex clear">
-              <div class="searchBox">
-                <span class="searchLable colorGrey font12">话题</span>
-                <input type="text" v-model="name" class="serchInput font12 colorblack" placeholder="参与话题"/>
-              </div>
-
-              <div class="searchBox">
-                <span class="searchLable colorGrey font12">发帖人数>= </span>
-                <input type="text" v-model="minPostCount" class="serchInput font12 colorblack" placeholder="参与帖子"/>
-              </div>
-              <div class="bacButton cursor" @click="getcommodityData('search')">筛选</div>
-            </div>
-
-          </div>
           <div class="dataGeneral bannerTable">
-            <div class="borderButton cursor" @click="openTopic('新增话题')">新增话题</div>
+            <div class="padding20">圈子：盲盒</div>
+            <div class="borderButton cursor" @click="openTopic('添加海报话题')">添加海报话题</div>
             <table v-if="noData" class="table">
               <tr>
                 <th v-for="item in sortDatas" :key="item.name">
@@ -352,7 +338,7 @@
               </tr>
               <tr v-for="item in tableData" :key="item.id">
                 <td>
-                  {{item.name}}
+                  <img  @click="showBig(item)" class="imgUrl curson" :src="item.imgUrl">
                 </td>
                 <td>
                   {{item.name}}
@@ -370,7 +356,7 @@
                 <td>
                   <span class="color2087 font12 fontWeight cursor" @click="openTopic('编辑话题',item)">修改</span>
                   <span class="line"></span>
-                  <span class="color2087 font12 fontWeight cursor" @click="godynamicmnage(item.id)">参与的帖子</span>
+                  <span class="color2087 font12 fontWeight cursor" @click="delectCommodity(item.id)">删除</span>
                   <!-- <span class="line"></span>
                   <span class="color2087 font12 fontWeight cursor" @click="deleteTopic(item.id)">删除</span> -->
                 </td>
@@ -404,9 +390,15 @@
           <div class="messageContent">
 
             <div class="messagemessage">
-              <span class="lableText colorblack font12">话题</span>
-              <input type="text" @change="changeValue('topName','')" v-model="topName"
-                     class="inputBox marginLeft10 colorblack font12" placeholder="话题"/>
+              <span class="lableText colorblack font12">关联话题</span>
+              <el-select v-model="circleId" placeholder="" class="marginLeft10">
+                <el-option
+                  v-for="item in circleOption"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
             </div>
             <div class="messagemessage flex">
               <span class="lableText colorblack font12">展示图</span>
@@ -436,27 +428,6 @@
                 <span class="font12 colorGrey" style="margin-left:10px;">图片格式要求（672*464），大小不超过2M</span>
               </div>
             </div>
-            <div class="messagemessage">
-              <span class="lableText colorblack  font12">圈子</span>
-              <el-select v-model="circleId" placeholder="" class="marginLeft10">
-                <el-option
-                  v-for="item in circleOption"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                </el-option>
-              </el-select>
-            </div>
-            <div class="messagemessage flex">
-              <span class="lableText colorblack font12">简介</span>
-              <el-input
-                class="marginLeft10"
-                type="textarea"
-                :rows="3"
-                placeholder="话题简介"
-                v-model="introduction" >
-              </el-input>
-            </div>
           </div>
           <div class="messagebtns">
             <div class="button borderButton copyButton" @click="closeDiologone()">
@@ -482,7 +453,7 @@
   import Util from '@/common/util'
 
   export default {
-    name: "salecustomer",
+    name: "relationposter",
     components: {
       Aside,
       KlTop,
@@ -499,10 +470,10 @@
         tableData: [],
         noData: true,
         sortDatas: [
-          {orderType: '', name: '话题', showBlue: false, orderField: ''},
-          {orderType: '', name: '圈子', showBlue: false, orderField: ''},
-          {orderType: '', name: '参与帖子', showBlue: false, orderField: ''},
-          {orderType: '', name: '参与人数', showBlue: false, orderField: ''},
+          {orderType: '', name: '图片', showBlue: false, orderField: ''},
+          {orderType: '', name: '点击次数', showBlue: false, orderField: ''},
+          {orderType: '', name: '关联话题', showBlue: false, orderField: ''},
+          {orderType: '', name: '排序', showBlue: false, orderField: ''},
           {orderType: '', name: '创建时间', showBlue: false, orderField: ''},
           {orderType: '', name: '操作', showBlue: false, orderField: ''}
         ],
@@ -564,6 +535,12 @@
           });
         }
       },
+      showBig(item){
+        this.title = item.name;
+        this.bigImg1 = item.imgUrl;
+        this.bigImg2 = item.tempImgUrl;
+        this.centerDialogVisible = true;
+      },
       //打开编辑话题
       openTopic(type, item) {
         if (item) {
@@ -576,8 +553,29 @@
         $(".dialogone").css({"display": "block"})
       },
       // 跳转到帖子管理
-      godynamicmnage(id) {
-        this.$router.push({name: 'dynamicmanage', query: {topicId: id}})
+      delectCommodity(id) {
+        this.$confirm( '圈子删除请谨慎操作，确定删除?', '', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          Service.goods().deleteGoods({
+          },id).then(response => {
+            if(response.errorCode == 0){
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.getcommodityData('');//获取商品列表
+            }else{
+              this.$message.error(response.message)
+            }
+
+          }, err => {
+          });
+        }).catch(() => {
+
+        });
       },
       // 删除话题
       deleteTopic(id) {

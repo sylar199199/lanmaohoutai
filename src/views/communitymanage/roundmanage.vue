@@ -330,20 +330,20 @@
           <div class="dataGeneral backWhite">
             <div class="searchContent flex clear">
               <div class="searchBox">
-                <span class="searchLable colorGrey font12">话题</span>
-                <input type="text" v-model="name" class="serchInput font12 colorblack" placeholder="参与话题"/>
+                <span class="searchLable colorGrey font12">圈子</span>
+                <input type="text" v-model="name" class="serchInput font12 colorblack" placeholder="圈子"/>
               </div>
 
-              <div class="searchBox">
-                <span class="searchLable colorGrey font12">发帖人数>= </span>
+             <!-- <div class="searchBox">
+                <span class="searchLable colorGrey font12">参与帖子>= </span>
                 <input type="text" v-model="minPostCount" class="serchInput font12 colorblack" placeholder="参与帖子"/>
-              </div>
+              </div>-->
               <div class="bacButton cursor" @click="getcommodityData('search')">筛选</div>
             </div>
 
           </div>
           <div class="dataGeneral bannerTable">
-            <div class="borderButton cursor" @click="openTopic('新增话题')">新增话题</div>
+            <div class="borderButton cursor" @click="openTopic('新增圈子')">新增圈子</div>
             <table v-if="noData" class="table">
               <tr>
                 <th v-for="item in sortDatas" :key="item.name">
@@ -370,7 +370,7 @@
                 <td>
                   <span class="color2087 font12 fontWeight cursor" @click="openTopic('编辑话题',item)">修改</span>
                   <span class="line"></span>
-                  <span class="color2087 font12 fontWeight cursor" @click="godynamicmnage(item.id)">参与的帖子</span>
+                  <span class="color2087 font12 fontWeight cursor" @click="godynamicmnage(item.id)">关联海报</span>
                   <!-- <span class="line"></span>
                   <span class="color2087 font12 fontWeight cursor" @click="deleteTopic(item.id)">删除</span> -->
                 </td>
@@ -404,58 +404,9 @@
           <div class="messageContent">
 
             <div class="messagemessage">
-              <span class="lableText colorblack font12">话题</span>
+              <span class="lableText colorblack font12">圈子</span>
               <input type="text" @change="changeValue('topName','')" v-model="topName"
-                     class="inputBox marginLeft10 colorblack font12" placeholder="话题"/>
-            </div>
-            <div class="messagemessage flex">
-              <span class="lableText colorblack font12">展示图</span>
-              <div class="flexCenter">
-                <div class="applicaninfo marginLeft10" style="margin-left: 12px">
-                  <i class="iconfont iconcuowu cursor deleteIcon"  v-if="topicImg" @click="delectImg()"></i>
-                  <img class="bannerImg" :src="topicImg" v-if="topicImg" >
-                  <el-upload
-                    class="upload-demo imgBox"
-                    name="file"
-                    :action="upFileAction"
-                    :headers="headers"
-                    :on-change="handleChange"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
-                    :on-error="errphoto"
-                    :show-file-list="false"
-                    accept="">
-                    <div  class="uploadtext" v-if="topicImg">
-                    </div>
-                    <div  class="uploadtext" v-if="!topicImg">
-                      <i class="iconfont iconiconjia color2087 uploadIcon"></i>
-                      <span>上传图片</span>
-                    </div>
-                  </el-upload>
-                </div>
-                <span class="font12 colorGrey" style="margin-left:10px;">图片格式要求（672*464），大小不超过2M</span>
-              </div>
-            </div>
-            <div class="messagemessage">
-              <span class="lableText colorblack  font12">圈子</span>
-              <el-select v-model="circleId" placeholder="" class="marginLeft10">
-                <el-option
-                  v-for="item in circleOption"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                </el-option>
-              </el-select>
-            </div>
-            <div class="messagemessage flex">
-              <span class="lableText colorblack font12">简介</span>
-              <el-input
-                class="marginLeft10"
-                type="textarea"
-                :rows="3"
-                placeholder="话题简介"
-                v-model="introduction" >
-              </el-input>
+                     class="inputBox marginLeft10 colorblack font12" placeholder="圈子"/>
             </div>
           </div>
           <div class="messagebtns">
@@ -499,10 +450,10 @@
         tableData: [],
         noData: true,
         sortDatas: [
-          {orderType: '', name: '话题', showBlue: false, orderField: ''},
           {orderType: '', name: '圈子', showBlue: false, orderField: ''},
-          {orderType: '', name: '参与帖子', showBlue: false, orderField: ''},
-          {orderType: '', name: '参与人数', showBlue: false, orderField: ''},
+          {orderType: '', name: '点击次数', showBlue: false, orderField: ''},
+          {orderType: '', name: '话题数', showBlue: false, orderField: ''},
+          {orderType: '', name: '排序', showBlue: false, orderField: ''},
           {orderType: '', name: '创建时间', showBlue: false, orderField: ''},
           {orderType: '', name: '操作', showBlue: false, orderField: ''}
         ],
@@ -510,10 +461,10 @@
         topName: '',
         upFileAction: '',
         headers: null,
-        topicImg: '', // 话题图片
+        topicImg: '', // 圈子图片
         circleId: '', // 圈子
         circleOption: [], // 圈子数组
-        introduction: '', // 话题简介
+        introduction: '', // 圈子简介
       };
     },
     created() {
@@ -523,16 +474,16 @@
     computed: {},
     watch: {},
     mounted() {
-      this.getcommodityData('');//获取话题列表
+      this.getcommodityData('');//获取圈子列表
       this.upFileAction = Global.requestUrl+"/lanmao/admin/upload/file";
     },
     methods: {
-      //添加、编辑话题
+      //添加、编辑圈子
       addTopic() {
         if (!this.changeValue('topName', 'submit')) {
           return;
         }
-        if (this.topicId) {//编辑话题
+        if (this.topicId) {//编辑圈子
           Service.toppic().editorTopic({
             name: this.topName,
           }, this.topicId).then(response => {
@@ -547,7 +498,7 @@
             }
           }, err => {
           });
-        } else {//新增话题
+        } else {//新增圈子
           Service.toppic().addTopic({
             name: this.topName,
           }).then(response => {
@@ -564,22 +515,20 @@
           });
         }
       },
-      //打开编辑话题
+      //打开编辑圈子
       openTopic(type, item) {
         if (item) {
           this.topicId = item.id;
           this.topName = item.name;
-          this.circleId = item.circleId;
-          this.introduction = item.introduction;
         }
         this.topicTitle = type;
         $(".dialogone").css({"display": "block"})
       },
-      // 跳转到帖子管理
+      // 跳转到关联海报
       godynamicmnage(id) {
-        this.$router.push({name: 'dynamicmanage', query: {topicId: id}})
+        this.$router.push({name: 'relationposter', query: {topicId: id}})
       },
-      // 删除话题
+      // 删除圈子
       deleteTopic(id) {
         this.$confirm('确定删除?', '', {
           confirmButtonText: '确定',
@@ -615,7 +564,7 @@
         if (name == 'topName') {
           this.topName = this.topName.replace(/(^\s*)|(\s*$)/g, "");
           if (this.topName.length > 20 || this.topName.length == 0) {
-            this.$message.error('请输入不超过20个字符的话题');
+            this.$message.error('请输入不超过20个字符的圈子');
             on = false;
             return;
           }
