@@ -96,7 +96,16 @@ const padding = (s, len) => {
     }
     return s
 };
-
+/**
+ * 截取字符串 超出指定长度显示...
+ */
+const beautySub = (str, len)=> {
+  let reg = /[\u4e00-\u9fa5]/g   //专业匹配中文
+  let slice = str.substring(0, len)
+  let chineseCharNum = (~~(slice.match(reg) && slice.match(reg).length))
+  let realen = slice.length * 2 - chineseCharNum;
+  return str.substr(0, realen) + (realen < str.length ? "..." : "");
+};
 const arrayToStr = (arr, separator) => {
     return isArray(arr) ? arr.join(separator) : arr
 };
@@ -396,6 +405,7 @@ const copy = (source, destination, stackSource, stackDest) => {
 };
 
 export default {
+    beautySub,
     extend: extend,
     objExtend: objExtend,
     copy: copy,

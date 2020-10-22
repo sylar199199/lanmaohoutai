@@ -18,6 +18,8 @@ import orderDetail from '@/views/order/orderDetail' //订单详情
 import revenuequery from '@/views/order/revenuequery'//订单列表
 import integralmanage from '@/views/integralmanage/integralmanage'//积分管理
 import integraldetail from '@/views/integralmanage/integraldetail'//积分明细
+import rafflebenefits from '@/views/marketing/rafflebenefits'//抽奖活动
+import addrafflebenefits from '@/views/marketing/addrafflebenefits'//添加抽奖活动
 import limitactiveList from '@/views/marketing/limitactiveList'//限时活动列表
 import addlimitactive from '@/views/marketing/addlimitactive'//新建限时活动
 import clockdaybackground from '@/views/templatemanage/clockdaybackground'//白天打卡背景
@@ -28,8 +30,10 @@ import activityposter from '@/views/templatemanage/activityposter'//活动海报
 import guidebackground from '@/views/templatemanage/guidebackground'//引导页
 
 
-import dynamicmanage from '@/views/communitymanage/dynamicmanage'//动态管理
+import dynamicmanage from '@/views/communitymanage/dynamicmanage'//帖子管理
 import topicmanage from '@/views/communitymanage/topicmanage'//话题管理
+import roundmanage from '@/views/communitymanage/roundmanage'//圈子管理
+import relationposter from '@/views/communitymanage/relationposter'//关联海报
 import publisherlist from '@/views/communitymanage/publisherlist'//发布者查询
 import visitlist from '@/views/customer/visitlist'//访客查询
 import dynamicDetail from '@/views/communitymanage/dynamicDetail'//动态详情
@@ -75,7 +79,7 @@ export default new Router({
             name: 'activityposter',
             component: activityposter
         },
-        
+
         {
             path: '/customer/visitlist',
             name: 'visitlist',
@@ -112,6 +116,16 @@ export default new Router({
             component: topicmanage
         },
         {
+            path: '/communitymanage/roundmanage',
+            name: 'roundmanage',
+            component: roundmanage
+        },
+        {
+            path: '/communitymanage/relationposter/:roundId/:roundName',
+            name: 'relationposter',
+            component: relationposter
+        },
+        {
             path: '/communitymanage/publisherlist',
             name: 'publisherlist',
             component: publisherlist
@@ -121,7 +135,7 @@ export default new Router({
             name: 'salesspecification',
             component: salesspecification
         },
-        
+
         {
             path: '/templatemanage/posterbackground',
             name: 'posterbackground',
@@ -151,7 +165,18 @@ export default new Router({
             path: '/marketing/limitactiveList',
             name: 'limitactiveList',
             component: limitactiveList
-        }, {
+        },
+       {
+            path: '/marketing/rafflebenefits',
+            name: 'rafflebenefits',
+            component: rafflebenefits
+        },
+        {
+            path: '/marketing/addrafflebenefits',
+            name: 'addrafflebenefits',
+            component: addrafflebenefits
+        },
+       {
             path: '/marketing/addlimitactive',
             name: 'addlimitactive',
             component: addlimitactive
@@ -216,8 +241,8 @@ export default new Router({
             name: 'accountpermission',
             component: accountpermission
         },
-      
-      
+
+
         {
             path: '/',
             name: 'login',

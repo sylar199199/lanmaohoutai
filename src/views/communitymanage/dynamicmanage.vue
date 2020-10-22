@@ -118,11 +118,11 @@
                                 max-width: 50px;
                             }
                             td:nth-child(5){
-                                max-width: 64px;
-                                min-width: 64px;
+                                max-width: 50px;
+                                min-width: 50px;
                             }
                             th:nth-child(7){
-                                min-width: 80px;
+                                min-width: 60px;
                             }
                              td:nth-child(9){
                                 max-width: 62px;
@@ -133,10 +133,10 @@
                                 min-width: 62px;
                             }
                              td:nth-child(11){
-                                max-width: 110px;
-                                min-width: 110px;
+                                max-width: 150px;
+                                min-width: 150px;
                             }
-                          
+
                             td{
                                 text-align: center;
                                 padding: 20px 16px;
@@ -181,10 +181,10 @@
                 <div class="contanternews">
                     <div class="dataGeneral backWhite">
                         <div class="searchContent flex clear">
-                            <div class="searchBox">
+                           <!-- <div class="searchBox">
                                 <span class="searchLable colorGrey font12">标题 </span>
                                 <input type="text" v-model="title" class="serchInput font12 colorblack" placeholder="标题"/>
-                            </div>
+                            </div>-->
                             <div class="searchBox">
                                 <span class="searchLable colorGrey font12">发布者 </span>
                                 <input type="text" v-model="userNickname" class="serchInput font12 colorblack" placeholder="微信昵称"/>
@@ -215,7 +215,7 @@
                                     </el-option>
                                 </el-select>
                             </div>
-                            
+
                             <div class="searchBox">
                                 <span class="searchLable colorGrey font12">获赞>= </span>
                                 <input type="text" v-model="likeCount" class="serchInput font12 colorblack" placeholder="获赞数"/>
@@ -250,10 +250,8 @@
                                 <td>
                                     <div class="flex">
                                          <img @click='openBig(item)' :src="item.imgUrl" class="imgUrl">
-                                         <span>{{item.title}}</span>
+                                         <span>{{Util.beautySub(item.content, 10)}}</span>
                                     </div>
-                                   
-
                                  </td>
                                 <td>
                                     {{item.topicName}}
@@ -264,7 +262,7 @@
                                 <td>
                                     {{item.userNickname}}
                                 </td>
-                               
+
                                 <td>
                                    {{item.likeCount}}
                                 </td>
@@ -284,8 +282,8 @@
                                 <td>
                                     <span class="color2087 font12 fontWeight cursor" @click="goDetail(item.id)">详情</span>
                                     <span class="line">|</span>
-                                    <span class="color2087 font12 fontWeight cursor" v-if="!item.top" @click="topCommunity(item.id)">动态置顶</span>
-                                     <span class="color2087 font12 fontWeight cursor" v-if="item.top" @click="canceltopCommunity(item.id)">取消置顶</span>
+                                    <span class="color2087 font12 fontWeight cursor" v-if="!item.top" @click="topCommunity(item.id)">在话题中置顶</span>
+                                     <span class="color2087 font12 fontWeight cursor" v-if="item.top" @click="canceltopCommunity(item.id)">取消在话题中置顶</span>
                                 </td>
                             </tr>
                         </table>
@@ -316,6 +314,7 @@
     import Service from '@/common/service'
     import KlTop from '@/components/klTop'
     import Commodities from '@/components/commodities'
+    import Util from '@/common/util'
     export default {
         name: "salecustomer",
         components:{
@@ -325,6 +324,7 @@
         },
         data() {
             return {
+                Util,
                 centerDialogVisible: false,
                 bigImg: "",
                 showtitle: '',
@@ -332,7 +332,7 @@
                 id: '',
                 sortDatas:[
                      {orderType:'',name: '',showBlue: false,orderField: ''},
-                    {orderType:'',name: '动态',showBlue: false,orderField: ''},
+                    {orderType:'',name: '帖子',showBlue: false,orderField: ''},
                     {orderType:'',name: '参与话题',showBlue: false,orderField: ''},
                     {orderType:'',name: '发布者ID',showBlue: false,orderField: ''},
                     {orderType:'',name: '发布者',showBlue: false,orderField: ''},
@@ -383,7 +383,7 @@
         },
         methods: {
             openBig(item){
-                this.showtitle = '动态：'+item.title;
+                this.showtitle = '帖子：'+item.title;
                 this.bigImg = item.imgUrl;
                 this.centerDialogVisible = true;
             },
@@ -400,7 +400,7 @@
             },
             deleteAll(){
                 if(this.selectId.length != 0){
-                    this.$confirm('所选动态将被删除，请谨慎操作！', '删除动态?', {
+                    this.$confirm('所选帖子将被删除，请谨慎操作！', '删除帖子?', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -420,21 +420,21 @@
 
                     });
                 }else{
-                    this.$message.error('请勾选需要删除的动态')
+                    this.$message.error('请勾选需要删除的帖子')
                 }
-                 
+
             },
             jubao(){
                  console.log(this.selectId )
                  if(this.selectId.length != 0){
-                     this.$confirm('所选动态存在违规行为，举报后将对所有用户不可见，发布者将被禁言3日', '举报动态?', {
+                     this.$confirm('所选帖子存在违规行为，举报后将对所有用户不可见，发布者将被禁言3日', '举报帖子?', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                     }).then(() => {
                         Service.community().reportbatchcommunity(
-                        this.selectId 
-                        
+                        this.selectId
+
                         ).then(response => {
                             if(response.errorCode == 0){
                                 this.$message.success('已举报')
@@ -449,12 +449,12 @@
 
                     });
                  }else{
-                      this.$message.error('请勾选需要举报的动态')
+                      this.$message.error('请勾选需要举报的帖子')
                  }
-                
+
             },
             topCommunity(id){
-                    this.$confirm('置顶该动态?', '', {
+                    this.$confirm('在话题中置该顶帖子?', '', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -474,7 +474,7 @@
             });
             },
             canceltopCommunity(id){
-                this.$confirm('取消置顶?', '', {
+                this.$confirm('在话题中取消置顶该帖子?', '', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -596,7 +596,7 @@
                     }
                 }
             },
-            
+
             getcommunityList(str){
                 if(str == 'search'){
                     this.page = 1;
@@ -615,7 +615,7 @@
                     reported: this.reported,
                     shareCount: this.shareCount,
                     topicId: this.topicId,
-                    title: this.title,
+                    /*title: this.title,*/
                     page: this.page,
                     userId: this.userId,
                     size: this.size,

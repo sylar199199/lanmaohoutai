@@ -284,6 +284,17 @@
                         isdelete: false,
                         subItems: [
                             {
+                                title: '抽奖福利',
+                                secTitlte: '',
+                                isdelete: false,
+                                secgreyIcon: '',
+                                secgreenIcon: '',
+                                name: '抽奖福利',
+                                isSubShow: false,
+                                router:'rafflebenefits',
+                                thirditems: []
+                            },
+                            {
                                 title: '限时兑换',
                                 secTitlte: '',
                                 isdelete: false,
@@ -370,7 +381,7 @@
                                 router:'guidebackground',
                                 thirditems: []
                             }
-                            
+
                         ]
                     },
                       {
@@ -383,12 +394,12 @@
                         isdelete: false,
                         subItems: [
                             {
-                                title: '动态管理',
+                                title: '帖子管理',
                                 secTitlte: '',
                                 isdelete: false,
                                 secgreyIcon: '',
                                 secgreenIcon: '',
-                                name: '动态管理',
+                                name: '帖子管理',
                                 isSubShow: false,
                                 router:'dynamicmanage',
                                 thirditems: []
@@ -402,6 +413,17 @@
                                 name: '话题管理',
                                 isSubShow: false,
                                 router:'topicmanage',
+                                thirditems: []
+                            },
+                            {
+                                title: '圈子管理',
+                                secTitlte: '',
+                                isdelete: false,
+                                secgreyIcon: '',
+                                secgreenIcon: '',
+                                name: '圈子管理',
+                                isSubShow: false,
+                                router:'roundmanage',
                                 thirditems: []
                             },
                              {
