@@ -118,11 +118,11 @@
                                 max-width: 50px;
                             }
                             td:nth-child(5){
-                                max-width: 64px;
-                                min-width: 64px;
+                                max-width: 50px;
+                                min-width: 50px;
                             }
                             th:nth-child(7){
-                                min-width: 80px;
+                                min-width: 60px;
                             }
                              td:nth-child(9){
                                 max-width: 62px;
@@ -133,8 +133,8 @@
                                 min-width: 62px;
                             }
                              td:nth-child(11){
-                                max-width: 110px;
-                                min-width: 110px;
+                                max-width: 150px;
+                                min-width: 150px;
                             }
 
                             td{
@@ -282,8 +282,8 @@
                                 <td>
                                     <span class="color2087 font12 fontWeight cursor" @click="goDetail(item.id)">详情</span>
                                     <span class="line">|</span>
-                                    <span class="color2087 font12 fontWeight cursor" v-if="!item.top" @click="topCommunity(item.id)">帖子置顶</span>
-                                     <span class="color2087 font12 fontWeight cursor" v-if="item.top" @click="canceltopCommunity(item.id)">取消置顶</span>
+                                    <span class="color2087 font12 fontWeight cursor" v-if="!item.top" @click="topCommunity(item.id)">在话题中置顶</span>
+                                     <span class="color2087 font12 fontWeight cursor" v-if="item.top" @click="canceltopCommunity(item.id)">取消在话题中置顶</span>
                                 </td>
                             </tr>
                         </table>
@@ -454,7 +454,7 @@
 
             },
             topCommunity(id){
-                    this.$confirm('置顶该帖子?', '', {
+                    this.$confirm('在话题中置该顶帖子?', '', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -474,7 +474,7 @@
             });
             },
             canceltopCommunity(id){
-                this.$confirm('取消置顶?', '', {
+                this.$confirm('在话题中取消置顶该帖子?', '', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'

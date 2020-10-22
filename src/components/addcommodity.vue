@@ -325,7 +325,6 @@
         type: Array
       },
       goodsdataq: {
-        type: Object
       }
 
     },
@@ -437,7 +436,7 @@
         Store.commit("setIsLoading", true);
         if (this.source == 'addrafflebenefits') {
           Service.lottery().getlotterygoods({
-            "name": this.name,
+            "goodsName": this.name,
           }).then(response => {
             Store.commit("setIsLoading", false);
             if (response.errorCode == 0) {

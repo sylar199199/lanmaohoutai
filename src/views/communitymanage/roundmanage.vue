@@ -225,24 +225,27 @@
 
         .messagemessage {
           margin-bottom: 12px;
-          .flexCenter{
+
+          .flexCenter {
             display: flex;
             align-items: center;
           }
+
           .lableText {
             min-width: 50px;
             text-align: right;
             display: inline-block;
           }
 
-          .applicaninfo{
+          .applicaninfo {
             width: 130px;
             height: 90px;
             background-color: #f9f9f9;
             border-radius: 4px;
             text-align: center;
             position: relative;
-            .deleteIcon{
+
+            .deleteIcon {
               position: absolute;
               right: -8px;
               top: -8px;
@@ -250,22 +253,26 @@
               z-index: 100;
 
             }
-            .bannerImg{
+
+            .bannerImg {
               width: 130px;
               height: 90px;
               position: absolute;
 
             }
-            .imgBox{
+
+            .imgBox {
               display: inline-block;
               width: 130px;
               height: 90px;
-              .uploadtext{
+
+              .uploadtext {
                 color: #979797;
                 position: relative;
                 margin-top: 60px;
                 height: 55px;
-                .uploadIcon{
+
+                .uploadIcon {
                   font-size: 20px;
                   display: inline-block;
                   vertical-align: middle;
@@ -333,63 +340,49 @@
                 <span class="searchLable colorGrey font12">圈子</span>
                 <input type="text" v-model="name" class="serchInput font12 colorblack" placeholder="圈子"/>
               </div>
-
-             <!-- <div class="searchBox">
-                <span class="searchLable colorGrey font12">参与帖子>= </span>
-                <input type="text" v-model="minPostCount" class="serchInput font12 colorblack" placeholder="参与帖子"/>
-              </div>-->
-              <div class="bacButton cursor" @click="getcommodityData('search')">筛选</div>
+              <div class="bacButton cursor" @click="getroundData('search')">筛选</div>
             </div>
 
           </div>
           <div class="dataGeneral bannerTable">
-            <div class="borderButton cursor" @click="openTopic('新增圈子')">新增圈子</div>
+            <div class="borderButton cursor" @click="openRound('新增圈子')">新增圈子</div>
             <table v-if="noData" class="table">
               <tr>
                 <th v-for="item in sortDatas" :key="item.name">
                   {{item.name}}
                 </th>
               </tr>
-              <tr v-for="item in tableData" :key="item.id">
+              <tr v-for="(item,index) in tableData" :key="item.id">
                 <td>
                   {{item.name}}
                 </td>
                 <td>
-                  {{item.name}}
+                  {{item.click}}
                 </td>
                 <td>
-                  {{item.postCount}}
+                  {{item.topicCount}}
                 </td>
                 <td>
-                  {{item.userCount}}
+                  <i class="cursor iconfont iconshangsheng fontIcongreen" v-if="index!=0"
+                     @click='upSort(index,item)'></i>
+                  <i class="iconfont iconshangsheng fontIcongrey" v-if="index==0"></i>
+                  <i class='cursor iconfont fontIcongreen iconjiang' @click='downSort(index,item)'
+                     v-if="index!=(tableData.length-1)"></i>
+                  <i class='iconfont fontIcongrey iconjiang' v-if="index==(tableData.length-1)"></i>
                 </td>
-
                 <td>
                   {{timetrans(item.createDate)}}
                 </td>
                 <td>
-                  <span class="color2087 font12 fontWeight cursor" @click="openTopic('编辑话题',item)">修改</span>
+                  <span class="color2087 font12 fontWeight cursor" @click="openRound('编辑话题',item)">修改</span>
                   <span class="line"></span>
-                  <span class="color2087 font12 fontWeight cursor" @click="godynamicmnage(item.id)">关联海报</span>
-                  <!-- <span class="line"></span>
-                  <span class="color2087 font12 fontWeight cursor" @click="deleteTopic(item.id)">删除</span> -->
+                  <span class="color2087 font12 fontWeight cursor" @click="jumpPoster(item)">关联海报</span>
                 </td>
               </tr>
             </table>
             <div v-if="!noData" class="noData">
               <img class="nodataImg" src="../../assets/images/nodatalist.png"/>
               <p>暂无数据~</p>
-            </div>
-            <div class="block" v-if="noData">
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-size="size"
-                :page-sizes="[5,10]"
-                layout="total,sizes,prev, pager, next,jumper"
-                :total="total">
-              </el-pagination>
             </div>
           </div>
         </div>
@@ -398,14 +391,14 @@
         <div class="messge">
           <div class="messageHeader">
             <div class="messagetitle">
-              <span>{{topicTitle}}</span>
+              <span>{{roundTitle}}</span>
             </div>
           </div>
           <div class="messageContent">
 
             <div class="messagemessage">
               <span class="lableText colorblack font12">圈子</span>
-              <input type="text" @change="changeValue('topName','')" v-model="topName"
+              <input type="text" @change="changeValue('roundName','')" v-model="roundName"
                      class="inputBox marginLeft10 colorblack font12" placeholder="圈子"/>
             </div>
           </div>
@@ -413,7 +406,7 @@
             <div class="button borderButton copyButton" @click="closeDiologone()">
               取消
             </div>
-            <div class="button bacButton" @click="addTopic()">
+            <div class="button bacButton" @click="addRound()">
               确认
             </div>
           </div>
@@ -441,12 +434,8 @@
     },
     data() {
       return {
-        topicTitle: '',
-        minPostCount: '',
+        roundTitle: '',
         name: '',
-        total: 0,
-        size: 10,
-        page: 1,
         tableData: [],
         noData: true,
         sortDatas: [
@@ -457,41 +446,39 @@
           {orderType: '', name: '创建时间', showBlue: false, orderField: ''},
           {orderType: '', name: '操作', showBlue: false, orderField: ''}
         ],
-        topicId: '',
-        topName: '',
+        roundId: '',
+        roundName: '',
         upFileAction: '',
         headers: null,
-        topicImg: '', // 圈子图片
         circleId: '', // 圈子
         circleOption: [], // 圈子数组
-        introduction: '', // 圈子简介
       };
     },
     created() {
-      var  tokenVal = Util.localStorageUtil.get('access_token');
+      var tokenVal = Util.localStorageUtil.get('access_token');
       this.headers = {token: tokenVal};
     },
     computed: {},
     watch: {},
     mounted() {
-      this.getcommodityData('');//获取圈子列表
-      this.upFileAction = Global.requestUrl+"/lanmao/admin/upload/file";
+      this.getroundData('');//获取圈子列表
+      this.upFileAction = Global.requestUrl + "/lanmao/admin/upload/file";
     },
     methods: {
       //添加、编辑圈子
-      addTopic() {
-        if (!this.changeValue('topName', 'submit')) {
+      addRound() {
+        if (!this.changeValue('roundName', 'submit')) {
           return;
         }
-        if (this.topicId) {//编辑圈子
-          Service.toppic().editorTopic({
-            name: this.topName,
-          }, this.topicId).then(response => {
+        if (this.roundId) {//编辑圈子
+          Service.round().editorRound({
+            name: this.roundName,
+          }, this.roundId).then(response => {
             if (response.errorCode == 0) {
-              this.topName = '';
-              this.topicId = '';
+              this.roundName = '';
+              this.roundId = '';
               this.$message.success('编辑成功')
-              this.getcommodityData('')
+              this.getroundData('')
               $(".dialogone").css({"display": "none"})
             } else {
               this.$message.error(response.message)
@@ -499,14 +486,14 @@
           }, err => {
           });
         } else {//新增圈子
-          Service.toppic().addTopic({
-            name: this.topName,
+          Service.round().addCircle({
+            name: this.roundName,
           }).then(response => {
             if (response.errorCode == 0) {
-              this.topName = '';
-              this.topicId = '';
+              this.roundName = '';
+              this.roundId = '';
               this.$message.success('添加成功')
-              this.getcommodityData('')
+              this.getroundData('')
               $(".dialogone").css({"display": "none"})
             } else {
               this.$message.error(response.message)
@@ -515,55 +502,71 @@
           });
         }
       },
+      downSort(index, item) {//降序
+        let newSortArr = [
+          {
+            id: item.id,
+            sort: this.tableData[index + 1].sort
+          },
+          {
+            id: this.tableData[index + 1].id,
+            sort: item.sort
+          }
+        ];
+        this.tableData[index] = this.tableData[index + 1];
+        this.tableData[index + 1] = item;
+        this.sortRecData(newSortArr);
+      },
+      upSort(index, item) {//升序
+        let newSortArr = [
+          {
+            id: item.id,
+            sort: this.tableData[index - 1].sort
+          },
+          {
+            id: this.tableData[index - 1].id,
+            sort: item.sort
+          }
+        ];
+        this.tableData[index] = this.tableData[index - 1];
+        this.tableData[index - 1] = item;
+        this.sortRecData(newSortArr);
+      },
+      sortRecData(newSortArr) {
+        Service.round().sortCircle(newSortArr).then(response => {
+          if (response.errorCode == 0) {
+            this.getroundData();
+          } else {
+            this.$message.error(response.message)
+          }
+        }, err => {
+        });
+      },
       //打开编辑圈子
-      openTopic(type, item) {
+      openRound(type, item) {
         if (item) {
-          this.topicId = item.id;
-          this.topName = item.name;
+          this.roundId = item.id;
+          this.roundName = item.name;
         }
-        this.topicTitle = type;
+        this.roundTitle = type;
         $(".dialogone").css({"display": "block"})
       },
       // 跳转到关联海报
-      godynamicmnage(id) {
-        this.$router.push({name: 'relationposter', query: {topicId: id}})
-      },
-      // 删除圈子
-      deleteTopic(id) {
-        this.$confirm('确定删除?', '', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          Service.toppic().deleteTopic({}, id).then(response => {
-            if (response.errorCode == 0) {
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              });
-              this.getcommodityData('');
-            } else {
-              this.$message.error(response.message)
-            }
-
-          }, err => {
-          });
-        }).catch(() => {
-
-        });
+      jumpPoster(item) {
+        this.$router.push({name: 'relationposter', params: {roundId: item.id,roundName:item.name}})
       },
       closeDiologone() {
-        this.topicId = '';
-        this.topName = '';
+        this.roundId = '';
+        this.roundName = '';
         $(".dialogone").css({"display": "none"})
       },
 
       changeValue(name, type) {
         var on = true;
 
-        if (name == 'topName') {
-          this.topName = this.topName.replace(/(^\s*)|(\s*$)/g, "");
-          if (this.topName.length > 20 || this.topName.length == 0) {
+        if (name == 'roundName') {
+          this.roundName = this.roundName.replace(/(^\s*)|(\s*$)/g, "");
+          if (this.roundName.length > 20 || this.roundName.length == 0) {
             this.$message.error('请输入不超过20个字符的圈子');
             on = false;
             return;
@@ -573,15 +576,6 @@
         if (type == 'submit') {
           return on;
         }
-      },
-
-      handleSizeChange(val) {
-        this.size = val;
-        this.getcommodityData('')
-      },
-      handleCurrentChange(val) {
-        this.page = val;
-        this.getcommodityData('')
       },
       timetrans(timestamp) {
         var getSeconds = '', getMinutes = '', getHours = '';
@@ -594,25 +588,19 @@
         var newTime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + getHours + ':' + getMinutes + ':' + getSeconds;
         return newTime
       },
-
-      getcommodityData(str) {
-        if (str == 'search') {
-          this.page = 1;
-        }
-        Service.toppic().gettopicList({
-          minPostCount: this.minPostCount,
-          "page": this.page,
+      //获取圈子列表
+      getroundData(str) {
+        Service.round().getcircleList({
           "name": this.name,
-          "size": this.size,
         }).then(response => {
           if (response.errorCode == 0) {
-            if (response.data.records.length == 0) {
+            if (response.data.length == 0) {
               this.noData = false;
             } else {
               this.noData = true;
-              this.total = response.data.total;
               this.$nextTick(() => {
-                this.tableData = response.data.records;
+                this.tableData = response.data;
+                console.log('this.tableData', this.tableData)
               })
             }
           } else {
@@ -621,57 +609,6 @@
         }, err => {
         });
 
-      },
-      handleAvatarSuccess(res, file) {
-        Store.commit("setIsLoading", false);
-        if (res.data) {
-          console.log('res.data',res.data)
-          this.topicImg = res.data;
-        } else {
-          this.$message.error(res.message);
-        }
-      },
-      errphoto(err, file, fileList) {
-      },
-      beforeAvatarUpload(file) {
-      },
-      insertImg (imgurl) {
-        let _this = this
-        let image = new Image()
-        image.src = imgurl + '?v=' + Math.random()
-        image.crossOrigin = 'Anonymous';//外网访问必须加否则会报错
-        image.onload = function(){
-          let base64 = _this.getBase64Image(image)
-          _this.topicImg  = topicImg;
-        }
-      },
-      delectImg(){
-        this.topicImg = '';
-      },
-      getBase64Image (img) {
-        let canvas = document.createElement("canvas")
-        canvas.width = img.width
-        canvas.height = img.height
-        let ctx = canvas.getContext("2d")
-        ctx.drawImage(img, 0, 0, img.width, img.height)
-        let dataURL = canvas.toDataURL("image/png")
-        return dataURL
-      },
-      handleChange(file, fileList) {
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        var index = file.name.indexOf('.');
-
-        if (!isLt2M) {
-          Store.commit("setIsLoading", false);
-          this.$message.error('上传文件大小不能超过2M!');
-          return
-        }
-        // let reader = new FileReader()
-        // reader.onload = () => {
-        //         this.imgBase64 = reader.result
-
-        // }
-        // reader.readAsDataURL(file.raw)
       },
     },
 

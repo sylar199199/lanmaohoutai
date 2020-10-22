@@ -121,7 +121,7 @@ export default new Router({
             component: roundmanage
         },
         {
-            path: '/communitymanage/relationposter',
+            path: '/communitymanage/relationposter/:roundId/:roundName',
             name: 'relationposter',
             component: relationposter
         },

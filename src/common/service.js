@@ -294,6 +294,80 @@ export default {
 
     }
   },
+  round(){
+    return {
+      getcircleList(data, key) {
+        //获取圈子列表
+        return getResource({
+          url: `/lanmao/admin/community/circle/query`,
+          method: 'post'
+        }, data)
+      },
+      addCircle(data, key) {
+        //添加圈子
+        return getResource({
+          url: `/lanmao/admin/community/circle`,
+          method: 'post'
+        }, data)
+      },
+      editorRound(data, key) {
+        //修改圈子
+        return getResource({
+          url: `/lanmao/admin/community/circle/${key}`,
+          method: 'post'
+        }, data)
+      },
+      sortCircle(data) {
+        //圈子排序
+        return getResource({
+          url: `/lanmao/admin/community/circle/sort`,
+          method: 'post'
+        }, data)
+      },
+      getposterList(data) {
+        //圈子关联海报列表
+        return getResource({
+          url: `/lanmao/admin/community/circle/poster/query`,
+          method: 'post'
+        }, data)
+      },
+      addTopicPoster(data) {
+        //新增圈子关联海报
+        return getResource({
+          url: `/lanmao/admin/community/circle/poster`,
+          method: 'post'
+        }, data)
+      },
+      editorPoster(data,key) {
+        //修改圈子关联海报
+        return getResource({
+          url: `/lanmao/admin/community/circle/poster/${key}`,
+          method: 'post'
+        }, data)
+      },
+      posterCircle(data) {
+        //关联海报排序
+        return getResource({
+          url: `/lanmao/admin/community/circle/poster/sort`,
+          method: 'post'
+        }, data)
+      },
+      deletePoster(data,key) {
+        //删除圈子关联海报
+        return getResource({
+          url: `/lanmao/admin/community/circle/poster/${key}`,
+          method: 'DELETE'
+        }, data)
+      },
+      gettopicData(data) {
+        //获取圈子关联话题列表
+        return getResource({
+          url: `/lanmao/admin/community/topic/query`,
+          method: 'post'
+        }, data)
+      },
+    }
+  },
   banner() {
     return {
       addBanner(data, key) {
@@ -1275,6 +1349,48 @@ export default {
         return getResource({
           url: `/lanmao/admin/lottery/helpRules`,
           method: 'get'
+        }, data)
+      },
+      // 获取抽奖活动列表
+      queryactivity(data,key){
+        return getResource({
+          url: `/lanmao/admin/lottery/list?status=${key}`,
+          method: 'get'
+        }, data)
+      },
+      // 首页是否显示
+      showlottery(data,key){
+        return getResource({
+          url: `/lanmao/admin/lottery/show/${key}`,
+          method: 'put'
+        }, data)
+      },
+      sortactivity(data,key){
+        //抽奖活动排序
+        return getResource({
+          url: `/lanmao/admin/lottery/sort/${key}`,
+          method: 'put'
+        }, data)
+      },
+      //获取抽奖活动详情
+      getlotteryDetail(data,key){
+        return getResource({
+          url: `/lanmao/admin/lottery/${key}`,
+          method: 'get'
+        }, data)
+      },
+      // 失效/生效
+      invalidactivity(data,key){
+        return getResource({
+          url: `/lanmao/admin/lottery/invalid/${key}`,
+          method: 'put'
+        }, data)
+      },
+      // 删除抽奖活动
+      deleteactivity(data,key){
+        return getResource({
+          url: `/lanmao/admin/lottery/${key}`,
+          method: 'DELETE'
         }, data)
       },
     }

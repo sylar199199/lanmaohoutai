@@ -453,7 +453,7 @@
                 total: 0,
                 size: 10,
                 page: 1,
-                goodsData: {},
+                goodsData: '',
                 noData: false,
                 userInfo: '',
             };

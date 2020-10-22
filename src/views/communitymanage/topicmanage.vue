@@ -225,24 +225,27 @@
 
         .messagemessage {
           margin-bottom: 12px;
-          .flexCenter{
+
+          .flexCenter {
             display: flex;
             align-items: center;
           }
+
           .lableText {
             min-width: 50px;
             text-align: right;
             display: inline-block;
           }
 
-          .applicaninfo{
+          .applicaninfo {
             width: 130px;
             height: 90px;
             background-color: #f9f9f9;
             border-radius: 4px;
             text-align: center;
             position: relative;
-            .deleteIcon{
+
+            .deleteIcon {
               position: absolute;
               right: -8px;
               top: -8px;
@@ -250,22 +253,26 @@
               z-index: 100;
 
             }
-            .bannerImg{
+
+            .bannerImg {
               width: 130px;
               height: 90px;
               position: absolute;
 
             }
-            .imgBox{
+
+            .imgBox {
               display: inline-block;
               width: 130px;
               height: 90px;
-              .uploadtext{
+
+              .uploadtext {
                 color: #979797;
                 position: relative;
                 margin-top: 60px;
                 height: 55px;
-                .uploadIcon{
+
+                .uploadIcon {
                   font-size: 20px;
                   display: inline-block;
                   vertical-align: middle;
@@ -355,7 +362,10 @@
                   {{item.name}}
                 </td>
                 <td>
-                  {{item.name}}
+                  {{item.circleName}}
+                </td>
+                <td>
+                  {{item.circleName}}
                 </td>
                 <td>
                   {{item.postCount}}
@@ -369,8 +379,8 @@
                 </td>
                 <td>
                   <span class="color2087 font12 fontWeight cursor" @click="openTopic('编辑话题',item)">修改</span>
-                  <span class="line"></span>
-                  <span class="color2087 font12 fontWeight cursor" @click="godynamicmnage(item.id)">参与的帖子</span>
+                  <!--<span class="line"></span>
+                  <span class="color2087 font12 fontWeight cursor" @click="godynamicmnage(item.id)">参与的帖子</span>-->
                   <!-- <span class="line"></span>
                   <span class="color2087 font12 fontWeight cursor" @click="deleteTopic(item.id)">删除</span> -->
                 </td>
@@ -412,8 +422,8 @@
               <span class="lableText colorblack font12">展示图</span>
               <div class="flexCenter">
                 <div class="applicaninfo marginLeft10" style="margin-left: 12px">
-                  <i class="iconfont iconcuowu cursor deleteIcon"  v-if="topicImg" @click="delectImg()"></i>
-                  <img class="bannerImg" :src="topicImg" v-if="topicImg" >
+                  <i class="iconfont iconcuowu cursor deleteIcon" v-if="topicImg" @click="delectImg()"></i>
+                  <img class="bannerImg" :src="topicImg" v-if="topicImg">
                   <el-upload
                     class="upload-demo imgBox"
                     name="file"
@@ -425,9 +435,9 @@
                     :on-error="errphoto"
                     :show-file-list="false"
                     accept="">
-                    <div  class="uploadtext" v-if="topicImg">
+                    <div class="uploadtext" v-if="topicImg">
                     </div>
-                    <div  class="uploadtext" v-if="!topicImg">
+                    <div class="uploadtext" v-if="!topicImg">
                       <i class="iconfont iconiconjia color2087 uploadIcon"></i>
                       <span>上传图片</span>
                     </div>
@@ -454,7 +464,8 @@
                 type="textarea"
                 :rows="3"
                 placeholder="话题简介"
-                v-model="introduction" >
+                @change="changeValue('introduction','')"
+                v-model="introduction">
               </el-input>
             </div>
           </div>
@@ -491,7 +502,7 @@
     data() {
       return {
         topicTitle: '',
-        minPostCount: '',
+        minPostCount: null,
         name: '',
         total: 0,
         size: 10,
@@ -501,8 +512,9 @@
         sortDatas: [
           {orderType: '', name: '话题', showBlue: false, orderField: ''},
           {orderType: '', name: '圈子', showBlue: false, orderField: ''},
-          {orderType: '', name: '参与帖子', showBlue: false, orderField: ''},
-          {orderType: '', name: '参与人数', showBlue: false, orderField: ''},
+          {orderType: '', name: '阅读数', showBlue: false, orderField: ''},
+          {orderType: '', name: '帖子数', showBlue: false, orderField: ''},
+          {orderType: '', name: '发帖人数', showBlue: false, orderField: ''},
           {orderType: '', name: '创建时间', showBlue: false, orderField: ''},
           {orderType: '', name: '操作', showBlue: false, orderField: ''}
         ],
@@ -517,14 +529,16 @@
       };
     },
     created() {
-      var  tokenVal = Util.localStorageUtil.get('access_token');
+      var tokenVal = Util.localStorageUtil.get('access_token');
       this.headers = {token: tokenVal};
     },
     computed: {},
     watch: {},
     mounted() {
       this.getcommodityData('');//获取话题列表
-      this.upFileAction = Global.requestUrl+"/lanmao/admin/upload/file";
+      this.getcircleData('');//获取圈子下拉选数据
+
+      this.upFileAction = Global.requestUrl + "/lanmao/admin/upload/file";
     },
     methods: {
       //添加、编辑话题
@@ -532,13 +546,34 @@
         if (!this.changeValue('topName', 'submit')) {
           return;
         }
+        if (!this.topicImg){
+          this.$message.error('请添加展示图');
+          return;
+        }
+        if (!this.circleId) {
+          this.$message.error('请选择圈子');
+          return;
+        }
+
+        if (!this.changeValue('introduction', 'submit')) {
+          return;
+        }
+
+        debugger
         if (this.topicId) {//编辑话题
           Service.toppic().editorTopic({
+            circleId: this.circleId,
+            introduction: this.introduction,
             name: this.topName,
+            imgUrl: this.topicImg,
           }, this.topicId).then(response => {
             if (response.errorCode == 0) {
+              console.log('this.topName',  this.topName)
               this.topName = '';
               this.topicId = '';
+              this.topicImg = '';
+              this.circleId = '';
+              this.introduction = '';
               this.$message.success('编辑成功')
               this.getcommodityData('')
               $(".dialogone").css({"display": "none"})
@@ -549,11 +584,17 @@
           });
         } else {//新增话题
           Service.toppic().addTopic({
+            circleId: this.circleId,
+            introduction: this.introduction,
             name: this.topName,
+            imgUrl: this.topicImg,
           }).then(response => {
             if (response.errorCode == 0) {
               this.topName = '';
               this.topicId = '';
+              this.topicImg = '';
+              this.circleId = '';
+              this.introduction = '';
               this.$message.success('添加成功')
               this.getcommodityData('')
               $(".dialogone").css({"display": "none"})
@@ -570,6 +611,7 @@
           this.topicId = item.id;
           this.topName = item.name;
           this.circleId = item.circleId;
+          this.topicImg = item.imgUrl;
           this.introduction = item.introduction;
         }
         this.topicTitle = type;
@@ -620,6 +662,14 @@
             return;
           }
         }
+        if (name == 'introduction') {
+          this.introduction = this.introduction.replace(/(^\s*)|(\s*$)/g, "");
+          if (this.introduction.length > 100 || this.introduction.length == 0) {
+            this.$message.error('请输入不超过100个字符的话题');
+            on = false;
+            return;
+          }
+        }
 
         if (type == 'submit') {
           return on;
@@ -652,9 +702,9 @@
         }
         Service.toppic().gettopicList({
           minPostCount: this.minPostCount,
-          "page": this.page,
-          "name": this.name,
-          "size": this.size,
+          page: this.page,
+          name: this.name,
+          size: this.size,
         }).then(response => {
           if (response.errorCode == 0) {
             if (response.data.records.length == 0) {
@@ -673,10 +723,28 @@
         });
 
       },
+      getcircleData() {
+        Service.round().getcircleList({}).then(response => {
+          if (response.errorCode == 0) {
+            if (response.data.length != 0) {
+              this.circleOption = response.data.map(item => {
+                return {
+                  name: item.name,
+                  id: item.id,
+                }
+              })
+            }
+          } else {
+            this.$message.error(response.message)
+          }
+        }, err => {
+        });
+
+      },
       handleAvatarSuccess(res, file) {
         Store.commit("setIsLoading", false);
         if (res.data) {
-          console.log('res.data',res.data)
+          console.log('res.data', res.data)
           this.topicImg = res.data;
         } else {
           this.$message.error(res.message);
@@ -686,20 +754,20 @@
       },
       beforeAvatarUpload(file) {
       },
-      insertImg (imgurl) {
+      insertImg(imgurl) {
         let _this = this
         let image = new Image()
         image.src = imgurl + '?v=' + Math.random()
         image.crossOrigin = 'Anonymous';//外网访问必须加否则会报错
-        image.onload = function(){
+        image.onload = function () {
           let base64 = _this.getBase64Image(image)
-          _this.topicImg  = topicImg;
+          _this.topicImg = topicImg;
         }
       },
-      delectImg(){
+      delectImg() {
         this.topicImg = '';
       },
-      getBase64Image (img) {
+      getBase64Image(img) {
         let canvas = document.createElement("canvas")
         canvas.width = img.width
         canvas.height = img.height
@@ -717,12 +785,6 @@
           this.$message.error('上传文件大小不能超过2M!');
           return
         }
-        // let reader = new FileReader()
-        // reader.onload = () => {
-        //         this.imgBase64 = reader.result
-
-        // }
-        // reader.readAsDataURL(file.raw)
       },
     },
 

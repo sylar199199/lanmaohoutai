@@ -91,7 +91,11 @@
             border: 1px solid #f6f6f6;
             margin: 10px 20px;
             width: 937px;
-
+            .imgUrl{
+              height: 35px;
+              width: 40px;
+              margin-right: 6px;
+            }
             tr {
               border-bottom: 1px solid #f6f6f6;
 
@@ -225,24 +229,27 @@
 
         .messagemessage {
           margin-bottom: 12px;
-          .flexCenter{
+
+          .flexCenter {
             display: flex;
             align-items: center;
           }
+
           .lableText {
             min-width: 50px;
             text-align: right;
             display: inline-block;
           }
 
-          .applicaninfo{
+          .applicaninfo {
             width: 130px;
             height: 90px;
             background-color: #f9f9f9;
             border-radius: 4px;
             text-align: center;
             position: relative;
-            .deleteIcon{
+
+            .deleteIcon {
               position: absolute;
               right: -8px;
               top: -8px;
@@ -250,22 +257,26 @@
               z-index: 100;
 
             }
-            .bannerImg{
+
+            .bannerImg {
               width: 130px;
               height: 90px;
               position: absolute;
 
             }
-            .imgBox{
+
+            .imgBox {
               display: inline-block;
               width: 130px;
               height: 90px;
-              .uploadtext{
+
+              .uploadtext {
                 color: #979797;
                 position: relative;
                 margin-top: 60px;
                 height: 55px;
-                .uploadIcon{
+
+                .uploadIcon {
                   font-size: 20px;
                   display: inline-block;
                   vertical-align: middle;
@@ -328,7 +339,7 @@
       <div class="content">
         <div class="contanternews">
           <div class="dataGeneral bannerTable">
-            <div class="padding20">圈子：盲盒</div>
+            <div class="padding20">圈子：{{roundName}}</div>
             <div class="borderButton cursor" @click="openTopic('添加海报话题')">添加海报话题</div>
             <table v-if="noData" class="table">
               <tr>
@@ -336,27 +347,31 @@
                   {{item.name}}
                 </th>
               </tr>
-              <tr v-for="item in tableData" :key="item.id">
+              <tr v-for="(item, index) in tableData" :key="item.id">
                 <td>
-                  <img  @click="showBig(item)" class="imgUrl curson" :src="item.imgUrl">
+                  <img class="imgUrl curson" :src="item.imgUrl">
                 </td>
                 <td>
-                  {{item.name}}
+                  {{item.click}}
                 </td>
                 <td>
-                  {{item.postCount}}
+                  {{item.topicName}}
                 </td>
                 <td>
-                  {{item.userCount}}
+                  <i class="cursor iconfont iconshangsheng fontIcongreen" v-if="index!=0"
+                     @click='upSort(index,item)'></i>
+                  <i class="iconfont iconshangsheng fontIcongrey" v-if="index==0"></i>
+                  <i class='cursor iconfont fontIcongreen iconjiang' @click='downSort(index,item)'
+                     v-if="index!=(tableData.length-1)"></i>
+                  <i class='iconfont fontIcongrey iconjiang' v-if="index==(tableData.length-1)"></i>
                 </td>
-
                 <td>
                   {{timetrans(item.createDate)}}
                 </td>
                 <td>
                   <span class="color2087 font12 fontWeight cursor" @click="openTopic('编辑话题',item)">修改</span>
                   <span class="line"></span>
-                  <span class="color2087 font12 fontWeight cursor" @click="delectCommodity(item.id)">删除</span>
+                  <span class="color2087 font12 fontWeight cursor" @click="deletePoster(item.id)">删除</span>
                   <!-- <span class="line"></span>
                   <span class="color2087 font12 fontWeight cursor" @click="deleteTopic(item.id)">删除</span> -->
                 </td>
@@ -366,17 +381,6 @@
               <img class="nodataImg" src="../../assets/images/nodatalist.png"/>
               <p>暂无数据~</p>
             </div>
-            <div class="block" v-if="noData">
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page"
-                :page-size="size"
-                :page-sizes="[5,10]"
-                layout="total,sizes,prev, pager, next,jumper"
-                :total="total">
-              </el-pagination>
-            </div>
           </div>
         </div>
       </div>
@@ -384,16 +388,16 @@
         <div class="messge">
           <div class="messageHeader">
             <div class="messagetitle">
-              <span>{{topicTitle}}</span>
+              <span>{{posterTitle}}</span>
             </div>
           </div>
           <div class="messageContent">
 
             <div class="messagemessage">
               <span class="lableText colorblack font12">关联话题</span>
-              <el-select v-model="circleId" placeholder="" class="marginLeft10">
+              <el-select v-model="topicId" placeholder="" class="marginLeft10">
                 <el-option
-                  v-for="item in circleOption"
+                  v-for="item in topicOption"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id">
@@ -404,8 +408,8 @@
               <span class="lableText colorblack font12">展示图</span>
               <div class="flexCenter">
                 <div class="applicaninfo marginLeft10" style="margin-left: 12px">
-                  <i class="iconfont iconcuowu cursor deleteIcon"  v-if="topicImg" @click="delectImg()"></i>
-                  <img class="bannerImg" :src="topicImg" v-if="topicImg" >
+                  <i class="iconfont iconcuowu cursor deleteIcon" v-if="postImg" @click="delectImg()"></i>
+                  <img class="bannerImg" :src="postImg" v-if="postImg">
                   <el-upload
                     class="upload-demo imgBox"
                     name="file"
@@ -417,9 +421,9 @@
                     :on-error="errphoto"
                     :show-file-list="false"
                     accept="">
-                    <div  class="uploadtext" v-if="topicImg">
+                    <div class="uploadtext" v-if="postImg">
                     </div>
-                    <div  class="uploadtext" v-if="!topicImg">
+                    <div class="uploadtext" v-if="!postImg">
                       <i class="iconfont iconiconjia color2087 uploadIcon"></i>
                       <span>上传图片</span>
                     </div>
@@ -433,7 +437,7 @@
             <div class="button borderButton copyButton" @click="closeDiologone()">
               取消
             </div>
-            <div class="button bacButton" @click="addTopic()">
+            <div class="button bacButton" @click="addTopicPoster()">
               确认
             </div>
           </div>
@@ -461,12 +465,9 @@
     },
     data() {
       return {
-        topicTitle: '',
+        posterTitle: '',
         minPostCount: '',
         name: '',
-        total: 0,
-        size: 10,
-        page: 1,
         tableData: [],
         noData: true,
         sortDatas: [
@@ -477,41 +478,56 @@
           {orderType: '', name: '创建时间', showBlue: false, orderField: ''},
           {orderType: '', name: '操作', showBlue: false, orderField: ''}
         ],
-        topicId: '',
+        circleId: '',
         topName: '',
         upFileAction: '',
         headers: null,
-        topicImg: '', // 话题图片
-        circleId: '', // 圈子
+        postImg: '', // 海报图片
+        roundName: '',
         circleOption: [], // 圈子数组
         introduction: '', // 话题简介
+        topicOption: [],
+        topicId: '',
       };
     },
     created() {
-      var  tokenVal = Util.localStorageUtil.get('access_token');
+      var tokenVal = Util.localStorageUtil.get('access_token');
       this.headers = {token: tokenVal};
+      this.circleId = this.$route.params.roundId;
+      this.roundName = this.$route.params.roundName;
     },
     computed: {},
     watch: {},
     mounted() {
-      this.getcommodityData('');//获取话题列表
-      this.upFileAction = Global.requestUrl+"/lanmao/admin/upload/file";
+      this.getposterData();//获取关联海报列表
+      this.gettopicData(); // 获取关联圈子列表
+      this.upFileAction = Global.requestUrl + "/lanmao/admin/upload/file";
     },
     methods: {
-      //添加、编辑话题
-      addTopic() {
-        if (!this.changeValue('topName', 'submit')) {
+      //添加、编辑话题海报
+
+      addTopicPoster() {
+        if(!this.topicId){
+          this.$message.error('请选择关联话题');
           return;
         }
-        if (this.topicId) {//编辑话题
-          Service.toppic().editorTopic({
-            name: this.topName,
-          }, this.topicId).then(response => {
+        if(!this.postImg){
+          this.$message.error('请添加展示图');
+          return;
+        }
+        if (this.posterId) {//编辑话题
+          Service.round().editorPoster({
+            circleId: this.circleId,
+            imgUrl: this.postImg,
+            topicId: this.topicId,
+          }, this.posterId).then(response => {
             if (response.errorCode == 0) {
               this.topName = '';
+              this.postImg = '';
               this.topicId = '';
+              this.posterId = '';
               this.$message.success('编辑成功')
-              this.getcommodityData('')
+              this.getposterData()
               $(".dialogone").css({"display": "none"})
             } else {
               this.$message.error(response.message)
@@ -519,14 +535,18 @@
           }, err => {
           });
         } else {//新增话题
-          Service.toppic().addTopic({
-            name: this.topName,
+          Service.round().addTopicPoster({
+            circleId: this.circleId,
+            imgUrl: this.postImg,
+            topicId: this.topicId,
           }).then(response => {
             if (response.errorCode == 0) {
               this.topName = '';
               this.topicId = '';
+              this.postImg = '';
+              this.posterId = '';
               this.$message.success('添加成功')
-              this.getcommodityData('')
+              this.getposterData()
               $(".dialogone").css({"display": "none"})
             } else {
               this.$message.error(response.message)
@@ -535,39 +555,92 @@
           });
         }
       },
-      showBig(item){
-        this.title = item.name;
-        this.bigImg1 = item.imgUrl;
-        this.bigImg2 = item.tempImgUrl;
-        this.centerDialogVisible = true;
+      downSort(index, item) {//降序
+        let newSortArr = [
+          {
+            id: item.id,
+            sort: this.tableData[index + 1].sort
+          },
+          {
+            id: this.tableData[index + 1].id,
+            sort: item.sort
+          }
+        ];
+        this.tableData[index] = this.tableData[index + 1];
+        this.tableData[index + 1] = item;
+        this.sortRecData(newSortArr);
+      },
+      upSort(index, item) {//升序
+        let newSortArr = [
+          {
+            id: item.id,
+            sort: this.tableData[index - 1].sort
+          },
+          {
+            id: this.tableData[index - 1].id,
+            sort: item.sort
+          }
+        ];
+        this.tableData[index] = this.tableData[index - 1];
+        this.tableData[index - 1] = item;
+        this.sortRecData(newSortArr);
+      },
+      sortRecData(newSortArr) {
+        Service.round().posterCircle(newSortArr).then(response => {
+          if (response.errorCode == 0) {
+            this.getposterData();
+          } else {
+            this.$message.error(response.message)
+          }
+        }, err => {
+        });
+      },
+      gettopicData() {
+        Service.round().gettopicData({
+          circleId: this.circleId,
+          page: 1,
+          size: 100
+        }).then(response => {
+          if (response.errorCode == 0) {
+            if (response.data.records.length != 0) {
+              this.topicOption = response.data.records.map(item => {
+                return {
+                  name: `#${item.name}#`,
+                  id: item.id
+                }
+              })
+            }
+          }
+        })
       },
       //打开编辑话题
       openTopic(type, item) {
         if (item) {
-          this.topicId = item.id;
+          this.posterId = item.id
+          this.topicId = item.topicId;
           this.topName = item.name;
           this.circleId = item.circleId;
+          this.postImg = item.imgUrl;
           this.introduction = item.introduction;
         }
-        this.topicTitle = type;
+        this.posterTitle = type;
         $(".dialogone").css({"display": "block"})
       },
-      // 跳转到帖子管理
-      delectCommodity(id) {
-        this.$confirm( '圈子删除请谨慎操作，确定删除?', '', {
+      // 删除关联海报
+      deletePoster(id) {
+        this.$confirm('海报话题删除请谨慎操作，确定删除?', '', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          Service.goods().deleteGoods({
-          },id).then(response => {
-            if(response.errorCode == 0){
+          Service.round().deletePoster({}, id).then(response => {
+            if (response.errorCode == 0) {
               this.$message({
                 type: 'success',
                 message: '删除成功!'
               });
-              this.getcommodityData('');//获取商品列表
-            }else{
+              this.getposterData('');//获取商品列表
+            } else {
               this.$message.error(response.message)
             }
 
@@ -578,59 +651,20 @@
         });
       },
       // 删除话题
-      deleteTopic(id) {
-        this.$confirm('确定删除?', '', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          Service.toppic().deleteTopic({}, id).then(response => {
-            if (response.errorCode == 0) {
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              });
-              this.getcommodityData('');
-            } else {
-              this.$message.error(response.message)
-            }
-
-          }, err => {
-          });
-        }).catch(() => {
-
-        });
-      },
       closeDiologone() {
-        this.topicId = '';
+        this.circleId = '';
         this.topName = '';
         $(".dialogone").css({"display": "none"})
       },
 
-      changeValue(name, type) {
-        var on = true;
-
-        if (name == 'topName') {
-          this.topName = this.topName.replace(/(^\s*)|(\s*$)/g, "");
-          if (this.topName.length > 20 || this.topName.length == 0) {
-            this.$message.error('请输入不超过20个字符的话题');
-            on = false;
-            return;
-          }
-        }
-
-        if (type == 'submit') {
-          return on;
-        }
-      },
 
       handleSizeChange(val) {
         this.size = val;
-        this.getcommodityData('')
+        this.getposterData()
       },
       handleCurrentChange(val) {
         this.page = val;
-        this.getcommodityData('')
+        this.getposterData()
       },
       timetrans(timestamp) {
         var getSeconds = '', getMinutes = '', getHours = '';
@@ -644,24 +678,17 @@
         return newTime
       },
 
-      getcommodityData(str) {
-        if (str == 'search') {
-          this.page = 1;
-        }
-        Service.toppic().gettopicList({
-          minPostCount: this.minPostCount,
-          "page": this.page,
-          "name": this.name,
-          "size": this.size,
+      getposterData() {
+        Service.round().getposterList({
+          circleId: this.circleId
         }).then(response => {
           if (response.errorCode == 0) {
-            if (response.data.records.length == 0) {
+            if (response.data.length == 0) {
               this.noData = false;
             } else {
               this.noData = true;
-              this.total = response.data.total;
               this.$nextTick(() => {
-                this.tableData = response.data.records;
+                this.tableData = response.data;
               })
             }
           } else {
@@ -674,8 +701,8 @@
       handleAvatarSuccess(res, file) {
         Store.commit("setIsLoading", false);
         if (res.data) {
-          console.log('res.data',res.data)
-          this.topicImg = res.data;
+          console.log('res.data', res.data)
+          this.postImg = res.data;
         } else {
           this.$message.error(res.message);
         }
@@ -684,20 +711,20 @@
       },
       beforeAvatarUpload(file) {
       },
-      insertImg (imgurl) {
+      insertImg(imgurl) {
         let _this = this
         let image = new Image()
         image.src = imgurl + '?v=' + Math.random()
         image.crossOrigin = 'Anonymous';//外网访问必须加否则会报错
-        image.onload = function(){
+        image.onload = function () {
           let base64 = _this.getBase64Image(image)
-          _this.topicImg  = topicImg;
+          _this.postImg = postImg;
         }
       },
-      delectImg(){
-        this.topicImg = '';
+      delectImg() {
+        this.postImg = '';
       },
-      getBase64Image (img) {
+      getBase64Image(img) {
         let canvas = document.createElement("canvas")
         canvas.width = img.width
         canvas.height = img.height
@@ -715,12 +742,6 @@
           this.$message.error('上传文件大小不能超过2M!');
           return
         }
-        // let reader = new FileReader()
-        // reader.onload = () => {
-        //         this.imgBase64 = reader.result
-
-        // }
-        // reader.readAsDataURL(file.raw)
       },
     },
 
