@@ -566,8 +566,8 @@
 
         if (name == 'roundName') {
           this.roundName = this.roundName.replace(/(^\s*)|(\s*$)/g, "");
-          if (this.roundName.length > 20 || this.roundName.length == 0) {
-            this.$message.error('请输入不超过20个字符的圈子');
+          if (this.roundName.length > 2 || this.roundName.length == 0) {
+            this.$message.error('请输入不超过2个字符的圈子');
             on = false;
             return;
           }

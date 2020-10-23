@@ -178,8 +178,8 @@
                   <span v-if="!item.isHomepageShow" class="color2087 font12 cursor fontWeight" @click="showlottery(item.id,item.isHomepageShow)">首页展示</span>
                   <span v-if="item.isHomepageShow" class="color2087 font12 cursor fontWeight" @click="showlottery(item.id,item.isHomepageShow)">取消首页</span>
                   <span class="line"></span>
-                  <span class="color2087 font12 cursor fontWeight copyButton" :data-clipboard-text="httpurl"  @click="copyItem()">复制链接</span>
-                  <span class="line"></span>
+                  <!--<span class="color2087 font12 cursor fontWeight copyButton" :data-clipboard-text="`${httpurl}${item.id}`"  @click="copyItem()">复制链接</span>
+                  <span class="line"></span>-->
                   <span class="color2087 font12 cursor fontWeight" v-if="item.status != 2 || item.status != 4" @click="goDetail(item.id)">编辑</span>
                   <span class="line" v-if="item.status != 2 || item.status != 4"></span>
                   <span class="color2087 font12 cursor fontWeight" @click="undercarriage(item.id)" v-if="(item.status != 4)">使失效</span>
@@ -276,9 +276,9 @@
     },
     mounted(){
       if(Global.env == 'dev' || Global.env == 'test'){
-        this.httpurl = 'http://testhealthmall.ifxj.com/welfare/welfare-list'
+        this.httpurl = '/pages/luckdrawdetail?activityid='
       }else{
-        this.httpurl = 'http://healthmall.ifxj.com/welfare/welfare-list'
+        this.httpurl = '/pages/luckdrawdetail?activityid='
       }
       this.getcommodityData('');//获取商品列表
     },
