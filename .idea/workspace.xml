@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1807ca42-5cc1-4ed5-817e-2db18ac3fd59" name="Default" comment="消息通知 合并提交">
+    <list default="true" id="1807ca42-5cc1-4ed5-817e-2db18ac3fd59" name="Default" comment="消息通知 字段修改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/communitymanage/messageNotification.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/communitymanage/messageNotification.vue" afterDir="false" />
     </list>
@@ -337,7 +337,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603875877094</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="消息通知 字段修改">
+      <created>1603876623234</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1603876623234</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,13 +367,14 @@
     <MESSAGE value="圈子名称校验和抽奖去掉复制链接&#10;  还差话题管理的阅读数 和 群发通知 行为分析" />
     <MESSAGE value="解决冲突" />
     <MESSAGE value="消息通知 合并提交" />
-    <option name="LAST_COMMIT_MESSAGE" value="消息通知 合并提交" />
+    <MESSAGE value="消息通知 字段修改" />
+    <option name="LAST_COMMIT_MESSAGE" value="消息通知 字段修改" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="341" y="0" key="CommitChangelistDialog2" timestamp="1603875874893">
+    <state x="341" y="0" key="CommitChangelistDialog2" timestamp="1603876621924">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="341" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1603875874893" />
+    <state x="341" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1603876621924" />
     <state x="75" y="74" width="1394" height="682" key="DiffContextDialog" timestamp="1603876267128">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -375,22 +383,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="111" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1603868991484" />
-    <state width="1510" height="112" key="GridCell.Tab.0.bottom" timestamp="1603876512737">
+    <state width="1510" height="264" key="GridCell.Tab.0.bottom" timestamp="1603876832813">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="112" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1603876512737" />
-    <state width="1510" height="112" key="GridCell.Tab.0.center" timestamp="1603876512737">
+    <state width="1510" height="264" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1603876832813" />
+    <state width="1510" height="264" key="GridCell.Tab.0.center" timestamp="1603876832813">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="112" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1603876512737" />
-    <state width="1510" height="112" key="GridCell.Tab.0.left" timestamp="1603876512737">
+    <state width="1510" height="264" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1603876832813" />
+    <state width="1510" height="264" key="GridCell.Tab.0.left" timestamp="1603876832813">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="112" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1603876512737" />
-    <state width="1510" height="112" key="GridCell.Tab.0.right" timestamp="1603876512737">
+    <state width="1510" height="264" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1603876832813" />
+    <state width="1510" height="264" key="GridCell.Tab.0.right" timestamp="1603876832813">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="112" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1603876512737" />
+    <state width="1510" height="264" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1603876832813" />
     <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1603875880359">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
