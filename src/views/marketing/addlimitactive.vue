@@ -311,6 +311,26 @@
                                         <span class="searchLable colorGrey font12">活动名称</span>
                                         <input type="text" v-model="name" class="serchInput font12 colorblack" placeholder="请填写活动名称"/>
                                     </div>
+                                     <div class="searchBox flex">
+                                        <span class="searchLable searchName colorGrey font12">新品设置 </span>
+                                        <div class="radioBox" >
+                                            <i class="iconfont iconxuanzhong color2087 font20 cursor" v-if="newproduct==0"></i>
+                                            <i class="iconfont iconxuanze  font20 cursor" v-if="newproduct !=0" @click="newproduct = 0"></i>
+                                             <span class="typeText colorblack font12 ">不设置</span>
+                                            <i class="iconfont iconxuanzhong color2087 font20 cursor marginLeft10" v-if="newproduct==1"></i>
+                                            <i class="iconfont iconxuanze  font20 cursor marginLeft10" v-if="newproduct != 1" @click="newproduct = 1"></i>
+                                            <span class="typeText colorblack font12 marginright10">设置预告时间
+                                                <el-date-picker
+                                                class="font12"
+                                                v-model="pretime"
+                                                type="datetime"
+                                                placeholder="选择日期时间">
+                                                </el-date-picker>
+                                            </span>
+                                            
+                                           
+                                        </div>
+                                    </div>
                                     <div class="searchBox flex">
                                         <span class="searchLable searchName colorGrey font12">生效时间 </span>
                                         <el-date-picker
@@ -431,6 +451,9 @@
         },
         data() {
             return {
+                newproduct: 0,
+                pretime: '',
+                previewTime: null,
                 maxRegDays: '',
                 minRegDays: '',
                 isuserRegDaysLimit: 1,
@@ -480,10 +503,17 @@
         created(){
             this.userInfo = JSON.parse(localStorage.getItem('user'));
             if(this.userInfo){
+              
             }
 
         },
         watch:{
+            newproduct(){
+                console.log(this.newproduct)
+                if(this.newproduct == 0){
+                    this.pretime = '';
+                }
+            }
         },
         mounted(){
             if(this.$route.query){
@@ -534,7 +564,6 @@
                 return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00) + "%";
             },
             addActiveProduct(){
-
                 this.name = this.name.replace(/^\s*|\s*$/g,"");
                 if(!this.name){
                     this.$message.warning('请输入活动名称');
@@ -544,12 +573,27 @@
                     this.$message.warning('请输入短于2个字不超过30个字的活动名称');
                     return;
                 }
+                var previewTime = '';
+                if(this.newproduct == 0){
+                    previewTime = null;
+                 }else if(this.newproduct == 1){
+                     if(!this.pretime){
+                           this.$message.warning('请选择预告时间，且预告时间小于生效时间');
+                            return;
+                     }
+                    
+                     previewTime = Date.parse(this.pretime);
+                 }
                 if(!this.startDate || !this.endDate){
                     this.$message.warning('请选择生效时间');
                     return;
                 }
                 var endDate = Date.parse(new Date(this.endDate.replace(/-/g, "/")));
                 var startDate = Date.parse(new Date(this.startDate.replace(/-/g, "/")));
+                if(this.newproduct == 1 && (previewTime >= startDate)){
+                    this.$message.warning('预告时间需小于生效时间');
+                    return;
+                }
                 var purchaseLimit = '';
                 if(this.shelvesType == 0){
                     purchaseLimit = 0
@@ -592,6 +636,7 @@
                 }
                 if(this.goodsid){
                     Service.redeem().editorredeemGoods({
+                        previewTime: previewTime,
                         "endTime": endDate,
                         "goodsIds": goodsIds,
                         "name": this.name,
@@ -610,6 +655,7 @@
                     });
                 }else{
                     Service.redeem().addredeemGoods({
+                        previewTime: previewTime,
                         "endTime": endDate,
                         "goodsIds": goodsIds,
                         "name": this.name,
@@ -706,6 +752,16 @@
                         if(response.data.goods.length == 0){
                             this.noData = false;
                         }else{
+                            if(response.data.hasOwnProperty("previewTime")){
+                                if(response.data.previewTime){
+                                    this.newproduct = 1;
+                                    this.pretime = this.timetrans(response.data.previewTime);
+                                }else{
+                                    this.newproduct = 0;
+                                }
+                            }else{
+                                this.newproduct = 0;
+                            }
                             this.noData = true;
                             if(response.data.purchaseLimit == 0){
                                 this.shelvesType = 0;
