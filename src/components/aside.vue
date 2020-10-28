@@ -436,6 +436,17 @@
                                 isSubShow: false,
                                 router:'publisherlist',
                                 thirditems: []
+                            },
+                            {
+                                title: '消息通知',
+                                secTitlte: '',
+                                isdelete: false,
+                                secgreyIcon: '',
+                                secgreenIcon: '',
+                                name: '消息通知',
+                                isSubShow: false,
+                                router:'messageNotification',
+                                thirditems: []
                             }
                         ]
                     },
@@ -457,6 +468,28 @@
                                 name: '基础信息',
                                 isSubShow: false,
                                 router:'baseInfo',
+                                thirditems: []
+                            }
+                        ]
+                    },
+                    {
+                        name: '统计数据',
+                        greyIcon: 'el-icon-picture iconfont fontIcongrey',
+                        greenIcon: 'el-icon-picture iconfont fontIconwhite',
+                        isSubShow: false,
+                        showIcon: false,
+                        isShow: false,
+                        isdelete: false,
+                        subItems: [
+                            {
+                                title: '行为分析',
+                                secTitlte: '',
+                                isdelete: false,
+                                secgreyIcon: '',
+                                secgreenIcon: '',
+                                name: '行为分析',
+                                isSubShow: false,
+                                router:'behaviorAnalysis',
                                 thirditems: []
                             }
                         ]

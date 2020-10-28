@@ -368,6 +368,53 @@ export default {
       },
     }
   },
+  // 消息通知相关接口
+  notificationSe(){
+    return {
+      addMesNotification(data, key) {
+        // 新增消息通知
+        return getResource({
+          url: `/lanmao/admin/mp/notification`,
+          method: 'post'
+        }, data)
+      },
+      editMesNotification(data, key) {
+        // 修改消息通知
+        return getResource({
+          url: `/lanmao/admin/mp/notification/${key}`,
+          method: 'put'
+        }, data)
+      },
+      deleteNotificationSe(data, key) {
+        // 删除消息通知
+        return getResource({
+          url: `/lanmao/admin/mp/notification/${key}`,
+          method: 'DELETE'
+        }, data)
+      },
+      getNotification(data, page, size) {
+        // 获取消息通知列表
+        return getResource({
+          url: `/lanmao/admin/mp/notification/query?page=${page}&size=${size}`,
+          method: 'get'
+        }, data)
+      },
+      getNotificationTopic(data){
+        // 获取通知列表
+        return getResource({
+          url: `/lanmao/admin/mp/notification/topics`,
+          method: 'get'
+        },data)
+      },
+      getNotificationDetails(data,key){
+        // 获取通知详情
+        return getResource({
+          url: `/lanmao/admin/mp/notification/${key}`,
+          method: 'get'
+        },data)
+      }
+    }
+  },
   banner() {
     return {
       addBanner(data, key) {

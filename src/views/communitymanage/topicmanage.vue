@@ -559,7 +559,6 @@
           return;
         }
 
-        debugger
         if (this.topicId) {//编辑话题
           Service.toppic().editorTopic({
             circleId: this.circleId,

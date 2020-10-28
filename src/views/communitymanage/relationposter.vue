@@ -340,7 +340,7 @@
         <div class="contanternews">
           <div class="dataGeneral bannerTable">
             <div class="padding20">圈子：{{roundName}}</div>
-            <div class="borderButton cursor" @click="openTopic('添加海报话题')">添加海报话题</div>
+            <div class="borderButton cursor" @click="openTopic('添加话题海报')">添加话题海报</div>
             <table v-if="noData" class="table">
               <tr>
                 <th v-for="item in sortDatas" :key="item.name">
@@ -500,7 +500,7 @@
     watch: {},
     mounted() {
       this.getposterData();//获取关联海报列表
-      this.gettopicData(); // 获取关联圈子列表
+      this.gettopicData(); // 获取关联话题列表
       this.upFileAction = Global.requestUrl + "/lanmao/admin/upload/file";
     },
     methods: {

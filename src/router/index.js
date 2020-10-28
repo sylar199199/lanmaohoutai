@@ -9,6 +9,7 @@ import adressset from '@/views/baseset/adressset'//地址设置
 import baseInfo from '@/views/baseset/baseInfo'//基础信息
 import baseinfoDetail from '@/views/baseset/baseinfoDetail'//基础信息
 
+import behaviorAnalysis from '@/views/dataStatistics/behaviorAnalysis'//行为分析
 
 import questionmanage  from '@/views/helpcenter/questionmanage'//问答管理
 import customerlist from '@/views/customer/customerlist'//客户列表
@@ -34,6 +35,8 @@ import dynamicmanage from '@/views/communitymanage/dynamicmanage'//帖子管理
 import topicmanage from '@/views/communitymanage/topicmanage'//话题管理
 import roundmanage from '@/views/communitymanage/roundmanage'//圈子管理
 import relationposter from '@/views/communitymanage/relationposter'//关联海报
+import messageNotification from '@/views/communitymanage/messageNotification'//消息通知查询
+import addMessageNotification from '@/views/communitymanage/addMessageNotification'//新建消息通知
 import publisherlist from '@/views/communitymanage/publisherlist'//发布者查询
 import visitlist from '@/views/customer/visitlist'//访客查询
 import dynamicDetail from '@/views/communitymanage/dynamicDetail'//动态详情
@@ -131,6 +134,16 @@ export default new Router({
             component: publisherlist
         },
         {
+            path: '/communitymanage/messageNotification',
+            name: 'messageNotification',
+            component: messageNotification
+        },
+      {
+            path: '/communitymanage/addMessageNotification/:notificationId',
+            name: 'addMessageNotification',
+            component: addMessageNotification
+        },
+        {
             path: '/commodity/salesspecification',
             name: 'salesspecification',
             component: salesspecification
@@ -210,6 +223,11 @@ export default new Router({
             path:'/baseset/adressset',
             name: 'adressset',
             component: adressset
+        },
+        {
+            path:'/dataStatistics/behaviorAnalysis',
+            name: 'behaviorAnalysis',
+            component: behaviorAnalysis
         },
         {
             path:'/helpcenter/questionmanage',
