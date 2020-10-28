@@ -359,7 +359,7 @@
                 <td>
                   {{item.sendNums}}
                 </td>
-                <td>
+                <td v-if="!item.sendStatus">
                   <span class="color2087 font12 fontWeight cursor" @click="addNotification(item)">修改</span>
                   <span class="line"></span>
                   <span class="color2087 font12 fontWeight cursor" @click="deleteNotification(item)">删除</span>
@@ -410,7 +410,7 @@
           return "未发送"
         }
         if (value == 1) {
-          return "已发送"
+          return "已完成"
         }
       }
     },
