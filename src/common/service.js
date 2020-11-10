@@ -415,6 +415,24 @@ export default {
       }
     }
   },
+  // 行为分析接口
+  dataStatistics(){
+    return{
+       // 获取数据
+      getanalysist(data, page,size,startTime,endTime) {
+        return getResource({
+          url: `/lanmao/admin/dataAnalyse/browseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
+          method: 'get'
+        }, data)
+      },    // 获取数据
+      statisticsDaochu(data, page,size,startTime,endTime) {
+        return getResource({
+          url: `/lanmao/admin/dataAnalyse/exportBrowseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
+          method: 'get'
+        }, data)
+      }
+    }
+  },
   banner() {
     return {
       addBanner(data, key) {

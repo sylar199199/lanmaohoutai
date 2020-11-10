@@ -13,6 +13,7 @@
         .waitThing {
           margin-top: 20px;
           background: #fff;
+
           .rideoBox {
             width: 100%;
             padding: 0 200px 20px 50px;
@@ -21,20 +22,110 @@
             display: flex;
             flex-wrap: wrap;
             margin-top: 30px;
+
             .flex {
               padding-bottom: 20px;
               border-bottom: 1px solid #f3f3f3;
               flex-wrap: wrap;
             }
+
             .typeText {
               width: 100px;
             }
           }
+
           #analysis {
             width: 937px;
             height: 300px;
           }
         }
+      }
+      .table {
+        font-size: 12px;
+        border: 1px solid #f6f6f6;
+        margin: 20px 20px;
+        width: 937px;
+
+        .imgUrl {
+          height: 35px;
+          width: 40px;
+          margin-right: 6px;
+        }
+
+        tr {
+          border-bottom: 1px solid #f6f6f6;
+
+          .line {
+            display: inline-block;
+            height: 8px;
+            width: 3px;
+            background: #eee;
+            margin: 0 10px;
+          }
+
+          th {
+            font-size: 12px;
+            text-align: center;
+            background: #f6f6f6;
+
+            .iconshengjiangxu {
+              font-size: 16px;
+              margin-left: 5px;
+            }
+          }
+
+          th:nth-child(1) {
+            max-width: 60px;
+          }
+
+          td:nth-child(2) {
+            max-width: 70px;
+          }
+
+          td:nth-child(3) {
+            max-width: 70px;
+          }
+
+          td:nth-child(4) {
+            max-width: 50px;
+          }
+
+          td:nth-child(5) {
+            max-width: 64px;
+            min-width: 64px;
+          }
+
+          th:nth-child(7) {
+            min-width: 80px;
+          }
+
+          td:nth-child(10) {
+            max-width: 100px;
+          }
+
+          th:nth-child(11) {
+            min-width: 100px;
+          }
+
+          th:nth-child(12) {
+            min-width: 120px;
+          }
+
+          th:nth-child(13) {
+            min-width: 80px;
+          }
+
+          td {
+            text-align: center;
+            padding: 20px 16px;
+          }
+        }
+      }
+
+      .block {
+        text-align: right;
+        margin-top: 35px;
+        margin-right: 20px;
       }
     }
   }
@@ -46,7 +137,11 @@
   .marginleft20 {
     margin-left: 20px;
   }
-
+  .flexSpence{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   .flexCenter {
     display: flex;
     align-items: center;
@@ -69,9 +164,9 @@
             <div class="timeTJ flex" style="align-items: center">
               <div>统计时间</div>
               <div class="searchBox marginLeft10">
-                <el-select v-model="selectday" placeholder="">
+                <el-select v-model="selectType" @change="changeDateType" placeholder="">
                   <el-option
-                    v-for="item in timeOption"
+                    v-for="item in typeOption"
                     :key="item.value"
                     :label="item.name"
                     :value="item.value">
@@ -80,7 +175,8 @@
               </div>
               <div class="searchBox" style="margin-left: 10px;">
                 <el-date-picker
-                  v-model="selectTime"
+                  @change="changeDate"
+                  v-model="selectDate"
                   type="datetime"
                 >
                 </el-date-picker>
@@ -91,11 +187,64 @@
               <div class="marginleft20 flexCenter margintop20" v-for="(item,index) in dataSelectList" :key="item.id">
                 <i class="iconfont color2087 font20 cursor"
                    :class="checkIndex == item.id? 'iconxuanzhong' :'iconxuanze'"
-                   @click="checkType(item.id)"></i>
+                   @click="checkSelect(item)"></i>
                 <span class="typeText colorblack font12 marginLeft10" @click="checkType(item.id)">{{item.name}}</span>
               </div>
             </div>
             <div id='analysis'></div>
+            <div class="flexSpence">
+              <div class="colorblack font16 fontWeight marginright10 margintop20">详细数据</div>
+              <div class="bacButtonone bacButton cursor" :download="download" :href="href" @click="daochu()">导出</div>
+            </div>
+            <table v-if="noData" class="table">
+              <tr>
+                <th v-for="item in sortDatas" :key="item.name">
+                  {{item.name}}
+                </th>
+              </tr>
+              <tr v-for="(item, index) in tableData" :key="item.id">
+                <td>
+                  {{timetransAgo(item.statisticsDate)}}
+                </td>
+                <td>
+                  {{item.visitorNums}} <!--累计访问人数-->
+                </td>
+                <td>
+                  {{item.openNums}} <!--打开次数-->
+                </td>
+                <td>
+                  {{item.visitNums}} <!--访问次数-->
+                </td>
+                <td>
+                  {{item.visitorNums}} <!--访问人数-->
+                </td>
+                <td>
+                  {{item.newVisitorNums}}  <!--新访问人数-->
+                </td>
+                <td>
+                  {{item.visitDepthNums}} <!--平均访问深度-->
+                </td>
+                <td>
+                  {{item.stayLength}} <!--人均停留时长-->
+                </td>
+
+              </tr>
+            </table>
+            <div v-if="!noData" class="noData">
+              <img class="nodataImg" src="../../assets/images/nodatalist.png"/>
+              <p>暂无数据~</p>
+            </div>
+            <div class="block" v-if="noData">
+              <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-size="size"
+                :page-sizes="[5,10,20]"
+                layout="total,sizes,prev, pager, next,jumper"
+                :total="total">
+              </el-pagination>
+            </div>
           </div>
         </div>
       </div>
@@ -119,14 +268,17 @@
     },
     data() {
       return {
-        selectTime: '',
-        timeOption: [
+        selectDate: new Date(), // 选择的日期
+        selectType: 1, // 日期类行
+        selectId: 1, // 数据类行
+        startDate: '', // 开始日期
+        endDate: '', // 结束日期
+        typeOption: [
           {name: '(自然日)过去30天', value: 1},
           {name: '(自然周)过去12周', value: 2},
           {name: '(自然月)过去12个月', value: 3}
-        ],
+        ], // 日期选择数组
         checkIndex: 1,
-        dataType: 1,
         dataSelectList: [
           {
             id: 1,
@@ -159,269 +311,181 @@
             id: 8,
             name: '月活跃用户'
           },
-        ],
-        shelvesType: 0,
+        ],// 单选数组
+        startDate: '',  // 开始日期
+        endDate: '', // 结束日期
+        // 表格数据
+        download: '行为分析.xlsx',
         href: '',
-        pickerOptions: {
-          disabledDate(time) {
-            let curDate = (new Date()).getTime();
-            let three = 90 * 24 * 3600 * 1000;
-            let threeMonths = curDate - three;
-            return time.getTime() < threeMonths;
-          }
-        },
-        dialogFormVisible: false,
+        noData: true,
+        page: 1,
+        size: 10,
+        total: 0,
+        tableData: [],
         sortDatas: [
-          {orderType: '', name: '', showspan: false, orderField: ''},
-          {orderType: '', name: '浏览次数(pv)', showspan: false, orderField: ''},
-          {orderType: '', name: '独立访客(uv)', showspan: false, orderField: ''},
-          {orderType: '', name: '人均浏览页数(pv/uv)', showspan: false, orderField: ''},
-          {orderType: 'desc', name: '注册人数(人)', showspan: false, orderField: ''},
-          {orderType: 'desc', name: '下单客户(人)', showspan: false, orderField: ''},
-          {orderType: 'desc', name: '订单数(个)', showspan: false, orderField: ''},
-          {orderType: 'desc', name: '订单收入(元)', showspan: false, orderField: ''}
-        ],
-        selectday: 1,
-        normOption: [
-          {name: '浏览指标（uv、pv）', value: 1},
-          {name: '注册用户', value: 2},
-          {name: '订单收入', value: 3},
-          {name: '订单数量', value: 4}
-        ],
-        today: null,
-        showOne: false,
-        showTwo: false,
-        showThree: false,
-        showFour: false,
-        xData: [1,2,3,4,5],
-        yData: [1,2,3,4,5],
-        getoverviewCount: null,
-        todoCount: null,
-        startDate: '',
-        endDate: '',
-        insuranceDate: '',
-        dataTable: [
-          {
-            xdata:[1,2,3,4,5],
-            ydata:[2,2,3,4,5]
-          }
+          {orderType: '', name: '日期', showBlue: false, orderField: ''},
+          {orderType: '', name: '累计访问人数', showBlue: false, orderField: ''},
+          {orderType: '', name: '打开次数', showBlue: false, orderField: ''},
+          {orderType: '', name: '访问次数', showBlue: false, orderField: ''},
+          {orderType: '', name: '访问人数', showBlue: false, orderField: ''},
+          {orderType: '', name: '新访问人数', showBlue: false, orderField: ''},
+          {orderType: '', name: '平均访问深度', showBlue: false, orderField: ''},
+          {orderType: '', name: '人均停留时长', showBlue: false, orderField: ''},
+          {orderType: '', name: '月活越用户', showBlue: false, orderField: ''},
         ],
       };
     },
-    created() {
-      /*this.today = this.getDay(0, 'getday');*/
-      // console.log(this.getDay(-29))//获取最近30天
-      // console.log(this.getDay(-6))
-      // console.log(this.getPassYearFormatDate());//获取最近12个月
-    },
-    watch: {
-      'selectday': function () {
-        if (this.selectday) {
-          if (this.selectday == 1) {
-            this.getDay(-29, this.selectnorm)
-          } else if (this.selectday == 2) {
-            this.getDay(-6, this.selectnorm)
-          } else if (this.selectday == 3) {
-            this.getPassYearFormatDate(this.selectnorm)
-          }
-        } else {
-        }
-      },
-      'selectnorm': function () {
-        if (this.selectnorm) {
-          if (this.selectday == 1) {
-            this.getDay(-29, this.selectnorm)
-          } else if (this.selectday == 2) {
-            this.getDay(-6, this.selectnorm)
-          } else if (this.selectday == 3) {
-            this.getPassYearFormatDate(this.selectnorm)
-          }
-        }
-      }
-    },
     mounted() {
-      /*
-           // this.getoverview();
-            this.gettodo();
-            // this.getanalysis()
-            this.overviewtable()//概览表格
-            this.getDay(-29,this.selectnorm)//获取30天的*/
-      this.getDay(-29, this.dataType)
-
+      this.getAllDate(this.selectDate, this.selectType, this.selectId)
     },
     methods: {
-      checkType(id) {
-        this.checkIndex = id
+      // 获取数据
+      getAllDate(selectDate, selectType, selectId) {
+        this.endDate = this.timetransAgo(selectDate.getTime())
+        if (selectType == 1) {
+          let agoDate = selectDate.getTime() - 3600 * 1000 * 24 * 29
+          this.startDate = this.timetransAgo(agoDate)
+        } else if (selectType == 2) {
+          let agoDate = selectDate.getTime() - 3600 * 1000 * 24 * 84
+          this.startDate = this.timetransAgo(agoDate)
+        } else if (selectType == 3) {
+          // 获取12个自然月前的时间
+          let agoDateYear = (new Date().getFullYear() - 1)
+          this.startDate = new Date().setFullYear(agoDateYear)
+          this.startDate = this.timetransAgo((this.startDate + 3600 * 1000 * 24))
+        }
+        this.getechartData(this.startDate, this.endDate, selectId);
       },
-      handleClick(tab, event) {
-        console.log(tab, event);
+      changeDate(val) {
+        this.getAllDate(val, this.selectType,this.selectId)
+      },
+      // 获取数据
+      getechartData(startDate, endDate ,selectId) {
+        Service.dataStatistics().getanalysist({}, this.page, this.size, startDate, endDate).then(response => {
+          if (response.errorCode == 0) {
+            if (response.data.records.length == 0) {
+              this.noData = false;
+            } else {
+              this.noData = true;
+              this.total = response.data.total;
+              this.tableData = response.data.records;
+              let optionsData = this.getOptions(selectId, this.tableData)
+              console.log('optionsData', optionsData.ydata)
+              this.getanalysist( optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei)
+              this.$nextTick(() => {
+                this.tableData = response.data.records;
+              })
+            }
+          }
+        });
+        // 生产echart
+
+      },
+      getOptions(type, tableDate) {
+       let optionsSet = {};
+        optionsSet.xdata = tableDate.map(item=>{
+          return  this.timetransAgo(item.statisticsDate)
+        })
+        switch (type) {
+          case 1:
+            optionsSet.title = '累计访问人数'
+            optionsSet.danwei = '人数'
+            optionsSet.ydata = tableDate.map(item=>{
+              return item.visitorNums
+            })
+            return optionsSet
+            break
+          case 2:
+            optionsSet.title = '打开次数'
+            optionsSet.danwei = '次数'
+            optionsSet.ydata = tableDate.map(item=>{
+              return item.openNums
+            })
+            return optionsSet
+            break
+          case 3:
+            optionsSet.title = '访问次数'
+            optionsSet.danwei = '次数'
+            optionsSet.ydata = tableDate.map(item=>{
+              return item.visitNums
+            })
+            return optionsSet
+            break
+          case 4:
+            optionsSet.title = '访问人数'
+            optionsSet.danwei = '人数'
+            optionsSet.ydata = tableDate.map(item=>{
+              return  item.visitorNums
+            })
+            return optionsSet
+            break
+          case 5:
+            optionsSet.title = '新访问人数'
+            optionsSet.danwei = '人数'
+            optionsSet.ydata = tableDate.map(item=>{
+              return item.newVisitorNums
+            })
+            return optionsSet
+            break
+          case 6:
+            optionsSet.title = '平均访问深度'
+            optionsSet.danwei = '深度'
+            optionsSet.ydata = tableDate.map(item=>{
+              return item.visitDepthNums
+            })
+            return optionsSet
+            break
+          case 7:
+            optionsSet.title = '人均停留时长'
+            optionsSet.danwei = '分钟'
+            optionsSet.ydata = tableDate.map(item=>{
+              return   item.stayLength/1000/60
+            })
+            return optionsSet
+            break
+          case 8:
+            optionsSet.title = '月活跃用户'
+            optionsSet.danwei = '人数'
+            optionsSet.ydata = tableDate.map(item=>{
+              return 0
+            })
+            return optionsSet
+            break
+        }
       },
       Decode(arr) {
         var bstr = atob(arr), n = bstr.length, u8arr = new Uint8Array(n);
         while (n--) {
           u8arr[n] = bstr.charCodeAt(n);
         }
-        return new Blob([u8arr], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        return new Blob([u8arr],{type : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
       },
-      //下载表格
-      daochu() {
-        if (this.shelvesType == 1) {
-          var endDate = '', startDate = '';
-          if (this.endDate || this.startDate) {
-            endDate = Date.parse(new Date(this.endDate.replace(/-/g, "/")));
-            startDate = Date.parse(new Date(this.startDate.replace(/-/g, "/")));
-          } else {
-            endDate = this.endDate;
-            startDate = this.startDate;
+      daochu(){
+        Service.dataStatistics().statisticsDaochu({}, this.page, this.size, this.startDate, this.endDate).then(response=>{
+          if(response.errorCode == 0){
+            var blob = this.Decode(response.data);
+            if(window.URL.createObjectURL(blob).indexOf(location.host) < 0){//ie不支持
+              this.href =  window.navigator.msSaveOrOpenBlob(blob, '行为分析.xlsx');
+            }else{
+              this.href = URL.createObjectURL(blob);
+            }
+            this.downloadtable(this.href);
+          }else{
+            this.$message.error(response.message)
           }
-          Service.home().overviewexport({
-            startDate: startDate,
-            endDate: endDate
-          }).then(response => {
-            if (response.errorCode == 0) {
-              var blob = this.Decode(response.data);
-              if (window.URL.createObjectURL(blob).indexOf(location.host) < 0) {//ie不支持
-                this.href = window.navigator.msSaveOrOpenBlob(blob, '报表.xlsx');
-              } else {
-                this.href = URL.createObjectURL(blob);
-              }
-              this.downloadtable(this.href);
-              this.dialogFormVisible = false
-            } else {
-              this.$message.error(response.message)
-            }
-
-          }, err => {
-          });
-        } else if (this.shelvesType == 0) {
-          Service.home().tableexport({}).then(response => {
-            if (response.errorCode == 0) {
-              var blob = this.Decode(response.data);
-              if (window.URL.createObjectURL(blob).indexOf(location.host) < 0) {//ie不支持
-                this.href = window.navigator.msSaveOrOpenBlob(blob, '报表.xlsx');
-              } else {
-                this.href = URL.createObjectURL(blob);
-              }
-              this.downloadtable(this.href);
-              this.dialogFormVisible = false;
-            } else {
-              this.$message.error(response.message)
-            }
-
-          }, err => {
-          });
-        }
+        })
       },
-      downloadtable(blobUrl) {
+      downloadtable(blobUrl){
         const a = document.createElement('a');
         a.style.display = 'none';
-        a.download = '报表.xlsx';
+        a.download = '行为分析.xlsx';
         a.href = blobUrl;
         a.click();
       },
-      //概览表格
-      overviewtable() {
-        Service.home().overviewtable({}, 5).then(response => {
-          if (response.errorCode == 0) {
-            var data = response.data;
-            for (let i in data) {
-              if (data[i].pv == 0) {
-                data[i].puv = 0
-              } else {
-                data[i].puv = (data[i].pv / data[i].uv).toFixed(2)
-              }
-            }
-            this.dataTable = response.data;
-            this.$nextTick(() => {
-            })
-          } else {
-            this.$message.error(response.message)
-          }
-
-        }, err => {
-        });
-      },
-      enddateChange(val) {
-        if (val) {
-          this.startDate = this.timetrans(val[0], 'getday');
-          this.endDate = this.timetrans(val[1], 'getday')
-        } else {
-          this.startDate = '';
-          this.endDate = '';
-        }
-      },
-      timetrans(timestamp, type) {
-        var d = new Date(timestamp);
-        if (type == 'getmonth') {
-          var newTime = d.getFullYear() + '-' + (d.getMonth() + 1);
-        } else if (type == 'getday') {
-          var newTime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-
-        }
-
-        return newTime
-      },
-      //获取累计访问人数
-      gettodayuvpv(startDate, type, yname) {
-        this.getanalysist([1,2,3], [1,2,3], type, yname)
-        return;
-      },
-      getDay(day, type) {
-        var today = new Date();
-        var targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
-
-        today.setTime(targetday_milliseconds); //注意，这行是关键代码
-        if(type == 1){
-          // 累计访问人数
-          this.gettodayuvpv(targetday_milliseconds, '累计访问人数', '人数')
-        }
-      },
-      doHandleMonth(month) {
-        var m = month;
-        if (month.toString().length == 1) {
-          m = "0" + month;
-        }
-        return m;
-      },
-      getPassYearFormatDate(type) {
-        var nowDate = new Date();
-        var date = new Date(nowDate);
-        date.setDate(date.getDate() - 365);
-
-        // var seperator1 = "-";
-        // var year = date.getFullYear();
-        // var month = date.getMonth() + 1;
-        // var strDate = date.getDate();
-        // if (month >= 1 && month <= 9) {
-        //     month = "0" + month;
-        // }
-        // if (strDate >= 0 && strDate <= 9) {
-        //     strDate = "0" + strDate;
-        // }
-        // var currentdate = year + seperator1 + month + seperator1 + strDate;
-        if (type == 1) {//pv uv
-          this.gettomonthuvpv(date.getTime())
-        } else if (type == 2) {//注册用户
-          this.gettomonthuser(date.getTime())
-        } else if (type == 4) {//订单
-          this.gettomonthorder(date.getTime())
-        }
-      },
-      getoverview() {
-        Service.home().getoverview({}).then(response => {
-          if (response.errorCode == 0) {
-            this.getoverviewCount = response.data;
-          } else {
-            this.$message.error(response.message)
-          }
-
-        }, err => {
-        });
-      },
-       // 生成echart
-      getanalysist(xdata, y1d,type,yname) {
+      // 生成echart
+      getanalysist(xdata, ydata, title, danwei) {
         var myChart = this.echarts.init(document.getElementById('analysis'));
-        myChart.clear()
+        myChart.clear();
         var option = {
           color: ['#56ae97'],
           tooltip: {
@@ -435,7 +499,7 @@
           },
           toolbox: {},
           legend: {
-            data: [type]
+            data: [title]
           },
           xAxis: [
             {
@@ -449,9 +513,9 @@
           yAxis: [
             {
               type: 'value',
-              name: yname,
+              name: danwei,
               splitLine: {
-                show: type
+                show: true
               },
               axisLabel: {
                 formatter: '{value}'
@@ -460,13 +524,36 @@
           ],
           series: [
             {
-              name: '累计访问人数',
+              name: title,
               type: 'line',
-              data: y1d
+              smooth: true,
+              data: ydata
             },
           ]
         };
         myChart.setOption(option)
+      },
+      changeDateType(selectType) {
+        this.getAllDate(this.selectDate, selectType,this.selectId)
+      },
+        // 切换数据类行
+      checkSelect(item) {
+        this.checkIndex = item.id
+        this.SelectId = item.id
+        this.getechartData(this.startDate, this.endDate, item.id)
+      },
+      timetransAgo(timestamp) {
+        var d = new Date(timestamp);
+        var newTime = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+        return newTime
+      },
+      handleSizeChange(val) {
+        this.size = val;
+        this.getAllDate(this.selectDate, this.selectType)
+      },
+      handleCurrentChange(val) {
+        this.page = val;
+        this.getAllDate(this.selectDate, this.selectType)
       },
     },
   }
