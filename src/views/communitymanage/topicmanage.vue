@@ -365,7 +365,7 @@
                   {{item.circleName}}
                 </td>
                 <td>
-                  {{item.circleName}}
+                  {{item.click}}
                 </td>
                 <td>
                   {{item.postCount}}
