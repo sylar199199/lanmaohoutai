@@ -3,13 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="1807ca42-5cc1-4ed5-817e-2db18ac3fd59" name="Default" comment="消息通知 字段修改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/debug.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/js/app.0fc64ce04c8de299e905.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/js/app.0fc64ce04c8de299e905.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/app.5e2a668298cb16ec5416.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/app.5e2a668298cb16ec5416.js.map" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/static/js/manifest.2ae2e69a05c33dfc65f8.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/dist/static/js/manifest.2ae2e69a05c33dfc65f8.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/dataStatistics/behaviorAnalysis.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dataStatistics/behaviorAnalysis.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/marketing/rafflebenefits.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/marketing/rafflebenefits.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/order/orderlist.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/order/orderlist.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +43,7 @@
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="fo&#9;null&#9;null&#10;sid&#9;null&#9;null" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ifxj-jianfu-admin" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -311,7 +309,8 @@
       <workItem from="1603882338528" duration="64000" />
       <workItem from="1604983825526" duration="1594000" />
       <workItem from="1604985454393" duration="49000" />
-      <workItem from="1604985504805" duration="16818000" />
+      <workItem from="1604985504805" duration="17404000" />
+      <workItem from="1605062866202" duration="544000" />
     </task>
     <task id="LOCAL-00001" summary="抽奖福利">
       <created>1603277915533</created>
@@ -362,7 +361,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603876974567</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="行为分析">
+      <created>1605002902976</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1605002902976</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -388,41 +394,42 @@
     <MESSAGE value="解决冲突" />
     <MESSAGE value="消息通知 合并提交" />
     <MESSAGE value="消息通知 字段修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="消息通知 字段修改" />
+    <MESSAGE value="行为分析" />
+    <option name="LAST_COMMIT_MESSAGE" value="行为分析" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="341" y="0" key="CommitChangelistDialog2" timestamp="1605002869555">
+    <state x="341" y="0" key="CommitChangelistDialog2" timestamp="1605002900781">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="341" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1605002869555" />
-    <state x="75" y="74" width="1394" height="682" key="DiffContextDialog" timestamp="1605002865024">
+    <state x="341" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1605002900781" />
+    <state x="75" y="74" width="1394" height="682" key="DiffContextDialog" timestamp="1605002875964">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="75" y="74" width="1394" height="682" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1605002865024" />
+    <state x="75" y="74" width="1394" height="682" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1605002875964" />
     <state x="499" y="111" key="FileChooserDialogImpl" timestamp="1604985547494">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="111" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1604985547494" />
-    <state width="1510" height="61" key="GridCell.Tab.0.bottom" timestamp="1605002749290">
+    <state width="1510" height="370" key="GridCell.Tab.0.bottom" timestamp="1605003319562">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="61" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605002749290" />
-    <state width="1510" height="61" key="GridCell.Tab.0.center" timestamp="1605002749289">
+    <state width="1510" height="370" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605003319562" />
+    <state width="1510" height="370" key="GridCell.Tab.0.center" timestamp="1605003319562">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="61" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605002749289" />
-    <state width="1510" height="61" key="GridCell.Tab.0.left" timestamp="1605002749289">
+    <state width="1510" height="370" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605003319562" />
+    <state width="1510" height="370" key="GridCell.Tab.0.left" timestamp="1605003319562">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="61" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605002749289" />
-    <state width="1510" height="61" key="GridCell.Tab.0.right" timestamp="1605002749290">
+    <state width="1510" height="370" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605003319562" />
+    <state width="1510" height="370" key="GridCell.Tab.0.right" timestamp="1605003319562">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="61" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605002749290" />
-    <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1603876978507">
+    <state width="1510" height="370" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605003319562" />
+    <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1605002928900">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="261" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1603876978507" />
+    <state x="261" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1605002928900" />
     <state x="386" y="85" width="769" height="654" key="find.popup" timestamp="1604985257657">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

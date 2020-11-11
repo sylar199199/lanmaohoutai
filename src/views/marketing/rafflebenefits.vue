@@ -175,9 +175,6 @@
                   <i class='iconfont fontIcongrey iconjiang' v-if="index==(tableData.length-1)"></i>
                 </td>
                 <td>
-                  <span v-if="!item.isHomepageShow" class="color2087 font12 cursor fontWeight" @click="showlottery(item.id,item.isHomepageShow)">首页展示</span>
-                  <span v-if="item.isHomepageShow" class="color2087 font12 cursor fontWeight" @click="showlottery(item.id,item.isHomepageShow)">取消首页</span>
-                  <span class="line"></span>
                   <!--<span class="color2087 font12 cursor fontWeight copyButton" :data-clipboard-text="`${httpurl}${item.id}`"  @click="copyItem()">复制链接</span>
                   <span class="line"></span>-->
                   <span class="color2087 font12 cursor fontWeight" v-if="item.status != 2 || item.status != 4" @click="goDetail(item.id)">编辑</span>

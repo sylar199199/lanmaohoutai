@@ -200,12 +200,12 @@
                 border-radius: 4px;
                 text-align: center;
                     position: relative;
-                 
+
                 .imgBox{
                     display: inline-block;
                     width: 120px;
                     height: 68px;
-                   
+
                     .uploadtext{
                         display: flex;
                         flex-direction: column;
@@ -220,7 +220,7 @@
                     }
                 }
             }
-                   
+
         }
     .dialogone::after {
         content: "";
@@ -367,15 +367,15 @@
                                 <span class="searchLable colorGrey font12">用户id </span>
                                 <input type="text" v-model="userId" class="serchInput font12 colorblack" placeholder="用户id"/>
                             </div>
-                            
-                           
+
+
                             <div class="searchBox flex">
                                   <div class="bacButton cursor" @click="getcommodityData('search')">筛选</div>
                                   <div class="bacButtonone bacButton cursor" :download="download" :href="href" @click="daochu()">导出</div>
                                    <div class="fileBox" >
                                         <div class="applicaninfo">
                                             <el-upload
-                                                ref="upload" 
+                                                ref="upload"
                                                     class="upload-demo imgBox"
                                                     name="file"
                                                     :action="upFileAction"
@@ -619,7 +619,7 @@
              handleChange(file, fileList) {
             },
              errphoto(err, file, fileList){
-               
+
             },
             handleAvatarSuccess(res, file) {
                 Store.commit("setIsLoading", false);
@@ -909,7 +909,7 @@
                 if(!this.userId){
                     this.userId = null
                 }
-                
+
                 Service.order().orderDaochu({
                     userId: this.userId,
                     userName: this.userName,
