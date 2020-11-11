@@ -91,11 +91,13 @@
             border: 1px solid #f6f6f6;
             margin: 10px 20px;
             width: 937px;
-            .imgUrl{
+
+            .imgUrl {
               height: 35px;
               width: 40px;
               margin-right: 6px;
             }
+
             tr {
               border-bottom: 1px solid #f6f6f6;
 
@@ -507,11 +509,11 @@
       //添加、编辑话题海报
 
       addTopicPoster() {
-        if(!this.topicId){
+        if (!this.topicId) {
           this.$message.error('请选择关联话题');
           return;
         }
-        if(!this.postImg){
+        if (!this.postImg) {
           this.$message.error('请添加展示图');
           return;
         }
@@ -556,33 +558,23 @@
         }
       },
       downSort(index, item) {//降序
-        let newSortArr = [
-          {
+        this.tableData[index] = this.tableData.splice(index + 1, 1, this.tableData[index])[0];
+        let newSortArr = this.tableData.map((item, i) => {
+          return {
             id: item.id,
-            sort: this.tableData[index + 1].sort
-          },
-          {
-            id: this.tableData[index + 1].id,
-            sort: item.sort
+            sort: i + 1
           }
-        ];
-        this.tableData[index] = this.tableData[index + 1];
-        this.tableData[index + 1] = item;
+        })
         this.sortRecData(newSortArr);
       },
       upSort(index, item) {//升序
-        let newSortArr = [
-          {
+        this.tableData[index] = this.tableData.splice(index - 1, 1, this.tableData[index])[0];
+        let newSortArr = this.tableData.map((item, i) => {
+          return {
             id: item.id,
-            sort: this.tableData[index - 1].sort
-          },
-          {
-            id: this.tableData[index - 1].id,
-            sort: item.sort
+            sort: i - 1
           }
-        ];
-        this.tableData[index] = this.tableData[index - 1];
-        this.tableData[index - 1] = item;
+        })
         this.sortRecData(newSortArr);
       },
       sortRecData(newSortArr) {
@@ -689,6 +681,10 @@
               this.noData = true;
               this.$nextTick(() => {
                 this.tableData = response.data;
+                this.tableData = response.data.map((item, index) => {
+                  item.sort = index + 1
+                  return item
+                })
               })
             }
           } else {

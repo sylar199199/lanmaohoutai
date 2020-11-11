@@ -424,6 +424,7 @@
   import Global from '@/common/global'
   import Store from '@/vuex/index'
   import Util from '@/common/util'
+  import commodities from "../../components/commodities";
 
   export default {
     name: "salecustomer",
@@ -503,33 +504,23 @@
         }
       },
       downSort(index, item) {//降序
-        let newSortArr = [
-          {
+        this.tableData[index] =  this.tableData.splice(index+1, 1,  this.tableData[index])[0];
+        let newSortArr = this.tableData.map((item,i)=>{
+          return{
             id: item.id,
-            sort: this.tableData[index + 1].sort
-          },
-          {
-            id: this.tableData[index + 1].id,
-            sort: item.sort
+            sort: i+1
           }
-        ];
-        this.tableData[index] = this.tableData[index + 1];
-        this.tableData[index + 1] = item;
+        })
         this.sortRecData(newSortArr);
       },
       upSort(index, item) {//升序
-        let newSortArr = [
-          {
+        this.tableData[index] = this.tableData.splice(index-1, 1, this.tableData[index])[0];
+        let newSortArr = this.tableData.map((item,i)=>{
+          return{
             id: item.id,
-            sort: this.tableData[index - 1].sort
-          },
-          {
-            id: this.tableData[index - 1].id,
-            sort: item.sort
+            sort: i-1
           }
-        ];
-        this.tableData[index] = this.tableData[index - 1];
-        this.tableData[index - 1] = item;
+        })
         this.sortRecData(newSortArr);
       },
       sortRecData(newSortArr) {
@@ -566,8 +557,8 @@
 
         if (name == 'roundName') {
           this.roundName = this.roundName.replace(/(^\s*)|(\s*$)/g, "");
-          if (this.roundName.length > 2 || this.roundName.length == 0) {
-            this.$message.error('请输入不超过2个字符的圈子');
+          if (this.roundName.length > 10 || this.roundName.length == 0) {
+            this.$message.error('请输入不超过10个字符的圈子');
             on = false;
             return;
           }
@@ -600,7 +591,10 @@
               this.noData = true;
               this.$nextTick(() => {
                 this.tableData = response.data;
-                console.log('this.tableData', this.tableData)
+                this.tableData = response.data.map((item,index)=>{
+                   item.sort = index + 1
+                  return item
+                })
               })
             }
           } else {

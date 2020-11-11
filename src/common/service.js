@@ -1402,6 +1402,13 @@ export default {
           method: 'put'
         }, data)
       },
+      copyactivity(data,key){
+        //抽奖活动复制
+        return getResource({
+          url: `/lanmao/admin/lottery/copy/${key}`,
+          method: 'post'
+        }, data)
+      },
       addhelpRules(data,key){
         //添加活动规则
         return getResource({
