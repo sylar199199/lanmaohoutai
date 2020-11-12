@@ -587,7 +587,7 @@
     import KlTop from '@/components/klTop'
     import Global from '@/common/global'
     import VueUeditorWrap from 'vue-ueditor-wrap' // ES6 Module
-    
+
     export default {
         name: "salecustomer",
         components:{
@@ -1051,7 +1051,7 @@
             },
             removpointsBorder(item,type){
                 var on = true;
-                var reg = /^[1-9]\d*$/;
+                var reg = /^[0-9]\d*$/;
                 if(!reg.test(item.points)){
                     on = false;
                     this.$alert('请输入合理的消耗积分', '消耗积分修改提醒', {
@@ -1096,7 +1096,7 @@
                         }
                     });
                 }
-                if(parseFloat(item.price)<=0){
+                if(parseFloat(item.price)<0){
                     on = false;
                     this.$alert('请输入合理的销售价格', '销售价格修改提醒', {
                         confirmButtonText: '确定',
