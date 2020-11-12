@@ -207,7 +207,7 @@
                   {{timetransAgo(item.statisticsDate)}}
                 </td>
                 <td>
-                  {{item.visitorNums}} <!--累计访问人数-->
+                  {{item.totalVisitors}} <!--累计访问人数-->
                 </td>
                 <td>
                   {{item.openNums}} <!--打开次数-->
@@ -225,7 +225,10 @@
                   {{item.visitDepthNums}} <!--平均访问深度-->
                 </td>
                 <td>
-                  {{item.stayLength}} <!--人均停留时长-->
+                  {{item.stayLengthStr}} <!--人均停留时长-->
+                </td>
+                <td>
+                  {{item.monthActiveNums}} <!--月活跃人数-->
                 </td>
 
               </tr>
@@ -391,7 +394,7 @@
             optionsSet.title = '累计访问人数'
             optionsSet.danwei = '人数'
             optionsSet.ydata = tableDate.map(item=>{
-              return item.visitorNums
+              return item.totalVisitors
             })
             return optionsSet
             break
@@ -439,7 +442,7 @@
             optionsSet.title = '人均停留时长'
             optionsSet.danwei = '分钟'
             optionsSet.ydata = tableDate.map(item=>{
-              return   item.stayLength/1000/60
+              return   item.stayLengthStr
             })
             return optionsSet
             break
@@ -447,7 +450,7 @@
             optionsSet.title = '月活跃用户'
             optionsSet.danwei = '人数'
             optionsSet.ydata = tableDate.map(item=>{
-              return 0
+              return item.monthActiveNums
             })
             return optionsSet
             break
