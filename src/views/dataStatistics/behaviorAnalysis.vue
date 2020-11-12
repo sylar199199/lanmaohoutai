@@ -484,7 +484,6 @@
       },
       // 生成echart
       getanalysist(xdata, ydata, title, danwei) {
-        console.log('xdata', xdata)
         var myChart = this.echarts.init(document.getElementById('analysis'));
         myChart.clear();
         var option = {
@@ -505,7 +504,7 @@
           xAxis: [
             {
               type: 'category',
-              data: xdata,
+              data: xdata.reverse(),
               axisPointer: {
                 type: 'shadow',
               },
