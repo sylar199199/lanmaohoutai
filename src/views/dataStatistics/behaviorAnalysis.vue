@@ -357,13 +357,44 @@
           this.startDate = new Date().setFullYear(agoDateYear)
           this.startDate = this.timetransAgo((this.startDate + 3600 * 1000 * 24))
         }
-        this.getechartData(this.startDate, this.endDate, selectId);
+        this.gettabletData(this.startDate, this.endDate);
+        this.getAllechartsData(this.startDate, this.endDate, selectId, selectType);
       },
+      // 切换时间端
+      changeDateType(selectType) {
+        this.getAllDate(this.selectDate, selectType,this.selectId)
+      },
+      // 切换日期
       changeDate(val) {
         this.getAllDate(val, this.selectType,this.selectId)
       },
-      // 获取数据
-      getechartData(startDate, endDate ,selectId) {
+      // 获取所有数据echarts
+      getAllechartsData(startDate, endDate ,selectId, selectType){
+        Service.dataStatistics().getanalysist({}, this.page, 1000, startDate, endDate).then(response => {
+          if (response.errorCode == 0) {
+            if (response.data.records.length == 0) {
+              this.noData = false;
+            } else {
+              this.noData = true;
+              let echartDatas = response.data.records;
+              let optionsData = this.getOptions(selectId, echartDatas)
+              let xinterval = this.getXinterval(selectType)
+              this.getanalysist( optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei, xinterval)
+            }
+          }
+        });
+      },
+      getXinterval(type){
+        if(type == 1){
+          return 4
+        } else if(type == 2){
+          return 6
+        }else if(type == 3){
+          return 30
+        }
+      },
+      // 获取列表数据
+      gettabletData(startDate, endDate) {
         Service.dataStatistics().getanalysist({}, this.page, this.size, startDate, endDate).then(response => {
           if (response.errorCode == 0) {
             if (response.data.records.length == 0) {
@@ -372,9 +403,6 @@
               this.noData = true;
               this.total = response.data.total;
               this.tableData = response.data.records;
-              let optionsData = this.getOptions(selectId, this.tableData)
-              console.log('optionsData', optionsData.ydata)
-              this.getanalysist( optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei)
               this.$nextTick(() => {
                 this.tableData = response.data.records;
               })
@@ -486,7 +514,7 @@
         a.click();
       },
       // 生成echart
-      getanalysist(xdata, ydata, title, danwei) {
+      getanalysist(xdata, ydata, title, danwei, xinterval) {
         var myChart = this.echarts.init(document.getElementById('analysis'));
         myChart.clear();
         var option = {
@@ -512,7 +540,7 @@
                 type: 'shadow',
               },
               axisLabel:{
-                interval: 0
+                interval: xinterval
               },
             }
           ],
@@ -533,20 +561,17 @@
               name: title,
               type: 'line',
               smooth: true,
-              data: ydata
+              data: ydata.reverse()
             },
           ]
         };
         myChart.setOption(option)
       },
-      changeDateType(selectType) {
-        this.getAllDate(this.selectDate, selectType,this.selectId)
-      },
         // 切换数据类行
       checkSelect(item) {
         this.checkIndex = item.id
         this.SelectId = item.id
-        this.getechartData(this.startDate, this.endDate, item.id)
+        this.getAllechartsData(this.startDate, this.endDate, item.id)
       },
       timetransAgo(timestamp) {
         var d = new Date(timestamp);
@@ -555,11 +580,11 @@
       },
       handleSizeChange(val) {
         this.size = val;
-        this.getAllDate(this.selectDate, this.selectType)
+        this.gettabletData(this.startDate,this.endDate)
       },
       handleCurrentChange(val) {
         this.page = val;
-        this.getAllDate(this.selectDate, this.selectType)
+        this.gettabletData(this.startDate,this.endDate)
       },
     },
   }

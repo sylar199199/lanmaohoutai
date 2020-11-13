@@ -306,6 +306,7 @@
   import Aside from '@/components/aside'
   import Service from '@/common/service'
   import KlTop from '@/components/klTop'
+  import Global from '@/common/global'
 
   export default {
     name: "salecustomer",
@@ -338,6 +339,7 @@
       };
     },
     created() {
+      this.myConfig.serverUrl = Global.requestUrl+"/kl-store/ueditor/index";
       this.userInfo = JSON.parse(localStorage.getItem('user'));
       this.notificationId = this.$route.params.notificationId
       if (this.userInfo) {
@@ -389,20 +391,14 @@
           publishTime: Date.parse(new Date((this.timetrans(this.publishTime)).replace(/-/g, "/"))),
         }
         if(this.notificationType == 1){
-          /*delete params.details
-          delete params.linkUrl*/
           this.details = null;
           this.linkUrl = null;
         }
         if(this.notificationType == 2){
-          /*delete params.topicId
-          delete params.linkUrl*/
           this.topicId = null;
           this.linkUrl = null;
         }
         if(this.notificationType == 3){
-       /*   delete params.topicId
-          delete params.details*/
           this.topicId = null;
           this.details = null;
         }
