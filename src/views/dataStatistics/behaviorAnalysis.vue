@@ -188,7 +188,7 @@
                 <i class="iconfont color2087 font20 cursor"
                    :class="checkIndex == item.id? 'iconxuanzhong' :'iconxuanze'"
                    @click="checkSelect(item)"></i>
-                <span class="typeText colorblack font12 marginLeft10" @click="checkType(item.id)">{{item.name}}</span>
+                <span class="typeText colorblack font12 marginLeft10" @click="checkSelect(item)">{{item.name}}</span>
               </div>
             </div>
             <div id='analysis'></div>
@@ -370,13 +370,13 @@
       },
       // 获取所有数据echarts
       getAllechartsData(startDate, endDate ,selectId, selectType){
-        Service.dataStatistics().getanalysist({}, this.page, 366, startDate, endDate).then(response => {
+        Service.dataStatistics().getAllanalysist({}, this.page, 366, startDate, endDate).then(response => {
           if (response.errorCode == 0) {
-            if (response.data.records.length == 0) {
+            if (response.data.records == 0) {
               this.noData = false;
             } else {
               this.noData = true;
-              let echartDatas = response.data.records;
+              let echartDatas = response.data;
               let optionsData = this.getOptions(selectId, echartDatas)
               let xinterval = this.getXinterval(selectType)
               this.getanalysist( optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei, xinterval)
@@ -397,7 +397,7 @@
       gettabletData(startDate, endDate) {
         Service.dataStatistics().getanalysist({}, this.page, this.size, startDate, endDate).then(response => {
           if (response.errorCode == 0) {
-            if (response.data.records.length == 0) {
+            if (response.data.length == 0) {
               this.noData = false;
             } else {
               this.noData = true;
@@ -470,7 +470,11 @@
             optionsSet.title = '人均停留时长'
             optionsSet.danwei = '分钟'
             optionsSet.ydata = tableDate.map(item=>{
-              return   item.stayLengthStr
+              let fenarr = item.stayLengthStr.split("分")
+              let fen = fenarr[0]
+              let miao = fenarr[1].split("秒")[0]
+              let transFen = parseInt(fen) + parseFloat((miao/60).toFixed(2))
+              return   transFen
             })
             return optionsSet
             break
