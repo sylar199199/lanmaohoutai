@@ -264,13 +264,16 @@
                                 </td>
 
                                 <td>
-                                   {{item.likeCount}}
+                                  <span v-if="!item.likeCount">0</span>
+                                  <span v-else>{{item.likeCount}}</span>
                                 </td>
                                 <td>
-                                  {{item.commentCount}}
+                                  <span v-if="!item.commentCount">0</span>
+                                  <span v-else>{{item.commentCount}}</span>
                                 </td>
                                 <td>
-                                    {{item.shareCount}}
+                                  <span v-if="!item.shareCount">0</span>
+                                  <span v-else>{{item.shareCount}}</span>
                                 </td>
                                 <td>
                                     {{timetrans(item.createDate)}}

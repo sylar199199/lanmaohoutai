@@ -370,7 +370,7 @@
       },
       // 获取所有数据echarts
       getAllechartsData(startDate, endDate ,selectId, selectType){
-        Service.dataStatistics().getanalysist({}, this.page, 1000, startDate, endDate).then(response => {
+        Service.dataStatistics().getanalysist({}, this.page, 366, startDate, endDate).then(response => {
           if (response.errorCode == 0) {
             if (response.data.records.length == 0) {
               this.noData = false;
@@ -388,7 +388,7 @@
         if(type == 1){
           return 4
         } else if(type == 2){
-          return 6
+          return 8
         }else if(type == 3){
           return 30
         }
@@ -514,7 +514,7 @@
         a.click();
       },
       // 生成echart
-      getanalysist(xdata, ydata, title, danwei, xinterval) {
+        getanalysist(xdata, ydata, title, danwei, xinterval) {
         var myChart = this.echarts.init(document.getElementById('analysis'));
         myChart.clear();
         var option = {
