@@ -73,7 +73,7 @@
               }
 
               .serchInput {
-                width: 200px;
+                width: 500px;
                 height: 30px;
                 line-height: 30px;
                 border: 1px solid #e5e5e5;
@@ -159,7 +159,11 @@
       }
     }
   }
-
+  .shurutishi {
+    color: #999999;
+    font-size: 12px;
+    margin-left: 10px;
+  }
   .margintop10 {
     margin-top: 10px;
   }
@@ -178,6 +182,9 @@
   }
   /deep/ .el-input__icon{
     line-height: 30px;
+  }
+  /deep/ .el-textarea{
+    width: 500px;
   }
   /deep/ .el-input__inner {
     border-radius: 0;
@@ -205,17 +212,19 @@
                   </div>
                   <div class="searchBox">
                     <span class="searchLable searchName colorGrey font12">通知标题</span>
-                    <input type="text" v-model="title" class="serchInput font12 colorblack" placeholder="请填写通知标题"/>
+                    <input  @change="changeValue" type="text" v-model="title" class="serchInput font12 colorblack" placeholder="请填写通知标题"/><span class="shurutishi">不超过12个字</span>
                   </div>
                   <div class="searchBox flex">
                     <span class="searchLable searchName colorGrey font12">通知简介</span>
                     <el-input
-                      class="marginLeft10"
+                      style="margin-left: 3px;"
                       type="textarea"
                       :rows="3"
+                      :maxlength="120"
                       placeholder="话题简介"
                       v-model="introduction">
                     </el-input>
+                    <span class="shurutishi">不超过120个字</span>
                   </div>
                   <div class="searchBox flex">
                     <span class="searchLable searchName colorGrey font12">通知详情 </span>
@@ -455,6 +464,15 @@
             this.publishTime = response.data.publishTime
           }
         })
+      },
+      changeValue(){
+        if(this.title.length > 12){
+          this.title = this.title.substring(0,12);
+          this.$message.error('请输入不超过12字的标题')
+          return false
+        }else{
+          return true
+        }
       },
       gettopicData() {
         Service.notificationSe().getNotificationTopic({}).then(response => {

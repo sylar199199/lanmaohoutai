@@ -4,10 +4,12 @@
     <list default="true" id="1807ca42-5cc1-4ed5-817e-2db18ac3fd59" name="Default" comment="富文本bug修改 和 echarts修改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/js/app.97b3f420a1730f28063a.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/static/js/app.97b3f420a1730f28063a.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/app.b58df75b039560cb89de.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/app.b58df75b039560cb89de.js.map" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/static/js/manifest.2ae2e69a05c33dfc65f8.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/dist/static/js/manifest.2ae2e69a05c33dfc65f8.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/communitymanage/addMessageNotification.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/communitymanage/addMessageNotification.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/communitymanage/dynamicmanage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/communitymanage/dynamicmanage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/dataStatistics/behaviorAnalysis.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dataStatistics/behaviorAnalysis.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +45,7 @@
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="fo&#9;null&#9;null&#10;sid&#9;null&#9;null" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ifxj-jianfu-web" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ifxj-jianfu-admin" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -312,7 +314,7 @@
       <workItem from="1604985504805" duration="17404000" />
       <workItem from="1605062866202" duration="11802000" />
       <workItem from="1605238454321" duration="6214000" />
-      <workItem from="1605246296246" duration="8969000" />
+      <workItem from="1605246296246" duration="15927000" />
     </task>
     <task id="LOCAL-00001" summary="抽奖福利">
       <created>1603277915533</created>
@@ -473,38 +475,38 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="75" y="74" width="1394" height="682" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1605252546345" />
-    <state x="499" y="111" key="FileChooserDialogImpl" timestamp="1605248953609">
+    <state x="499" y="111" key="FileChooserDialogImpl" timestamp="1605493793012">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="111" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1605248953609" />
-    <state width="1510" height="130" key="GridCell.Tab.0.bottom" timestamp="1605257899495">
+    <state x="499" y="111" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1605493793012" />
+    <state width="1510" height="238" key="GridCell.Tab.0.bottom" timestamp="1605502606912">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="130" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605257899495" />
-    <state width="1510" height="130" key="GridCell.Tab.0.center" timestamp="1605257899495">
+    <state width="1510" height="238" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605502606912" />
+    <state width="1510" height="238" key="GridCell.Tab.0.center" timestamp="1605502606912">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="130" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605257899495" />
-    <state width="1510" height="130" key="GridCell.Tab.0.left" timestamp="1605257899494">
+    <state width="1510" height="238" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605502606912" />
+    <state width="1510" height="238" key="GridCell.Tab.0.left" timestamp="1605502606912">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="130" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605257899494" />
-    <state width="1510" height="130" key="GridCell.Tab.0.right" timestamp="1605257899495">
+    <state width="1510" height="238" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605502606912" />
+    <state width="1510" height="238" key="GridCell.Tab.0.right" timestamp="1605502606912">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1510" height="130" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605257899495" />
-    <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1605253223864">
+    <state width="1510" height="238" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605502606912" />
+    <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1605258034049">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="261" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1605253223864" />
+    <state x="261" y="81" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1605258034049" />
     <state x="536" y="310" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605250643176">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="536" y="310" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1605250643176" />
-    <state x="386" y="85" width="769" height="654" key="find.popup" timestamp="1605245127576">
+    <state x="386" y="85" width="769" height="654" key="find.popup" timestamp="1605498189016">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="386" y="85" width="769" height="654" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1605245127576" />
+    <state x="386" y="85" width="769" height="654" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1605498189016" />
     <state x="341" y="183" key="run.anything.popup" timestamp="1603201211137">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

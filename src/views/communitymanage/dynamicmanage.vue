@@ -250,7 +250,7 @@
                                 <td>
                                     <div class="flex">
                                          <img @click='openBig(item)' :src="item.imgUrl" class="imgUrl">
-                                         <span>{{Util.beautySub(item.content, 10)}}</span>
+                                         <span style="word-break: break-all">{{Util.beautySub(item.content, 10)}}</span>
                                     </div>
                                  </td>
                                 <td>

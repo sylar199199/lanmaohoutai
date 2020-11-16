@@ -370,19 +370,36 @@
       },
       // 获取所有数据echarts
       getAllechartsData(startDate, endDate ,selectId, selectType){
-        Service.dataStatistics().getAllanalysist({}, this.page, 366, startDate, endDate).then(response => {
-          if (response.errorCode == 0) {
-            if (response.data.records == 0) {
-              this.noData = false;
-            } else {
-              this.noData = true;
-              let echartDatas = response.data;
-              let optionsData = this.getOptions(selectId, echartDatas)
-              let xinterval = this.getXinterval(selectType)
-              this.getanalysist( optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei, xinterval)
+        if(selectType == 3){
+          Service.dataStatistics().getMountanalysist({}, this.page, 366, startDate, endDate).then(response =>{
+            if (response.errorCode == 0) {
+              if (response.data.records == 0) {
+                this.noData = false;
+              } else {
+                this.noData = true;
+                let echartDatas = response.data;
+                let optionsData = this.getOptions(selectId, echartDatas,selectType)
+                let xinterval = this.getXinterval(selectType)
+                this.getanalysist( optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei, xinterval)
+              }
             }
-          }
-        });
+          })
+        }else{
+          Service.dataStatistics().getAllanalysist({}, this.page, 366, startDate, endDate).then(response => {
+            if (response.errorCode == 0) {
+              if (response.data.records == 0) {
+                this.noData = false;
+              } else {
+                this.noData = true;
+                let echartDatas = response.data;
+                let optionsData = this.getOptions(selectId, echartDatas,selectType)
+                let xinterval = this.getXinterval(selectType)
+                this.getanalysist( optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei, xinterval)
+              }
+            }
+          });
+        }
+
       },
       getXinterval(type){
         if(type == 1){
@@ -390,7 +407,7 @@
         } else if(type == 2){
           return 8
         }else if(type == 3){
-          return 30
+          return 0
         }
       },
       // 获取列表数据
@@ -412,11 +429,18 @@
         // 生产echart
 
       },
-      getOptions(type, tableDate) {
+      getOptions(type, tableDate, selectType) {
        let optionsSet = {};
-        optionsSet.xdata = tableDate.map(item=>{
-          return  this.timetransAgo(item.statisticsDate)
-        })
+        if(selectType == 3){
+          optionsSet.xdata = tableDate.map(item=>{
+            return item.statisticsMonth
+          })
+        }else {
+          optionsSet.xdata = tableDate.map(item=>{
+            return  this.timetransAgo(item.statisticsDate)
+          })
+        }
+
         switch (type) {
           case 1:
             optionsSet.title = '累计访问人数'
@@ -575,7 +599,7 @@
       checkSelect(item) {
         this.checkIndex = item.id
         this.SelectId = item.id
-        this.getAllechartsData(this.startDate, this.endDate, item.id)
+        this.getAllechartsData(this.startDate, this.endDate, item.id, this.selectType)
       },
       timetransAgo(timestamp) {
         var d = new Date(timestamp);

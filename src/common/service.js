@@ -421,7 +421,14 @@ export default {
        // 获取echarts数据
       getAllanalysist(data, page,size,startTime,endTime) {
         return getResource({
-          url: `/lanmao/admin/dataAnalyse/allBbrowseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
+          url: `/lanmao/admin/dataAnalyse/allBrowseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
+          method: 'get'
+        }, data)
+      },
+      // 获取12个月的每个月的累计数据接口
+      getMountanalysist(data, page,size,startTime,endTime){
+        return getResource({
+          url: `/lanmao/admin/dataAnalyse/monthBrowseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
           method: 'get'
         }, data)
       },
