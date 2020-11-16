@@ -374,7 +374,9 @@
                   {{timetrans(item.createDate)}}
                 </td>
                 <td>
-                  <span class="color2087 font12 fontWeight cursor" @click="openRound('编辑话题',item)">修改</span>
+                  <span class="color2087 font12 fontWeight cursor" @click="openRound('编辑圈子',item)">修改</span>
+                  <span class="line"></span>
+                  <span class="color2087 font12 fontWeight cursor" @click="deleteRound(item.id)">删除</span>
                   <span class="line"></span>
                   <span class="color2087 font12 fontWeight cursor" @click="jumpPoster(item)">关联海报</span>
                 </td>
@@ -541,6 +543,30 @@
         }
         this.roundTitle = type;
         $(".dialogone").css({"display": "block"})
+      },
+      deleteRound(id){
+        // 删除圈子
+        this.$confirm('确定删除?', '', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          Service.round().deleteCircle({}, id).then(response => {
+            if (response.errorCode == 0) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.getroundData('');
+            } else {
+              this.$message.error(response.message)
+            }
+
+          }, err => {
+          });
+        }).catch(() => {
+
+        });
       },
       // 跳转到关联海报
       jumpPoster(item) {

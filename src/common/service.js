@@ -310,6 +310,14 @@ export default {
           method: 'post'
         }, data)
       },
+      deleteCircle(data, key) {
+        //删除圈子
+        return getResource({
+          url: `/lanmao/admin/community/circle/${key}`,
+          method: 'DELETE'
+        }, data)
+      },
+
       editorRound(data, key) {
         //修改圈子
         return getResource({

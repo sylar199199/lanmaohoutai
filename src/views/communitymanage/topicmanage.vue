@@ -33,7 +33,7 @@
               margin-bottom: 20px;
 
               .searchLable {
-                margin-right: 6px;
+                margin-right: 3px;
               }
 
               .serchInput {
@@ -345,6 +345,19 @@
                 <span class="searchLable colorGrey font12">发帖人数>= </span>
                 <input type="text" v-model="minPostCount" class="serchInput font12 colorblack" placeholder="参与帖子"/>
               </div>
+
+              <div class="searchBox">
+                <span class="searchLable colorGrey font12">关联圈子 </span>
+                <el-select v-model="selectcircleId" placeholder="请选择关联圈子" class="marginLeft10">
+                  <el-option
+                    v-for="item in circleOption"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
               <div class="bacButton cursor" @click="getcommodityData('search')">筛选</div>
             </div>
 
@@ -501,6 +514,7 @@
     },
     data() {
       return {
+        selectcircleId: '', // 筛选圈子id
         topicTitle: '',
         minPostCount: null,
         name: '',
@@ -647,6 +661,9 @@
       closeDiologone() {
         this.topicId = '';
         this.topName = '';
+        this.introduction = '';
+        this.topicImg = '';
+        this.circleId = '';
         $(".dialogone").css({"display": "none"})
       },
 
@@ -701,6 +718,7 @@
         }
         Service.toppic().gettopicList({
           minPostCount: this.minPostCount,
+          circleId: this.selectcircleId,
           page: this.page,
           name: this.name,
           size: this.size,
