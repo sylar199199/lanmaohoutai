@@ -270,6 +270,13 @@ export default {
           method: 'post'
         }, data)
       },
+      topicSort(data, key) {
+        //获取话题列表
+        return getResource({
+          url: `/lanmao/admin/community/topic/sort`,
+          method: 'post'
+        }, data)
+      },
       editorTopic(data, key) {
         //编辑话题
         return getResource({

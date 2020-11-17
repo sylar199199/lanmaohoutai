@@ -370,7 +370,7 @@
                   {{item.name}}
                 </th>
               </tr>
-              <tr v-for="item in tableData" :key="item.id">
+              <tr v-for="(item, index) in tableData" :key="item.id">
                 <td>
                   {{item.name}}
                 </td>
@@ -386,7 +386,14 @@
                 <td>
                   {{item.userCount}}
                 </td>
-
+                <td>
+                  <i class="cursor iconfont iconshangsheng fontIcongreen" v-if="index!=0"
+                     @click='upSort(index,item)'></i>
+                  <i class="iconfont iconshangsheng fontIcongrey" v-if="index==0"></i>
+                  <i class='cursor iconfont fontIcongreen iconjiang' @click='downSort(index,item)'
+                     v-if="index!=(tableData.length-1)"></i>
+                  <i class='iconfont fontIcongrey iconjiang' v-if="index==(tableData.length-1)"></i>
+                </td>
                 <td>
                   {{timetrans(item.createDate)}}
                 </td>
@@ -529,6 +536,7 @@
           {orderType: '', name: '阅读数', showBlue: false, orderField: ''},
           {orderType: '', name: '帖子数', showBlue: false, orderField: ''},
           {orderType: '', name: '发帖人数', showBlue: false, orderField: ''},
+          {orderType: '', name: '排序', showBlue: false, orderField: ''},
           {orderType: '', name: '创建时间', showBlue: false, orderField: ''},
           {orderType: '', name: '操作', showBlue: false, orderField: ''}
         ],
@@ -581,7 +589,6 @@
             imgUrl: this.topicImg,
           }, this.topicId).then(response => {
             if (response.errorCode == 0) {
-              console.log('this.topName',  this.topName)
               this.topName = '';
               this.topicId = '';
               this.topicImg = '';
@@ -658,6 +665,36 @@
 
         });
       },
+      upSort(index, item) {//升序
+        this.tableData[index] = this.tableData.splice(index - 1, 1, this.tableData[index])[0];
+        let newSortArr = this.tableData.map((item, i) => {
+          return {
+            id: item.id,
+            sort: i - 1
+          }
+        })
+        this.sortRecData(newSortArr);
+      },
+      downSort(index, item) {//降序
+        this.tableData[index] = this.tableData.splice(index + 1, 1, this.tableData[index])[0];
+        let newSortArr = this.tableData.map((item, i) => {
+          return {
+            id: item.id,
+            sort: i + 1
+          }
+        })
+        this.sortRecData(newSortArr);
+      },
+      sortRecData(newSortArr) {
+        Service.toppic().topicSort(newSortArr).then(response => {
+          if (response.errorCode == 0) {
+            this.getcommodityData('');
+          } else {
+            this.$message.error(response.message)
+          }
+        }, err => {
+        });
+      },
       closeDiologone() {
         this.topicId = '';
         this.topName = '';
@@ -731,6 +768,10 @@
               this.total = response.data.total;
               this.$nextTick(() => {
                 this.tableData = response.data.records;
+                this.tableData = response.data.records.map((item, index) => {
+                  item.sort = index + 1
+                  return item
+                })
               })
             }
           } else {
