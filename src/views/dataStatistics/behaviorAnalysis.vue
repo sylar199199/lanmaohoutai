@@ -362,6 +362,7 @@
       },
       // 切换时间端
       changeDateType(selectType) {
+        console.log('this.sele', this.selectId)
         this.getAllDate(this.selectDate, selectType,this.selectId)
       },
       // 切换日期
@@ -598,7 +599,7 @@
         // 切换数据类行
       checkSelect(item) {
         this.checkIndex = item.id
-        this.SelectId = item.id
+        this.selectId = item.id
         this.getAllechartsData(this.startDate, this.endDate, item.id, this.selectType)
       },
       timetransAgo(timestamp) {

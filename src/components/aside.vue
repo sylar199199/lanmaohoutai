@@ -160,6 +160,28 @@
                         isShow: false,
                         isdelete: false,
                         subItems: [
+                          {
+                            title: '数据概况',
+                            secTitlte: '',
+                            isdelete: false,
+                            secgreyIcon: '',
+                            secgreenIcon: '',
+                            name: '数据概况',
+                            isSubShow: false,
+                            router:'home',
+                            thirditems: []
+                          },
+                          {
+                            title: '行为分析',
+                            secTitlte: '',
+                            isdelete: false,
+                            secgreyIcon: '',
+                            secgreenIcon: '',
+                            name: '行为分析',
+                            isSubShow: false,
+                            router:'behaviorAnalysis',
+                            thirditems: []
+                          }
                         ]
                     },
                     {
@@ -472,7 +494,7 @@
                             }
                         ]
                     },
-                    {
+            /*        {
                         name: '统计数据',
                         greyIcon: 'el-icon-picture iconfont fontIcongrey',
                         greenIcon: 'el-icon-picture iconfont fontIconwhite',
@@ -481,19 +503,9 @@
                         isShow: false,
                         isdelete: false,
                         subItems: [
-                            {
-                                title: '行为分析',
-                                secTitlte: '',
-                                isdelete: false,
-                                secgreyIcon: '',
-                                secgreenIcon: '',
-                                name: '行为分析',
-                                isSubShow: false,
-                                router:'behaviorAnalysis',
-                                thirditems: []
-                            }
+
                         ]
-                    },
+                    },*/
                 ],
                 hasChannel: '',
                 hasCommodity: '',
