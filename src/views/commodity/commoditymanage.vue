@@ -211,7 +211,7 @@
         <div class="contanternews">
           <div class="dataGeneral backWhite">
             <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-              <el-menu-item index="0">兑换中</el-menu-item>
+              <el-menu-item index="0">销售中</el-menu-item>
               <el-menu-item index="1">仓库中</el-menu-item>
             </el-menu>
 
@@ -265,7 +265,7 @@
                   <span class="color2087 font12 cursor" v-if="activeIndex == 0"
                         @click="copyCommodity(item.id)">复制</span>
                   <span class="line"></span>
-                  <span class="color2087 font12 cursor" @click="undercarriage(item.id,item.activityId)"
+                  <span class="color2087 font12 cursor" @click="undercarriage(item.goodsActivityId)"
                         v-if="activeIndex == 0">下架</span>
                   <span class="line" v-if="activeIndex == 0"></span>
                   <span class="color2087 font12 cursor" @click="delectCommodity(item.id)">删除</span>
@@ -329,7 +329,7 @@
         sortDatas: [
           {orderType: '', name: '商品', showBlue: false, orderField: ''},
           {orderType: '', name: '活动名称', showBlue: false, orderField: ''},
-          {orderType: '', name: '活动类行', showBlue: false, orderField: ''},
+          {orderType: '', name: '活动类型', showBlue: false, orderField: ''},
           {orderType: '', name: '累计消耗积分', showBlue: false, orderField: ''},
           {orderType: '', name: '已兑换', showBlue: false, orderField: ''},
           {orderType: '', name: '剩余库存', showBlue: false, orderField: ''},
@@ -436,15 +436,14 @@
 
         });
       },
-      undercarriage(id, activityId) {
+      undercarriage(goodsActivityId) {
         this.$confirm('确认下架?', '', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           Service.goods().offShelfGoods({
-            "goodsId": id,
-            "activityId": activityId
+            "goodsActivityId": goodsActivityId
           }).then(response => {
             if (response.errorCode == 0) {
               this.$message({
