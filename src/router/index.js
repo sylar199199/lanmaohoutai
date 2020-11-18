@@ -35,6 +35,7 @@ import dynamicmanage from '@/views/communitymanage/dynamicmanage'//帖子管理
 import topicmanage from '@/views/communitymanage/topicmanage'//话题管理
 import roundmanage from '@/views/communitymanage/roundmanage'//圈子管理
 import relationposter from '@/views/communitymanage/relationposter'//关联海报
+import relationtopic from '@/views/communitymanage/relationtopic'//关联话题
 import messageNotification from '@/views/communitymanage/messageNotification'//消息通知查询
 import addMessageNotification from '@/views/communitymanage/addMessageNotification'//新建消息通知
 import publisherlist from '@/views/communitymanage/publisherlist'//发布者查询
@@ -127,6 +128,11 @@ export default new Router({
             path: '/communitymanage/relationposter/:roundId/:roundName',
             name: 'relationposter',
             component: relationposter
+        },
+      {
+            path: '/communitymanage/relationtopic/:roundId/:roundName',
+            name: 'relationtopic',
+            component: relationtopic
         },
         {
             path: '/communitymanage/publisherlist',

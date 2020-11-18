@@ -379,6 +379,8 @@
                   <span class="color2087 font12 fontWeight cursor" @click="deleteRound(item.id)">删除</span>
                   <span class="line"></span>
                   <span class="color2087 font12 fontWeight cursor" @click="jumpPoster(item)">关联海报</span>
+                  <span class="line"></span>
+                  <span class="color2087 font12 fontWeight cursor" @click="jumpTopic(item)">关联话题</span>
                 </td>
               </tr>
             </table>
@@ -571,6 +573,9 @@
       // 跳转到关联海报
       jumpPoster(item) {
         this.$router.push({name: 'relationposter', params: {roundId: item.id,roundName:item.name}})
+      },
+      jumpTopic(item) {
+        this.$router.push({name: 'relationtopic', params: {roundId: item.id,roundName:item.name}})
       },
       closeDiologone() {
         this.roundId = '';

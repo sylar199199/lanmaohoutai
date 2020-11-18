@@ -387,14 +387,6 @@
                   {{item.userCount}}
                 </td>
                 <td>
-                  <i class="cursor iconfont iconshangsheng fontIcongreen" v-if="index!=0"
-                     @click='upSort(index,item)'></i>
-                  <i class="iconfont iconshangsheng fontIcongrey" v-if="index==0"></i>
-                  <i class='cursor iconfont fontIcongreen iconjiang' @click='downSort(index,item)'
-                     v-if="index!=(tableData.length-1)"></i>
-                  <i class='iconfont fontIcongrey iconjiang' v-if="index==(tableData.length-1)"></i>
-                </td>
-                <td>
                   {{timetrans(item.createDate)}}
                 </td>
                 <td>
@@ -536,7 +528,6 @@
           {orderType: '', name: '阅读数', showBlue: false, orderField: ''},
           {orderType: '', name: '帖子数', showBlue: false, orderField: ''},
           {orderType: '', name: '发帖人数', showBlue: false, orderField: ''},
-          {orderType: '', name: '排序', showBlue: false, orderField: ''},
           {orderType: '', name: '创建时间', showBlue: false, orderField: ''},
           {orderType: '', name: '操作', showBlue: false, orderField: ''}
         ],
