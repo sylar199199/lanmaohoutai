@@ -362,10 +362,10 @@
                 <td>
                   {{item.readedNums}}
                 </td>
-                <td v-if="!item.sendStatus">
-                  <span  class="color2087 font12 fontWeight cursor" @click="addNotification(item)">修改</span>
-                  <span  class="line"></span>
+                <td>
                   <span  class="color2087 font12 fontWeight cursor" @click="deleteNotification(item)">删除</span>
+                  <span  class="line" v-if="!item.sendStatus"></span>
+                  <span  class="color2087 font12 fontWeight cursor" v-if="!item.sendStatus" @click="addNotification(item)">修改</span>
                 </td>
               </tr>
             </table>
