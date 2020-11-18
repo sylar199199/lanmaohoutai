@@ -213,7 +213,7 @@
                   {{item.openNums}} <!--打开次数-->
                 </td>
                 <td>
-                  {{item.visitNums}} <!--访问次数-->
+                  {{item.visitNums}} <!--页面浏览总数-->
                 </td>
                 <td>
                   {{item.visitorNums}} <!--访问人数-->
@@ -293,7 +293,7 @@
           },
           {
             id: 3,
-            name: '访问次数'
+            name: '页面浏览总数'
           },
           {
             id: 4,
@@ -329,7 +329,7 @@
           {orderType: '', name: '日期', showBlue: false, orderField: ''},
           {orderType: '', name: '累计访问人数', showBlue: false, orderField: ''},
           {orderType: '', name: '打开次数', showBlue: false, orderField: ''},
-          {orderType: '', name: '访问次数', showBlue: false, orderField: ''},
+          {orderType: '', name: '页面浏览总数', showBlue: false, orderField: ''},
           {orderType: '', name: '访问人数', showBlue: false, orderField: ''},
           {orderType: '', name: '新访问人数', showBlue: false, orderField: ''},
           {orderType: '', name: '平均访问深度', showBlue: false, orderField: ''},
@@ -460,7 +460,7 @@
             return optionsSet
             break
           case 3:
-            optionsSet.title = '访问次数'
+            optionsSet.title = '页面浏览总数'
             optionsSet.danwei = '次数'
             optionsSet.ydata = tableDate.map(item=>{
               return item.visitNums

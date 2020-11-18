@@ -441,14 +441,14 @@
             isdelete: false,
             subItems: [
               {
-                title: '帖子管理',
+                title: '圈子管理',
                 secTitlte: '',
                 isdelete: false,
                 secgreyIcon: '',
                 secgreenIcon: '',
-                name: '帖子管理',
+                name: '圈子管理',
                 isSubShow: false,
-                router: 'dynamicmanage',
+                router: 'roundmanage',
                 thirditems: []
               },
               {
@@ -463,16 +463,17 @@
                 thirditems: []
               },
               {
-                title: '圈子管理',
+                title: '帖子管理',
                 secTitlte: '',
                 isdelete: false,
                 secgreyIcon: '',
                 secgreenIcon: '',
-                name: '圈子管理',
+                name: '帖子管理',
                 isSubShow: false,
-                router: 'roundmanage',
+                router: 'dynamicmanage',
                 thirditems: []
               },
+
               {
                 title: '发布者管理',
                 secTitlte: '',

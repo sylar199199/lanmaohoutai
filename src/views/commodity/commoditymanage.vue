@@ -246,6 +246,9 @@
                   <span v-if="item.status == 1"></span>
                 </td>
                 <td>
+                  {{item.id}}
+                </td>
+                <td>
                   <span>{{item.activityType|capitalize}}</span>
                 </td>
                 <td>
@@ -329,6 +332,7 @@
         sortDatas: [
           {orderType: '', name: '商品', showBlue: false, orderField: ''},
           {orderType: '', name: '活动名称', showBlue: false, orderField: ''},
+          {orderType: '', name: '编号', showBlue: false, orderField: ''},
           {orderType: '', name: '活动类型', showBlue: false, orderField: ''},
           {orderType: '', name: '累计消耗积分', showBlue: false, orderField: ''},
           {orderType: '', name: '已兑换', showBlue: false, orderField: ''},
