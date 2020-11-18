@@ -334,7 +334,7 @@
           {orderType: '', name: '新访问人数', showBlue: false, orderField: ''},
           {orderType: '', name: '平均访问深度', showBlue: false, orderField: ''},
           {orderType: '', name: '人均停留时长', showBlue: false, orderField: ''},
-          {orderType: '', name: '月活越用户', showBlue: false, orderField: ''},
+          {orderType: '', name: '月活跃用户', showBlue: false, orderField: ''},
         ],
       };
     },
