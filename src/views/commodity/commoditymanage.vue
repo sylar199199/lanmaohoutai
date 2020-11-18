@@ -85,7 +85,7 @@
               }
 
               th:nth-child(1) {
-                text-align: left;
+                text-align: center;
                 padding-left: 10px
               }
 
@@ -136,9 +136,8 @@
               }
 
               td:nth-of-type(1) {
-                min-width: 168px;
-                max-width: 200px;
-                text-align: left;
+                width: 50px;
+                text-align: center;
                 padding-left: 10px
               }
 
@@ -233,6 +232,9 @@
               </tr>
               <tr v-for="(item,index) in tableData">
                 <td>
+                  {{item.id}}
+                </td>
+                <td>
                   <div class="flex">
                     <img class="productImg" :src="item.imgUrl">
                     <div class="productBox">
@@ -244,9 +246,6 @@
                 <td>
                   <span v-if="item.status == 0">{{item.activityName}}</span>
                   <span v-if="item.status == 1"></span>
-                </td>
-                <td>
-                  {{item.id}}
                 </td>
                 <td>
                   <span>{{item.activityType|capitalize}}</span>
@@ -330,9 +329,9 @@
         orderField: 'saleStartDate',
         orderType: 'desc',
         sortDatas: [
+          {orderType: '', name: '编号', showBlue: false, orderField: ''},
           {orderType: '', name: '商品', showBlue: false, orderField: ''},
           {orderType: '', name: '活动名称', showBlue: false, orderField: ''},
-          {orderType: '', name: '编号', showBlue: false, orderField: ''},
           {orderType: '', name: '活动类型', showBlue: false, orderField: ''},
           {orderType: '', name: '累计消耗积分', showBlue: false, orderField: ''},
           {orderType: '', name: '已兑换', showBlue: false, orderField: ''},
