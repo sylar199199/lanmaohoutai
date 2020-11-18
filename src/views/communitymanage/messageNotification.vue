@@ -492,13 +492,13 @@
         })
       },
       // 删除消息通知
-      deleteNotification(id) {
+      deleteNotification(item) {
         this.$confirm('消息通知删除请谨慎操作，确定删除?', '', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          Service.notificationSe().deleteNotificationSe({}, id).then(response => {
+          Service.notificationSe().deleteNotificationSe({}, item.id).then(response => {
             if (response.errorCode == 0) {
               this.$message({
                 type: 'success',
