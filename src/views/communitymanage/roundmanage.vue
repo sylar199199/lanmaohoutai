@@ -380,7 +380,7 @@
                   <span class="line"></span>
                   <span class="color2087 font12 fontWeight cursor" @click="jumpPoster(item)">关联海报</span>
                   <span class="line"></span>
-                  <span class="color2087 font12 fontWeight cursor" @click="jumpTopic(item)">关联话题</span>
+                  <span class="color2087 font12 fontWeight cursor" @click="jumpTopic(item)">话题排序</span>
                 </td>
               </tr>
             </table>
