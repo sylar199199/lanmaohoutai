@@ -447,6 +447,13 @@ export default {
           method: 'get'
         }, data)
       },
+      // 获取12个周的的累计数据接口
+      getWeekanalysist(data, page,size,startTime,endTime){
+        return getResource({
+          url: `/lanmao/admin/dataAnalyse/weekBrowseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
+          method: 'get'
+        }, data)
+      },
       // 获取table数据
       getanalysist(data, page,size,startTime,endTime) {
         return getResource({

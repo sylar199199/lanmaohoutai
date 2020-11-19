@@ -40,6 +40,7 @@
           }
         }
       }
+
       .table {
         font-size: 12px;
         border: 1px solid #f6f6f6;
@@ -137,11 +138,13 @@
   .marginleft20 {
     margin-left: 20px;
   }
-  .flexSpence{
+
+  .flexSpence {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+
   .flexCenter {
     display: flex;
     align-items: center;
@@ -362,30 +365,45 @@
       },
       // 切换时间端
       changeDateType(selectType) {
-        console.log('this.sele', this.selectId)
-        this.getAllDate(this.selectDate, selectType,this.selectId)
+        this.getAllDate(this.selectDate, selectType, this.selectId)
       },
       // 切换日期
       changeDate(val) {
-        this.getAllDate(val, this.selectType,this.selectId)
+        this.getAllDate(val, this.selectType, this.selectId)
       },
       // 获取所有数据echarts
-      getAllechartsData(startDate, endDate ,selectId, selectType){
-        if(selectType == 3){
-          Service.dataStatistics().getMountanalysist({}, this.page, 366, startDate, endDate).then(response =>{
+      getAllechartsData(startDate, endDate, selectId, selectType) {
+        if (selectType == 3) {
+          Service.dataStatistics().getMountanalysist({}, this.page, 366, startDate, endDate).then(response => {
             if (response.errorCode == 0) {
               if (response.data.records == 0) {
                 this.noData = false;
               } else {
                 this.noData = true;
                 let echartDatas = response.data;
-                let optionsData = this.getOptions(selectId, echartDatas,selectType)
+                let optionsData = this.getOptions(selectId, echartDatas, selectType)
                 let xinterval = this.getXinterval(selectType)
-                this.getanalysist( optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei, xinterval)
+                let roateNum = this.getRoateNum(selectType)
+                this.getanalysist(optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei, xinterval,roateNum)
               }
             }
           })
-        }else{
+        } else if (selectType == 2) {
+          Service.dataStatistics().getWeekanalysist({}, this.page, 366, startDate, endDate).then(response => {
+            if (response.errorCode == 0) {
+              if (response.data.records == 0) {
+                this.noData = false;
+              } else {
+                this.noData = true;
+                let echartDatas = response.data;
+                let optionsData = this.getOptions(selectId, echartDatas, selectType)
+                let xinterval = this.getXinterval(selectType)
+                let roateNum = this.getRoateNum(selectType)
+                this.getanalysist(optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei, xinterval,roateNum)
+              }
+            }
+          })
+        } else {
           Service.dataStatistics().getAllanalysist({}, this.page, 366, startDate, endDate).then(response => {
             if (response.errorCode == 0) {
               if (response.data.records == 0) {
@@ -393,21 +411,30 @@
               } else {
                 this.noData = true;
                 let echartDatas = response.data;
-                let optionsData = this.getOptions(selectId, echartDatas,selectType)
+                let optionsData = this.getOptions(selectId, echartDatas, selectType)
                 let xinterval = this.getXinterval(selectType)
-                this.getanalysist( optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei, xinterval)
+                let roateNum = this.getRoateNum(selectType)
+                this.getanalysist(optionsData.xdata, optionsData.ydata, optionsData.title, optionsData.danwei, xinterval, roateNum)
               }
             }
           });
         }
 
       },
-      getXinterval(type){
-        if(type == 1){
-          return 4
-        } else if(type == 2){
-          return 8
-        }else if(type == 3){
+      getRoateNum(type) {
+        if (type == 2) {
+          return 40
+        }else {
+          return 0
+        }
+
+      },
+      getXinterval(type) {
+        if (type == 1) {
+          return 5
+        } else if (type == 2) {
+          return 0
+        } else if (type == 3) {
           return 0
         }
       },
@@ -431,14 +458,18 @@
 
       },
       getOptions(type, tableDate, selectType) {
-       let optionsSet = {};
-        if(selectType == 3){
-          optionsSet.xdata = tableDate.map(item=>{
+        let optionsSet = {};
+        if (selectType == 3) {
+          optionsSet.xdata = tableDate.map(item => {
             return item.statisticsMonth
           })
-        }else {
-          optionsSet.xdata = tableDate.map(item=>{
-            return  this.timetransAgo(item.statisticsDate)
+        } else if (selectType == 2) {
+          optionsSet.xdata = tableDate.map(item => {
+            return this.timetransWeek(item.minDate) + "-" + this.timetransWeek(item.maxDate)
+          })
+        } else {
+          optionsSet.xdata = tableDate.map(item => {
+            return this.timetransAgo(item.statisticsDate)
           })
         }
 
@@ -446,7 +477,7 @@
           case 1:
             optionsSet.title = '累计访问人数'
             optionsSet.danwei = '人数'
-            optionsSet.ydata = tableDate.map(item=>{
+            optionsSet.ydata = tableDate.map(item => {
               return item.totalVisitors
             })
             return optionsSet
@@ -454,7 +485,7 @@
           case 2:
             optionsSet.title = '打开次数'
             optionsSet.danwei = '次数'
-            optionsSet.ydata = tableDate.map(item=>{
+            optionsSet.ydata = tableDate.map(item => {
               return item.openNums
             })
             return optionsSet
@@ -462,7 +493,7 @@
           case 3:
             optionsSet.title = '页面浏览总数'
             optionsSet.danwei = '次数'
-            optionsSet.ydata = tableDate.map(item=>{
+            optionsSet.ydata = tableDate.map(item => {
               return item.visitNums
             })
             return optionsSet
@@ -470,15 +501,15 @@
           case 4:
             optionsSet.title = '访问人数'
             optionsSet.danwei = '人数'
-            optionsSet.ydata = tableDate.map(item=>{
-              return  item.visitorNums
+            optionsSet.ydata = tableDate.map(item => {
+              return item.visitorNums
             })
             return optionsSet
             break
           case 5:
             optionsSet.title = '新访问人数'
             optionsSet.danwei = '人数'
-            optionsSet.ydata = tableDate.map(item=>{
+            optionsSet.ydata = tableDate.map(item => {
               return item.newVisitorNums
             })
             return optionsSet
@@ -486,7 +517,7 @@
           case 6:
             optionsSet.title = '平均访问深度'
             optionsSet.danwei = '深度'
-            optionsSet.ydata = tableDate.map(item=>{
+            optionsSet.ydata = tableDate.map(item => {
               return item.visitDepthNums
             })
             return optionsSet
@@ -494,19 +525,19 @@
           case 7:
             optionsSet.title = '人均停留时长'
             optionsSet.danwei = '分钟'
-            optionsSet.ydata = tableDate.map(item=>{
+            optionsSet.ydata = tableDate.map(item => {
               let fenarr = item.stayLengthStr.split("分")
               let fen = fenarr[0]
               let miao = fenarr[1].split("秒")[0]
-              let transFen = parseInt(fen) + parseFloat((miao/60).toFixed(2))
-              return   transFen
+              let transFen = parseInt(fen) + parseFloat((miao / 60).toFixed(2))
+              return transFen
             })
             return optionsSet
             break
           case 8:
             optionsSet.title = '月活跃用户'
             optionsSet.danwei = '人数'
-            optionsSet.ydata = tableDate.map(item=>{
+            optionsSet.ydata = tableDate.map(item => {
               return item.monthActiveNums
             })
             return optionsSet
@@ -518,24 +549,24 @@
         while (n--) {
           u8arr[n] = bstr.charCodeAt(n);
         }
-        return new Blob([u8arr],{type : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        return new Blob([u8arr], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
       },
-      daochu(){
-        Service.dataStatistics().statisticsDaochu({}, this.page, this.size, this.startDate, this.endDate).then(response=>{
-          if(response.errorCode == 0){
+      daochu() {
+        Service.dataStatistics().statisticsDaochu({}, this.page, this.size, this.startDate, this.endDate).then(response => {
+          if (response.errorCode == 0) {
             var blob = this.Decode(response.data);
-            if(window.URL.createObjectURL(blob).indexOf(location.host) < 0){//ie不支持
-              this.href =  window.navigator.msSaveOrOpenBlob(blob, '行为分析.xlsx');
-            }else{
+            if (window.URL.createObjectURL(blob).indexOf(location.host) < 0) {//ie不支持
+              this.href = window.navigator.msSaveOrOpenBlob(blob, '行为分析.xlsx');
+            } else {
               this.href = URL.createObjectURL(blob);
             }
             this.downloadtable(this.href);
-          }else{
+          } else {
             this.$message.error(response.message)
           }
         })
       },
-      downloadtable(blobUrl){
+      downloadtable(blobUrl) {
         const a = document.createElement('a');
         a.style.display = 'none';
         a.download = '行为分析.xlsx';
@@ -543,7 +574,7 @@
         a.click();
       },
       // 生成echart
-        getanalysist(xdata, ydata, title, danwei, xinterval) {
+      getanalysist(xdata, ydata, title, danwei, xinterval, roateNum) {
         var myChart = this.echarts.init(document.getElementById('analysis'));
         myChart.clear();
         var option = {
@@ -565,11 +596,13 @@
             {
               type: 'category',
               data: xdata.reverse(),
+              boundaryGap: false,
               axisPointer: {
                 type: 'shadow',
               },
-              axisLabel:{
-                interval: xinterval
+              axisLabel: {
+                interval: xinterval,
+                rotate: roateNum,
               },
             }
           ],
@@ -596,7 +629,7 @@
         };
         myChart.setOption(option)
       },
-        // 切换数据类行
+      // 切换数据类行
       checkSelect(item) {
         this.checkIndex = item.id
         this.selectId = item.id
@@ -607,13 +640,18 @@
         var newTime = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
         return newTime
       },
+      timetransWeek(timestamp) {
+        var d = new Date(timestamp);
+        var newTime = (d.getMonth() + 1) + '/' + d.getDate();
+        return newTime
+      },
       handleSizeChange(val) {
         this.size = val;
-        this.gettabletData(this.startDate,this.endDate)
+        this.gettabletData(this.startDate, this.endDate)
       },
       handleCurrentChange(val) {
         this.page = val;
-        this.gettabletData(this.startDate,this.endDate)
+        this.gettabletData(this.startDate, this.endDate)
       },
     },
   }
