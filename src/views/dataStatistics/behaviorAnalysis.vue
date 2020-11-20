@@ -21,7 +21,7 @@
             background: #f6f6f6;
             display: flex;
             flex-wrap: wrap;
-            margin-top: 30px;
+            margin-top: 20px;
 
             .flex {
               padding-bottom: 20px;
@@ -35,6 +35,7 @@
           }
 
           #analysis {
+            margin-top: 20px;
             width: 937px;
             height: 300px;
           }
@@ -143,6 +144,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
   }
 
   .flexCenter {
@@ -499,7 +501,7 @@
             return optionsSet
             break
           case 4:
-            optionsSet.title = '访问人数'
+            optionsSet.title = '访问人数（用户）'
             optionsSet.danwei = '人数'
             optionsSet.ydata = tableDate.map(item => {
               return item.visitorNums
@@ -582,10 +584,7 @@
           tooltip: {
             trigger: 'axis',
             axisPointer: {
-              type: 'cross',
-              crossStyle: {
-                color: '#999'
-              }
+              type: 'shadow',
             }
           },
           toolbox: {},
@@ -595,10 +594,16 @@
           xAxis: [
             {
               type: 'category',
+              axisTick: {
+                show: false
+              },
               data: xdata.reverse(),
               boundaryGap: false,
               axisPointer: {
-                type: 'shadow',
+                type: 'line',
+              },
+              axisLine: {
+                lineStyle:{color:'#999999'}
               },
               axisLabel: {
                 interval: xinterval,
@@ -609,9 +614,22 @@
           yAxis: [
             {
               type: 'value',
-              name: danwei,
+              axisTick: {
+                show: false
+              },
+              name: '',
+              axisLine: {
+                lineStyle:{
+                  width: 0,
+                  color: '#999999'
+                },
+              },
               splitLine: {
-                show: true
+                show: true,
+                lineStyle:{
+                  width: 1,
+                  type: 'dotted'
+                }
               },
               axisLabel: {
                 formatter: '{value}'

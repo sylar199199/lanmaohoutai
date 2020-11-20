@@ -238,6 +238,20 @@ export default {
           method: 'post'
         }, data)
       },
+      auditApprove(data, key) {
+        //审核通过
+        return getResource({
+          url: `lanmao/admin/community/post/${key}/audit/approve`,
+          method: 'post'
+        }, data)
+      },
+      auditRefuse(data, key) {
+        //审核不通过
+        return getResource({
+          url: `lanmao/admin/community/post/${key}/audit/refuse`,
+          method: 'post'
+        }, data)
+      },
       canceltopcommunity(data, key) {
         //取消置顶动态
         return getResource({
