@@ -168,7 +168,8 @@
               }
 
               td:nth-child(12) {
-                width: 200px;
+                width: 205px;
+                text-align: left;
               }
 
               td {
@@ -277,6 +278,17 @@
                   </el-option>
                 </el-select>
               </div>
+              <div class="searchBox">
+                <span class="searchLable colorGrey font12">置顶状态 </span>
+                <el-select v-model="topStatus" placeholder="">
+                  <el-option
+                    v-for="item in topStatusoption"
+                    :key="item.status"
+                    :label="item.name"
+                    :value="item.status">
+                  </el-option>
+                </el-select>
+              </div>
               <div class="bacButton cursor" @click="getcommunityList('search')">筛选</div>
             </div>
 
@@ -343,8 +355,8 @@
                         @click="auditClick(item.id)">审核</span>
                   <span class="color9999 font12 fontWeight cursor" v-if="item.auditStatus">审核</span>
                   <span class="line">|</span>
-                  <span class="color2087 font12 fontWeight cursor" v-if="!item.top" @click="topCommunity(item.id)">在话题中置顶</span>
-                  <span class="color2087 font12 fontWeight cursor" v-if="item.top" @click="canceltopCommunity(item.id)">取消在话题中置顶</span>
+                  <span class="color2087 font12 fontWeight cursor" v-if="!item.top" @click="topCommunity(item.id)">置顶</span>
+                  <span class="color2087 font12 fontWeight cursor" v-if="item.top" @click="canceltopCommunity(item.id)">取消置顶</span>
                 </td>
               </tr>
             </table>
@@ -411,6 +423,21 @@
             name: '审核不通过'
           },
         ], // 审核状态数组
+        topStatus: null, // 置顶状态
+        topStatusoption: [
+          {
+            status: null,
+            name: '全部'
+          },
+          {
+            status: true,
+            name: '置顶'
+          },
+          {
+            status: false,
+            name: '未位置'
+          },
+        ], // 置顶状态数组
         sortDatas: [
           {orderType: '', name: '', showBlue: false, orderField: ''},
           {orderType: '', name: '帖子', showBlue: false, orderField: ''},
@@ -740,7 +767,8 @@
           userId: this.userId,
           size: this.size,
           userNickname: this.userNickname,
-          auditStatus: this.auditStatus
+          auditStatus: this.auditStatus,
+          top: this.topStatus
         }).then(response => {
           if (response.errorCode == 0) {
             if (response.data.records.length == 0) {

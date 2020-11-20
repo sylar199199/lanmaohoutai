@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="1807ca42-5cc1-4ed5-817e-2db18ac3fd59" name="Default" comment="富文本bug修改 和 echarts修改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/app.0421e4625176317c38b5.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/app.0421e4625176317c38b5.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/manifest.2ae2e69a05c33dfc65f8.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/dist/static/js/manifest.2ae2e69a05c33dfc65f8.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/communitymanage/dynamicmanage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/communitymanage/dynamicmanage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/dataStatistics/behaviorAnalysis.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dataStatistics/behaviorAnalysis.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -324,7 +326,7 @@
       <workItem from="1605510827632" duration="2256000" />
       <workItem from="1605591409807" duration="18264000" />
       <workItem from="1605758776416" duration="6146000" />
-      <workItem from="1605850472919" duration="6923000" />
+      <workItem from="1605850472919" duration="8057000" />
     </task>
     <task id="LOCAL-00001" summary="抽奖福利">
       <created>1603277915533</created>
@@ -489,22 +491,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="499" y="111" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1605837925923" />
-    <state width="754" height="344" key="GridCell.Tab.0.bottom" timestamp="1605846545161">
+    <state width="754" height="3" key="GridCell.Tab.0.bottom" timestamp="1605867207046">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="754" height="344" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605846545161" />
-    <state width="754" height="344" key="GridCell.Tab.0.center" timestamp="1605846545161">
+    <state width="754" height="3" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605867207046" />
+    <state width="754" height="3" key="GridCell.Tab.0.center" timestamp="1605867207045">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="754" height="344" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605846545161" />
-    <state width="754" height="344" key="GridCell.Tab.0.left" timestamp="1605846545161">
+    <state width="754" height="3" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605867207045" />
+    <state width="754" height="3" key="GridCell.Tab.0.left" timestamp="1605867207045">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="754" height="344" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605846545161" />
-    <state width="754" height="344" key="GridCell.Tab.0.right" timestamp="1605846545161">
+    <state width="754" height="3" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605867207045" />
+    <state width="754" height="3" key="GridCell.Tab.0.right" timestamp="1605867207045">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="754" height="344" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605846545161" />
+    <state width="754" height="3" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605867207045" />
     <state x="261" y="81" key="Vcs.Push.Dialog.v2" timestamp="1605666648169">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
