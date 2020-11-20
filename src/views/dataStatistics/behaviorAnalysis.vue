@@ -30,7 +30,7 @@
             }
 
             .typeText {
-              width: 100px;
+              width: 120px;
             }
           }
 
@@ -288,7 +288,7 @@
         dataSelectList: [
           {
             id: 1,
-            name: '累计访问人数'
+            name: '累计访问人数（用户）'
           },
           {
             id: 2,
@@ -300,11 +300,11 @@
           },
           {
             id: 4,
-            name: '访问人数'
+            name: '访问人数（用户）'
           },
           {
             id: 5,
-            name: '访问新人数'
+            name: '访问新人数（用户）'
           },
           {
             id: 6,
@@ -330,11 +330,11 @@
         tableData: [],
         sortDatas: [
           {orderType: '', name: '日期', showBlue: false, orderField: ''},
-          {orderType: '', name: '累计访问人数', showBlue: false, orderField: ''},
+          {orderType: '', name: '累计访问人数(用户)', showBlue: false, orderField: ''},
           {orderType: '', name: '打开次数', showBlue: false, orderField: ''},
           {orderType: '', name: '页面浏览总数', showBlue: false, orderField: ''},
-          {orderType: '', name: '访问人数', showBlue: false, orderField: ''},
-          {orderType: '', name: '新访问人数', showBlue: false, orderField: ''},
+          {orderType: '', name: '访问人数（用户）', showBlue: false, orderField: ''},
+          {orderType: '', name: '新访问人数（用户）', showBlue: false, orderField: ''},
           {orderType: '', name: '平均访问深度', showBlue: false, orderField: ''},
           {orderType: '', name: '人均停留时长', showBlue: false, orderField: ''},
           {orderType: '', name: '月活跃用户', showBlue: false, orderField: ''},
@@ -475,7 +475,7 @@
 
         switch (type) {
           case 1:
-            optionsSet.title = '累计访问人数'
+            optionsSet.title = '累计访问人数（用户）'
             optionsSet.danwei = '人数'
             optionsSet.ydata = tableDate.map(item => {
               return item.totalVisitors
@@ -578,7 +578,7 @@
         var myChart = this.echarts.init(document.getElementById('analysis'));
         myChart.clear();
         var option = {
-          color: ['#56ae97'],
+          color: ['#41A3FC'],
           tooltip: {
             trigger: 'axis',
             axisPointer: {
