@@ -431,11 +431,11 @@
           },
           {
             status: true,
-            name: '置顶'
+            name: '已置顶'
           },
           {
             status: false,
-            name: '未位置'
+            name: '未置顶'
           },
         ], // 置顶状态数组
         sortDatas: [
