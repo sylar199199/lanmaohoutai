@@ -29,6 +29,7 @@
             padding-left: 74px;
             margin-bottom: 18px;
             font-size: 12px;
+            position: relative;
           }
 
           .secondLi:hover {

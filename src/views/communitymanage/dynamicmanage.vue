@@ -502,7 +502,7 @@
     },
     methods: {
       openBig(item) {
-        this.showtitle = '帖子：' + item.title;
+        this.showtitle = '';
         this.bigImg = item.imgUrl;
         this.centerDialogVisible = true;
       },
