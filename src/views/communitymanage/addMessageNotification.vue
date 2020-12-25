@@ -348,7 +348,7 @@
       };
     },
     created() {
-      this.myConfig.serverUrl = Global.requestUrl+"/kl-store/ueditor/index";
+      this.myConfig.serverUrl = Global.requestUrl+"/lanmao/ueditor/index";
       this.userInfo = JSON.parse(localStorage.getItem('user'));
       this.notificationId = this.$route.params.notificationId
       if (this.userInfo) {
