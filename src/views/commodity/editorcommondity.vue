@@ -873,6 +873,10 @@
                            this.$message.error('请输入规格值');
                            return;
                        }
+                       if(this.specs[i].price ==0 && this.specs[i].points==0){
+                           this.$message.error('价格与积分不能同时为0');
+                           return;
+                       }
                        if(!this.removsellPriceBorder(this.specs[i],'submit')){
                            return;
                        }

@@ -119,7 +119,7 @@
                                 <p class="colorGrey font12" v-if="getoverviewCount.yesterdayVisitors">昨日 {{getoverviewCount.yesterdayVisitors}}</p>
                                 <p class="colorGrey font12" v-if="!getoverviewCount.yesterdayVisitors">昨日 0</p>
                             </div>
-                            
+
                             <div class="generalBox">
                                 <ul class="warmText" v-if="showOne">
                                     <li>截至昨日24点整统计</li>
@@ -211,7 +211,7 @@
                                 </p>
                                 <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumPlayCount">{{getoverviewCount.accumPlayCount}}</p>
                                 <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumPlayCount">0</p>
-                                
+
                             </div>
                             <div class="generalBox">
                                 <p>
@@ -219,7 +219,7 @@
                                 </p>
                                 <p class="genatalCount colorblack fontWeight font28" v-if="getoverviewCount.accumMedal7DayCount">{{getoverviewCount.accumMedal7DayCount}}</p>
                                 <p class="genatalCount colorblack fontWeight font28" v-if="!getoverviewCount.accumMedal7DayCount">0</p>
-                             
+
                             </div>
                             <div class="generalBox">
                                 <p>
@@ -256,14 +256,14 @@
                                     <p class="countNumber fontWeight colorblack font28" v-if="getoverviewCount.unshippedOrderCount">{{getoverviewCount.unshippedOrderCount}}</p>
                                     <p class="countNumber fontWeight colorblack font28" v-if="!getoverviewCount.unshippedOrderCount">0</p>
                                 </div>
-                                <!--<div class="waitBox cursor">-->
-                                    <!--<div class="waitTitle back89 font12" @click="goList()">退货中</div>-->
-                                    <!--<p class="countNumber fontWeight colorblack font28">{{todoC}}</p>-->
-                                <!--</div>-->
-                                <!--<div class="waitBox cursor">-->
-                                    <!--<div class="waitTitle backfb font12" @click="goList()">退款中</div>-->
-                                    <!--<p class="countNumber fontWeight colorblack font28">{{tod}}</p>-->
-                                <!--</div>-->
+                                <div class="waitBox cursor">
+                                    <div class="waitTitle back89 font12" @click="goList()">带退款订单</div>
+                                    <p class="countNumber fontWeight colorblack font28">00</p>
+                                </div>
+                                <div class="waitBox cursor">
+                                    <div class="waitTitle backfb font12" @click="goList()">待退货退款订单</div>
+                                    <p class="countNumber fontWeight colorblack font28">00</p>
+                                </div>
                             </div>
                         </div>
 
@@ -304,7 +304,7 @@
                                     </p>
                                     <p class="genatalCount colorblack fontWeight font28" v-if="communityCount.accumLike">{{communityCount.accumLike}}</p>
                                     <p class="genatalCount colorblack fontWeight font28" v-if="!communityCount.accumLike">0</p>
-                                
+
                                 </div>
                             </div>
                             <div class="generalBox">
@@ -367,12 +367,12 @@
                                 <p class="colorGrey font12" v-if="getoverviewCount.accumOrderAmount">累计 {{getoverviewCount.accumOrderAmount}}</p>
                                 <p class="colorGrey font12" v-if="!getoverviewCount.accumOrderAmount">累计 0</p>
                             </div>
-                            
+
                         </div>
                         <div class="dataGenetalContent flexAround" >
-                           
-                            
-                           
+
+
+
                         </div>
                     </div>
                 </div>
@@ -421,7 +421,7 @@
         methods:{
              tranNumber(num, point) {
                 let numStr = num.toString()
-                // 十万以内直接返回 
+                // 十万以内直接返回
                 if (numStr.length < 6) {
                     return numStr;
                 }
