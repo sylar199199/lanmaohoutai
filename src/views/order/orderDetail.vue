@@ -276,7 +276,7 @@
     }
   }
 
-  .dialogone::after, .dialog::after, .editDialog::after {
+  .dialogone::after, .dialog::after, .editDialog::after, .dialogtwo::after {
     content: "";
     display: inline-block;
     height: 100%;
@@ -284,7 +284,7 @@
     vertical-align: middle;
   }
 
-  .dialogone, .dialog, .editDialog {
+  .dialogone, .dialog, .editDialog, .dialogtwo {
     display: none;
     position: fixed;
     top: 0;
@@ -378,6 +378,7 @@
   .flex1 {
     flex: 1;
   }
+
   .tip {
     font-size: 12px;
     color: #999999;
@@ -471,7 +472,7 @@
               </div>
             </div>
           </div>
-          <div class="dataGeneral backWhite">
+          <div class="dataGeneral backWhite" v-if="orderDetail.afs">
             <div class="infoBox">
               <span class="colorblack font16 fontWeight marginright10">售后信息</span>
             </div>
@@ -479,20 +480,21 @@
               <div class="infoLeft flex1 marginTop20">
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">售后状态</span>
-                  <span class="colorblack font12">代发货，退款审核</span>
-                  <span v-if="statusTitle == '退货中'&& orderDetail.goodsType == 2 && orderDetail.status == 2"
-                        @click="agreeReturn(orderDetail.goodsType,orderDetail.status)"
+                  <span class="colorblack font12">{{statusTitle}}</span>
+                  <span v-if="statusTitle == '退货中' && orderDetail.status == 2"
+                        @click="agreeReturn(orderDetail.status)"
                         class="cursor colorfff borderButton marginright10">立即退款</span>
-                  <span v-if="statusTitle == '退货中'&& orderDetail.goodsType == 2 && orderDetail.status == 2"
-                    style="height: 48px"
-                    class="cursor colorfff borderButton marginright10"     @click="editMoney()">同意退款 修改金额</span>
-                  <span v-if="statusTitle == '退货中'&& orderDetail.goodsType == 2 && orderDetail.status == 2"
+                  <span v-if="statusTitle == '退货中' && orderDetail.status == 2"
+                        style="height: 48px;width: 60px;"
+                        class="cursor colorfff borderButton marginright10"
+                        @click="editMoney()">同意退款 修改金额</span>
+                  <span v-if="statusTitle == '退货中' && orderDetail.status == 2"
                         @click="refuseMoney()"
                         class="cursor colorfff borderButton marginright10">拒绝退款</span>
-                  <span v-if="statusTitle == '退货中'&& orderDetail.goodsType == 2 && orderDetail.status != 2"
-                        @click="agreeReturn(orderDetail.goodsType,orderDetail.status)"
+                  <span v-if="statusTitle == '退货中' && orderDetail.status != 2"
+                        @click="agreeReturn(orderDetail.status)"
                         class="cursor colorfff borderButton marginright10">同意退货</span>
-                  <span v-if="statusTitle == '退货中'&& orderDetail.goodsType == 2 && orderDetail.status != 2"
+                  <span v-if="statusTitle == '退货中' && orderDetail.status != 2"
                         @click="refuseReturn()" class="cursor colorfff borderButton">拒绝退货</span>
                   <span class="cursor borderButton colorfff" v-if=" statusTitle == '退款中'"
                         @click="returnMoney()">立即退款</span>
@@ -503,33 +505,33 @@
                 </div>
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">申请原因</span>
-                  <span class="colorblack font12">重复购买</span>
+                  <span class="colorblack font12">{{orderDetail.afs && orderDetail.afs.reason}}</span>
                 </div>
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">申请时间</span>
-                  <span class="colorblack font12">2009-09-09</span>
+                  <span class="colorblack font12">{{timetrans(orderDetail.amount)}}</span>
                 </div>
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">退款金额</span>
-                  <span class="colorblack font12">￥33</span>
+                  <span class="colorblack font12">{{orderDetail.amount}}</span>
                 </div>
               </div>
               <div class="infoLeft flex1 marginTop20">
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">申请人联系方式</span>
-                  <span class="colorblack font12">13865452125</span>
+                  <span class="colorblack font12">{{orderDetail.consignee.phone}}</span>
                 </div>
-                <div class="infoBox">
+                <div class="infoBox" v-if="returnName">
                   <span class="colorGrey font12 marginright10">寄回收件人</span>
-                  <span class="colorblack font12">白洋</span>
+                  <span class="colorblack font12">{{returnName}}</span>
                 </div>
-                <div class="infoBox">
+                <div class="infoBox" v-if="returnPhone">
                   <span class="colorGrey font12 marginright10">寄回收件人联系方式</span>
-                  <span class="colorblack font12">18243015787</span>
+                  <span class="colorblack font12">{{returnPhone}}</span>
                 </div>
-                <div class="infoBox">
+                <div class="infoBox" v-if="returnAddressName">
                   <span class="colorGrey font12 marginright10">寄回收件人地址</span>
-                  <span class="colorblack font12">后瑞新瑞村</span>
+                  <span class="colorblack font12">{{returnAddressName}}</span>
                 </div>
               </div>
             </div>
@@ -719,21 +721,21 @@
         <div class="messageContent">
           <div class="messagemessage">
             <span class="lableText colorblack font12">修改退款金额</span>
-            <input type="text" @change="changeValue()" v-model="editValue"
+            <input type="text" @change="changeValue('editMoney')" v-model="editValue"
                    class="inputBox marginLeft10 colorblack font12" style="width: 150px" placeholder="输入金额"/>
             <span class="tip">需要小于等于用户申的金额</span>
           </div>
           <div class="messagemessage">
-            <span class="lableText colorblack font12">拒绝原因</span>
-            <input type="text" @change="changeValue()" v-model="refuseMessage"
-                   class="inputBox marginLeft10 colorblack font12" placeholder="拒绝原因不超过50字"/>
+            <span class="lableText colorblack font12">修改原因</span>
+            <input type="text" @change="changeValue('editReason')" v-model="refuseMessage"
+                   class="inputBox marginLeft10 colorblack font12" placeholder="修改原因不超过50字"/>
           </div>
         </div>
         <div class="messagebtns">
-          <div class="button borderButton copyButton" @click="closeDiologone()">
+          <div class="button borderButton copyButton" @click="closeeditDiologone()">
             取消
           </div>
-          <div class="button bacButton" @click="refuseReturnMessage()">
+          <div class="button bacButton" @click="editReturnMessage()">
             确认
           </div>
         </div>
@@ -749,7 +751,7 @@
         <div class="messageContent">
           <div class="messagemessage">
             <span class="lableText colorblack font12">拒绝原因</span>
-            <input type="text" @change="changeValue()" v-model="refuseMessage"
+            <input type="text" @change="changeValue('refuseMessage')" v-model="refuseMessage"
                    class="inputBox marginLeft10 colorblack font12" placeholder="拒绝原因不超过50字"/>
           </div>
         </div>
@@ -758,6 +760,30 @@
             取消
           </div>
           <div class="button bacButton" @click="refuseReturnMessage()">
+            确认
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dialogtwo">
+      <div class="messge">
+        <div class="messageHeader">
+          <div class="messagetitle">
+            <span>拒绝原因</span>
+          </div>
+        </div>
+        <div class="messageContent">
+          <div class="messagemessage">
+            <span class="lableText colorblack font12">拒绝原因</span>
+            <input type="text" @change="changeValue()" v-model="refuseMessage"
+                   class="inputBox marginLeft10 colorblack font12" placeholder="拒绝原因不超过50字"/>
+          </div>
+        </div>
+        <div class="messagebtns">
+          <div class="button borderButton copyButton" @click="closeDiologtwo()">
+            取消
+          </div>
+          <div class="button bacButton" @click="refuserefundMessage()">
             确认
           </div>
         </div>
@@ -787,6 +813,7 @@
         </div>
       </div>
     </div>
+    <Returnadress v-if="isshowadress" @getadressid='clickagreeReturn' @clickbanner="getbackData"></Returnadress>
   </div>
 </template>
 
@@ -798,13 +825,15 @@
   import KlTop from '@/components/klTop'
   import Global from '@/common/global'
   import Commodities from '@/components/commodities'
+  import Returnadress from '@/components/returnadress'
 
   export default {
     name: "salecustomer",
     components: {
       Aside,
       KlTop,
-      Commodities
+      Commodities,
+      Returnadress
     },
     data() {
       return {
@@ -816,6 +845,9 @@
         remarkList: '',
         refuseMessage: '',
         afs: null,
+        returnAddressName: '',
+        returnPhone: '',
+        returnName: '',
         orderDetail: {
           consignee: {},
         },
@@ -823,6 +855,7 @@
         shouhuo: '',
         statusTitle: '',
         imageUrl: '',
+        isshowadress: false
       };
     },
     created() {
@@ -864,8 +897,79 @@
         }, err => {
         });
       },
+      getbackData(str) {
+        if (str == 'sure') {
+          this.getorderDetail()
+        }
+        this.isshowadress = false;
+      },
+      clickagreeReturn(str) {
+        var addressId = str.id;
+        this.returnAddressName = str.name
+        this.returnPhone = str.contactName
+        this.returnName = str.contactTel
+        Service.order().agreeAfs({
+            message: '',
+            orderId: this.orderId,
+            addressId: addressId
+          },
+        ).then(response => {
+          if (response.errorCode == 0) {
+            this.getorderDetail();
+          } else {
+            this.$message.error(response.message)
+          }
+        }, err => {
+        });
+      },
       openRemark() {
         $(".dialog").css({'display': 'block'});
+      },
+      refuseReturn() {
+        $(".dialogone").css({"display": 'block'});
+      },
+      refuseMoney() {
+        $(".dialogtwo").css({"display": 'block'});
+      },
+      // 拒绝退货
+      refuseReturnMessage() {
+        if (!this.changeValue('refuseMessage', 'submit')) {
+          return;
+        }
+        Service.order().refuseafs({
+            message: this.refuseMessage,
+            orderId: this.orderId
+          },
+        ).then(response => {
+          if (response.errorCode == 0) {
+            $(".dialogone").css({"display": 'none'});
+            this.$message.success(response.message)
+            this.getorderDetail();
+          } else {
+            this.$message.error(response.message)
+          }
+        }, err => {
+        });
+      },
+      // 拒绝退款
+      refuserefundMessage() {
+        if (!this.changeValue('refuseMessage','submit')) {
+          return;
+        }
+        Service.order().refuserefund({
+            message: this.refuseMessage,
+            orderId: this.orderId
+          },
+        ).then(response => {
+          if (response.errorCode == 0) {
+            $(".dialogtwo").css({"display": 'none'});
+            this.$message.success(response.message)
+            this.getorderDetail();
+          } else {
+            this.$message.error(response.message)
+          }
+        }, err => {
+        });
       },
       changeremarkValue(type) {
         var on = true;
@@ -883,22 +987,48 @@
           return on;
         }
       },
-      changeValue(type) {
+      changeValue(name, type) {
         var on = true;
-        if (this.refuseMessage.length != 0) {
-          this.refuseMessage = this.refuseMessage.replace(/\s+/g, "");
-          if (this.refuseMessage.length > 50 || this.refuseMessage.length < 2) {
-            this.$message.error('请输入不少于2个字符或者多于50个字符的拒绝原因');
+        if (name == 'refuseMessage') {
+          if (this.refuseMessage.length != 0) {
+            this.refuseMessage = this.refuseMessage.replace(/\s+/g, "");
+            if (this.refuseMessage.length > 50 || this.refuseMessage.length < 2) {
+              this.$message.error('请输入不少于2个字符或者多于50个字符的拒绝原因');
+            }
+          } else {
+            this.$message.error('请输入拒绝原因');
+            on = false;
+            return;
           }
-        } else {
-          this.$message.error('请输入拒绝原因');
-          on = false;
-          return;
+        }
+        if (name == 'editReason') {
+          if (this.refuseMessage.length != 0) {
+            this.refuseMessage = this.refuseMessage.replace(/\s+/g, "");
+            if (this.refuseMessage.length > 50 || this.refuseMessage.length < 2) {
+              this.$message.error('请输入不少于2个字符或者多于50个字符的修改原因');
+            }
+          } else {
+            this.$message.error('请输入修改原因');
+            on = false;
+            return;
+          }
+        }
+        if (name == 'editMoney') {
+          if (this.editValue.length != 0) {
+            if (this.editValue > this.orderDetail.amount) {
+              this.$message.error('修改金额不能大于申请金额');
+              on = false;
+              return;
+            }
+          } else {
+            this.$message.error('请输入修改金额');
+            on = false;
+            return;
+          }
         }
         if (type == 'submit') {
           return on;
         }
-
       },
       returnMoney() {
         this.$confirm('同意退款，系统将订单款项原路退还给付款账号，请确认是否退款?', '', {
@@ -925,16 +1055,17 @@
       editMoney() {
         $(".editDialog").css({'display': 'block'});
       },
-      agreeReturn(type, status) {
+      agreeReturn(status) {
         var str = '';
-        if (type == 1) {
+        if (status == 2) {
           str = '同意退款，系统将订单款项原路退还给付款账号，请确认是否退款?'
-        } else if (type == 2 && status == 2) {
-          str = '同意退款，系统将订单款项原路退还给付款账号，请确认是否退款?'
-        } else if (type == 2 && status != 2) {
-          str = '请确认是否同意客户的退货申请?'
+          this.showconfirm(str);
+        } else if ( status != 2) {
+          str = '请确认是否同意客户的退货申请?';
+          this.isshowadress = true;
         }
-
+      },
+      showconfirm(str) {
         this.$confirm(str, '', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -956,8 +1087,8 @@
 
         });
       },
-      refuseReturnMessage() {
-        if (!this.changeValue('submit')) {
+      editReturnMessage() {
+        if (!this.changeValue('editMoney', 'submit')) {
           return;
         }
         Service.order().refuseafs({
@@ -966,7 +1097,7 @@
           },
         ).then(response => {
           if (response.errorCode == 0) {
-            $(".dialogone").css({"display": 'none'});
+            $(".editDialog").css({"display": 'none'});
             this.$message.success(response.message)
             this.getorderDetail();
           } else {
@@ -1133,8 +1264,14 @@
       closeDiologone() {
         $(".dialogone").css({"display": "none"})
       },
+      closeDiologtwo() {
+        $(".dialogtwo").css({"display": "none"})
+      },
       closeDiolog() {
         $(".dialog").css({"display": "none"})
+      },
+      closeeditDiologone() {
+        $(".editDialog").css({"display": "none"})
       },
       showDes(item) {
         if (item.statusDesc) {

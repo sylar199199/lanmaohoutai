@@ -315,7 +315,7 @@ export default {
 
     }
   },
-  round(){
+  round() {
     return {
       getcircleList(data, key) {
         //获取圈子列表
@@ -367,7 +367,7 @@ export default {
           method: 'post'
         }, data)
       },
-      editorPoster(data,key) {
+      editorPoster(data, key) {
         //修改圈子关联海报
         return getResource({
           url: `/lanmao/admin/community/circle/poster/${key}`,
@@ -381,7 +381,7 @@ export default {
           method: 'post'
         }, data)
       },
-      deletePoster(data,key) {
+      deletePoster(data, key) {
         //删除圈子关联海报
         return getResource({
           url: `/lanmao/admin/community/circle/poster/${key}`,
@@ -398,7 +398,7 @@ export default {
     }
   },
   // 消息通知相关接口
-  notificationSe(){
+  notificationSe() {
     return {
       addMesNotification(data, key) {
         // 新增消息通知
@@ -428,55 +428,55 @@ export default {
           method: 'get'
         }, data)
       },
-      getNotificationTopic(data){
+      getNotificationTopic(data) {
         // 获取通知列表
         return getResource({
           url: `/lanmao/admin/mp/notification/topics`,
           method: 'get'
-        },data)
+        }, data)
       },
-      getNotificationDetails(data,key){
+      getNotificationDetails(data, key) {
         // 获取通知详情
         return getResource({
           url: `/lanmao/admin/mp/notification/${key}`,
           method: 'get'
-        },data)
+        }, data)
       }
     }
   },
   // 行为分析接口
-  dataStatistics(){
-    return{
-       // 获取echarts数据
-      getAllanalysist(data, page,size,startTime,endTime) {
+  dataStatistics() {
+    return {
+      // 获取echarts数据
+      getAllanalysist(data, page, size, startTime, endTime) {
         return getResource({
           url: `/lanmao/admin/dataAnalyse/allBrowseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
           method: 'get'
         }, data)
       },
       // 获取12个月的每个月的累计数据接口
-      getMountanalysist(data, page,size,startTime,endTime){
+      getMountanalysist(data, page, size, startTime, endTime) {
         return getResource({
           url: `/lanmao/admin/dataAnalyse/monthBrowseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
           method: 'get'
         }, data)
       },
       // 获取12个周的的累计数据接口
-      getWeekanalysist(data, page,size,startTime,endTime){
+      getWeekanalysist(data, page, size, startTime, endTime) {
         return getResource({
           url: `/lanmao/admin/dataAnalyse/weekBrowseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
           method: 'get'
         }, data)
       },
       // 获取table数据
-      getanalysist(data, page,size,startTime,endTime) {
+      getanalysist(data, page, size, startTime, endTime) {
         return getResource({
           url: `/lanmao/admin/dataAnalyse/browseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
           method: 'get'
         }, data)
       },
       // 导出数据
-      statisticsDaochu(data, page,size,startTime,endTime) {
+      statisticsDaochu(data, page, size, startTime, endTime) {
         return getResource({
           url: `/lanmao/admin/dataAnalyse/exportBrowseBehaviour?page=${page}&size=${size}&startTime=${startTime}&endTime=${endTime}`,
           method: 'get'
@@ -524,6 +524,31 @@ export default {
 
     }
 
+  },
+  returnadress() {
+    return {
+      // 添加退货地址
+      addadress(data, key) {
+        return getResource({
+          url: `/lanmao/admin/return/address`,
+          method: 'post'
+        }, data)
+      },
+      // 删除
+      deleteaddress(data, key) {
+        return getResource({
+          url: `/lanmao/admin/return/address/${key}`,
+          method: 'DELETE'
+        }, data)
+      },
+      //    退货地址查询
+      queryaddress(data, key) {
+        return getResource({
+          url: `/lanmao/admin/return/address/query`,
+          method: 'post'
+        }, data)
+      },
+    }
   },
   redeem() {
     return {
@@ -978,37 +1003,37 @@ export default {
       },
       getremarkList: function (data, key) {//获取订单备注列表
         return getResource({
-          url: `/kl-store/admin/order/${key}/remark`,
+          url: `/lanmao/admin/order/${key}/remark`,
           method: 'get'
         }, data)
       },
       addremark: function (data, key) {//添加备注
         return getResource({
-          url: `/kl-store/admin/order/${key}/remark`,
+          url: `/lanmao/admin/order/${key}/remark`,
           method: 'post'
         }, data)
       },
       agreeAfs: function (data, key) {//同意退货
         return getResource({
-          url: `/kl-store/admin/order/afs/agree`,
+          url: `/lanmao/admin/order/afs/refund/agree`,
           method: 'post'
         }, data)
       },
       agreerefund: function (data, key) {//同意退款
         return getResource({
-          url: `/kl-store/admin/order/afs/refund/agree`,
+          url: `/lanmao/admin/order/afs/refund/agree`,
           method: 'POST'
         }, data)
       },
       refuserefund: function (data, key) {//拒绝退款
         return getResource({
-          url: `/kl-store/admin/order/afs/refund/refuse`,
+          url: `/lanmao/admin/order/afs/refund/refuse`,
           method: 'POST'
         }, data)
       },
       refuseafs: function (data, key) {//拒绝退货
         return getResource({
-          url: `kl-store/admin/order/afs/refuse`,
+          url: `/lanmao/admin/order/afs/refuse`,
           method: 'POST'
         }, data)
       },
@@ -1446,28 +1471,28 @@ export default {
           method: 'post'
         }, data)
       },
-      editoractivity(data,key){
+      editoractivity(data, key) {
         //抽奖活动编辑
         return getResource({
           url: `/lanmao/admin/lottery/${key}`,
           method: 'put'
         }, data)
       },
-      copyactivity(data,key){
+      copyactivity(data, key) {
         //抽奖活动复制
         return getResource({
           url: `/lanmao/admin/lottery/copy/${key}`,
           method: 'post'
         }, data)
       },
-      addhelpRules(data,key){
+      addhelpRules(data, key) {
         //添加活动规则
         return getResource({
           url: `/lanmao/admin/lottery/helpRules`,
           method: 'post'
         }, data)
       },
-      gethelpRules(data,key){
+      gethelpRules(data, key) {
         //获取活动规则
         return getResource({
           url: `/lanmao/admin/lottery/helpRules`,
@@ -1475,20 +1500,20 @@ export default {
         }, data)
       },
       // 获取抽奖活动列表
-      queryactivity(data,key){
+      queryactivity(data, key) {
         return getResource({
           url: `/lanmao/admin/lottery/list?status=${key}`,
           method: 'get'
         }, data)
       },
       // 首页是否显示
-      showlottery(data,key){
+      showlottery(data, key) {
         return getResource({
           url: `/lanmao/admin/lottery/show/${key}`,
           method: 'put'
         }, data)
       },
-      sortactivity(data,key){
+      sortactivity(data, key) {
         //抽奖活动排序
         return getResource({
           url: `/lanmao/admin/lottery/sort/${key}`,
@@ -1496,21 +1521,21 @@ export default {
         }, data)
       },
       //获取抽奖活动详情
-      getlotteryDetail(data,key){
+      getlotteryDetail(data, key) {
         return getResource({
           url: `/lanmao/admin/lottery/${key}`,
           method: 'get'
         }, data)
       },
       // 失效/生效
-      invalidactivity(data,key){
+      invalidactivity(data, key) {
         return getResource({
           url: `/lanmao/admin/lottery/invalid/${key}`,
           method: 'put'
         }, data)
       },
       // 删除抽奖活动
-      deleteactivity(data,key){
+      deleteactivity(data, key) {
         return getResource({
           url: `/lanmao/admin/lottery/${key}`,
           method: 'DELETE'

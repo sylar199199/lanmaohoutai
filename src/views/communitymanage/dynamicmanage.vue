@@ -355,7 +355,8 @@
                         @click="auditClick(item.id)">审核</span>
                   <span class="color9999 font12 fontWeight cursor" v-if="item.auditStatus">审核</span>
                   <span class="line">|</span>
-                  <span class="color2087 font12 fontWeight cursor" v-if="!item.top" @click="topCommunity(item.id)">置顶</span>
+                  <span class="color2087 font12 fontWeight cursor" v-if="!item.top"
+                        @click="topCommunity(item.id)">置顶</span>
                   <span class="color2087 font12 fontWeight cursor" v-if="item.top" @click="canceltopCommunity(item.id)">取消置顶</span>
                 </td>
               </tr>
@@ -519,6 +520,7 @@
       },
       auditClick(id) {
         this.$confirm('审核', '', {
+          distinguishCancelAndClose: true,
           confirmButtonText: '通过',
           cancelButtonText: '不通过',
           type: 'warning'
@@ -533,17 +535,25 @@
             }
           }, err => {
           });
-        }).catch(() => {
-          Service.community().auditRefuse({}, id
-          ).then(response => {
-            if (response.errorCode == 0) {
-              this.$message.success('审核不通过')
-              this.getcommunityList();
-            } else {
-              this.$message.error(response.message)
-            }
-          }, err => {
-          });
+        }).catch(action => {
+          if (action === 'cancel') {
+            Service.community().auditRefuse({}, id
+            ).then(response => {
+              if (response.errorCode == 0) {
+                this.$message.success('审核不通过')
+                this.getcommunityList();
+              } else {
+                this.$message.error(response.message)
+              }
+            }, err => {
+            });
+          } else {
+            this.$message({
+              type: 'info',
+              message: '取消审核'
+            });
+          }
+
         });
       },
       deleteAll() {
@@ -772,6 +782,12 @@
         }).then(response => {
           if (response.errorCode == 0) {
             if (response.data.records.length == 0) {
+              if(this.page != 1){
+                this.page = this.page -1
+                this.getcommunityList();
+              }else {
+
+              }
               this.noData = false;
             } else {
               this.noData = true;

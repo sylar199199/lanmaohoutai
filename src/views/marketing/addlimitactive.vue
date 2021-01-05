@@ -488,9 +488,9 @@
                       </td>
                       <td>
                         <i class="iconfont iconxuanzhong color2087 font20 cursor" v-if="item.isVirtualReduce"
-                           @click="changeVirtual(index, 0)"></i>
+                           @click="changeVirtual(index, 0, item.stock)"></i>
                         <i class="iconfont iconxuanze color2087 font20 cursor" v-if="!item.isVirtualReduce"
-                           @click="changeVirtual(index, 1)"></i>
+                           @click="changeVirtual(index, 1, item.stock)"></i>
                       </td>
                       <td>
                         <input v-if="item.isVirtualReduce" type="text" v-model="item.perReduceNums"
@@ -637,7 +637,11 @@
       }
     },
     methods: {
-      changeVirtual(goodsIndex, num) {
+      changeVirtual(goodsIndex, num, stock) {
+        if(!stock){
+          this.$message.error('库存为0不能造势')
+          return
+        }
         this.goodsdata[goodsIndex].isVirtualReduce = num
         this.$forceUpdate()
       },

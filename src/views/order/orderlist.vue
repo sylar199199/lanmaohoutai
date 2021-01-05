@@ -577,7 +577,15 @@
                 <td>
                   {{timetrans(item.createDate)}}
                 </td>
-                <td v-if="item.status">
+                <td v-if="item.afs">
+                  <span v-if="item.afs.status == 1">退货中</span>
+                  <span v-if="item.afs.status == 2">拒绝退货</span>
+                  <span v-if="item.afs.status == 3">同意退货</span>
+                  <span v-if="item.afs.status == 4">退款中</span>
+                  <span v-if="item.afs.status == 5">拒绝退款</span>
+                  <span v-if="item.afs.status == 6">已退款</span>
+                </td>
+                <td v-if="!item.afs">
                   <span v-if="item.status == 1">待支付</span>
                   <span v-if="item.status == 2">待发货</span>
                   <span v-if="item.status == 3">待收货</span>
@@ -587,8 +595,8 @@
                 <td>
                   <span class="color2087 font12 fontWeight cursor" v-if="item.status == 2" @click="ship(item)">发货</span>
                   <span class="line" v-if="item.status == 2"></span>
-                  <span class="color2087 font12 fontWeight cursor" @click="goExpress(item.id)">物流</span>
-                  <span class="line"></span>
+                 <!-- <span class="color2087 font12 fontWeight cursor" @click="goExpress(item.id)">物流</span>
+                  <span class="line"></span>-->
                   <span class="color2087 font12 fontWeight cursor" @click="goDetail(item.id)">详情</span>
 
                 </td>

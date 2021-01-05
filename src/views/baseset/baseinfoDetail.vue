@@ -62,7 +62,7 @@
                                 }
                             }
                         }
-                      
+
                         .inputBox{
                             text-indent: 10px;
                             width: 730px;
@@ -315,7 +315,7 @@
             <Aside></Aside>
             <div class="content">
                 <div class="contanternews">
-                  
+
                     <div class="selectChannel backWhite padding20 baseInfo">
                         <div class="searchBox">
                             <span class="searchLable colorGrey font12">名称</span>
@@ -333,10 +333,10 @@
                         <div class="editorBox" v-if="contentType == 1">
                             <textarea class="noticecontent" v-model="description" placeholder="请输入不超过200字的通知信息"  @change="changeValue()"></textarea>
                         </div>
-                       
-                      
+
+
                     </div>
-                   
+
                     <div class="nextButoon" >
                         <span class="bacButton" @click="submitCommodity()">完成</span>
                     </div>
@@ -385,7 +385,7 @@
             };
         },
         beforeDestroy(){
-           
+
         },
         created(){
             var  tokenVal = Util.localStorageUtil.get('access_token');
@@ -411,7 +411,7 @@
                 this.productId = this.$route.query.id;
                 this.contentType = this.$route.query.contentType;
                 if(!this.productId){
-                   
+
                 }else{
                   this.getDetail()
                 }
@@ -444,7 +444,6 @@
                console.log(this.description)
                if(this.contentType == 1){
                    if(!this.changeValue()){
-                       console.log(this.changeValue())
                         return;
                    }
                }
@@ -464,8 +463,8 @@
                 }
 
             },
-           
-          
+
+
             // 添加自定义按钮
             addCustomButtom (editorId) {
                 window.UE.registerUI('test-button', function (editor, uiName) {
@@ -551,7 +550,7 @@
                     return btn;
                 }, 0 /* 指定添加到工具栏上的那个位置，默认时追加到最后 */, editorId /* 指定这个UI是哪个编辑器实例上的，默认是页面上所有的编辑器都会添加这个按钮 */);
             },
-   
+
         },
 
     }
