@@ -301,6 +301,14 @@
   .marginbottom {
     margin-bottom: 8px;
   }
+
+  .width30 {
+    width: 30px;
+  }
+
+  .marginTop10 {
+    margin-top: 10px;
+  }
 </style>
 <template>
   <div class="general">
@@ -443,16 +451,16 @@
 
 
                 </div>
-                <div class="searchBox flex">
+                <div class="searchBox flex marginTop10">
                   <span class="searchLable  colorGrey font12">活动倒计时</span>
                   <div class="radioBox marginLeft10">
                     <div class="marginbottom">
-                      <i class="iconfont iconxuanzhong color2087 font20 cursor" v-if="newproduct==0"></i>
-                      <i class="iconfont iconxuanze  font20 cursor" v-if="newproduct !=0" @click="newproduct = 0"></i>
+                      <i class="iconfont iconxuanzhong color2087 font20 cursor" v-if="!isShowTime"></i>
+                      <i class="iconfont iconxuanze  font20 cursor" v-if="isShowTime" @click="isShowTime = false"></i>
                       <span class="typeText colorblack font12 ">不显示</span>
-                      <i class="iconfont iconxuanzhong color2087 font20 cursor marginLeft10" v-if="newproduct==1"></i>
-                      <i class="iconfont iconxuanze  font20 cursor marginLeft10" v-if="newproduct != 1"
-                         @click="newproduct = 1"></i>
+                      <i class="iconfont iconxuanzhong color2087 font20 cursor marginLeft10" v-if="isShowTime"></i>
+                      <i class="iconfont iconxuanze  font20 cursor marginLeft10" v-if="!isShowTime"
+                         @click="isShowTime = true"></i>
                       <span class="typeText colorblack font12 ">显示</span>
                     </div>
                   </div>
@@ -479,7 +487,20 @@
                         </div>
                       </td>
                       <td>
-                        <i class="iconfont iconxuanzhong color2087 font20 cursor"></i>
+                        <i class="iconfont iconxuanzhong color2087 font20 cursor" v-if="item.isVirtualReduce"
+                           @click="changeVirtual(index, 0)"></i>
+                        <i class="iconfont iconxuanze color2087 font20 cursor" v-if="!item.isVirtualReduce"
+                           @click="changeVirtual(index, 1)"></i>
+                      </td>
+                      <td>
+                        <input v-if="item.isVirtualReduce" type="text" v-model="item.perReduceNums"
+                               class="font12 colorblack width30" @change="changeValue('perReduceNums','',item, index)"
+                               placeholder=""/>
+                      </td>
+                      <td>
+                        <input v-if="item.isVirtualReduce" type="text" v-model="item.maxReduceNums"
+                               class="font12 colorblack width30" @change="changeValue('maxReduceNums','',item, index)"
+                               placeholder=""/>
                       </td>
                       <td>
                         <i class="cursor iconfont iconshangsheng fontIcongreen" v-if="index!=0"
@@ -538,7 +559,10 @@
     },
     data() {
       return {
+        isShowTime: false,
         newproduct: 0,
+        perReduceNums: '',
+        maxReduceNums: '',
         pretime: '',
         previewTime: null,
         maxRegDays: '',
@@ -556,6 +580,8 @@
         sortDatas: [
           {orderType: '', name: '商品', showBlue: false, orderField: ''},
           {orderType: '', name: '是否造势', showBlue: false, orderField: ''},
+          {orderType: '', name: '每秒扣减', showBlue: false, orderField: ''},
+          {orderType: '', name: '扣减总数', showBlue: false, orderField: ''},
           {orderType: '', name: '排序', showBlue: false, orderField: ''},
           {orderType: '', name: '剩余库存', showBlue: false, orderField: ''},
           {orderType: '', name: '操作', showBlue: false, orderField: ''}
@@ -597,7 +623,6 @@
     },
     watch: {
       newproduct() {
-        console.log(this.newproduct)
         if (this.newproduct == 0) {
           this.pretime = '';
         }
@@ -612,6 +637,10 @@
       }
     },
     methods: {
+      changeVirtual(goodsIndex, num) {
+        this.goodsdata[goodsIndex].isVirtualReduce = num
+        this.$forceUpdate()
+      },
       downSort(index, item) {//降序
         this.goodsdata[index] = this.goodsdata[index + 1];
         this.goodsdata[index + 1] = item;
@@ -642,6 +671,33 @@
         }, err => {
         });
       },
+      changeValue(name, type, item, index) {
+        var on = true;
+        if (name == 'perReduceNums') {
+          if (item.maxReduceNums && item.perReduceNums > item.maxReduceNums) {
+            this.$message.error('每秒扣减不能大于最大于扣减');
+            this.goodsdata[index].perReduceNums = ''
+            on = false;
+            return;
+          } else if (item.perReduceNums > item.stock) {
+            this.$message.error(`每秒扣减不能大于最大于库存${item.stock}件`);
+            this.goodsdata[index].perReduceNums = ''
+            on = false;
+            return;
+          }
+        }
+        if (name == 'maxReduceNums') {
+          if (item.maxReduceNums > item.stock) {
+            this.goodsdata[index].maxReduceNums = ''
+            this.$message.error(`最大扣减不能大于最大于库存${item.stock}件`);
+            on = false;
+            return;
+          }
+        }
+        if (type == 'submit') {
+          return on;
+        }
+      },
       getPercent(num, num1) {
         num = parseFloat(num);
         num1 = parseFloat(num1);
@@ -661,6 +717,7 @@
           this.$message.warning('请输入短于2个字不超过30个字的活动名称');
           return;
         }
+
         var previewTime = '';
         if (this.newproduct == 0) {
           previewTime = null;
@@ -718,12 +775,40 @@
           this.$message.warning('请添加活动商品');
           return;
         }
+        for (let item of this.goodsdata) {
+          if(item.isVirtualReduce && !item.perReduceNums){
+            this.$message.error('请输入每日扣减')
+            return;
+          }
+          if(item.isVirtualReduce && !item.maxReduceNums){
+            this.$message.error('请输入最大扣减')
+            return;
+          }
+          if (item.maxReduceNums > item.stock) {
+            this.$message.error('最大扣减不能大于库存')
+            return;
+          }
+          if (item.perReduceNums > item.maxReduceNums) {
+            this.$message.error('最大扣减不能大于最大扣减')
+            return;
+          }
+        }
+        let goodsEdits = this.goodsdata.map(item => {
+          return {
+            goodsId: item.id,
+            isVirtualReduce: item.isVirtualReduce,
+            maxReduceNums: item.maxReduceNums,
+            perReduceNums: item.perReduceNums
+          }
+        })
         var goodsIds = [];
         for (var i = 0; i < this.goodsdata.length; i++) {
           goodsIds.push(this.goodsdata[i].id);
         }
         if (this.goodsid) {
           Service.redeem().editorredeemGoods({
+            goodsEdits,
+            isShowTime: this.isShowTime,
             previewTime: previewTime,
             "endTime": endDate,
             "goodsIds": goodsIds,
@@ -744,13 +829,15 @@
         } else {
           Service.redeem().addredeemGoods({
             previewTime: previewTime,
+            isShowTime: this.isShowTime,
             "endTime": endDate,
             "goodsIds": goodsIds,
             "name": this.name,
             "purchaseLimit": purchaseLimit,
             "startTime": startDate,
             maxRegDays: this.maxRegDays,
-            minRegDays: this.minRegDays
+            minRegDays: this.minRegDays,
+            goodsEdits,
           }).then(response => {
             if (response.errorCode == 0) {
               this.$message.success('添加成功');
@@ -774,6 +861,9 @@
           if (obj[i].name.length > 15) {
             obj[i].name = obj[i].name.substring(0, 15) + '...'
           }
+          obj[i].isVirtualReduce = 0
+          obj[i].maxReduceNums = ''
+          obj[i].perReduceNums = ''
         }
         this.goodsdata = obj;
         if (this.goodsdata.length != 0) {
@@ -793,7 +883,6 @@
 
       handleSelect(key, keyPath) {
         this.activeIndex = key;
-        console.log(key, keyPath);
       },
       delectCommodity(item) {
         this.$confirm('商品删除请谨慎操作，确定删除?', '', {
@@ -814,7 +903,6 @@
         this.$router.push({name: 'editorcommondity', query: {id: id}})
       },
       enddateChange(val) {
-        console.log(this.insuranceDate)
         if (val) {
           this.startDate = this.timetrans(val[0]);
           this.endDate = this.timetrans(val[1])
@@ -867,6 +955,7 @@
                 this.minRegDays = response.data.minRegDays;
               }
               this.name = response.data.name;
+              this.isShowTime = response.data.isShowTime;
               this.startDate = this.timetrans(response.data.startTime);
               this.endDate = this.timetrans(response.data.endTime);
               this.insuranceDate.push(new Date(response.data.startTime));

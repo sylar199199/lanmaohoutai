@@ -203,7 +203,7 @@
                                 {{item.name}}
                             </th>
                         </tr>
-                        <tr v-for="(item,index) in tableData" :key="item.name">
+                        <tr v-for="(item,index) in tableData" :key="item.id">
                             <td>
                                 <div class="flex">
                                     <i class='iconfont iconchecked color2087' @click="selectAdver(item)" v-if='item.isSelect &&(!item.hasSelect)' ></i>
@@ -314,7 +314,6 @@
         methods: {
             getGoods(){
                 var goodsdata = this.goodsdata.concat(this.publishArr);
-                console.log(goodsdata)
                 this.$emit('selectGuige',goodsdata);
                 this.$emit('clickbanner', 'sure')
             },
@@ -328,7 +327,6 @@
                 }
                 this.selectNumber = this.publishArr.length;
                 this.$forceUpdate()
-                console.log(this.publishArr)
             },
             selectItem(item){
                 this.$emit('selectGuige',item);
@@ -367,11 +365,11 @@
                 }
                 return num
             },
-          
+
             getTimedate(timeStr){
                 return Filter.getTimedate(timeStr)
             },
-        
+
             getGuigeList(str){
                 if(str == 'chaxun'){
                     this.page = 1;
@@ -389,7 +387,6 @@
                         if(response.data.records.length != 0){
                             this.noData = true;
                             var tableData = response.data.records;
-                            console.log(this.goodsdata)
                             if(this.goodsdata.length != 0){
                                 for(var j = 0;j < tableData.length;j++){
                                     for(var i = 0;i < this.goodsdata.length;i++){
@@ -413,7 +410,6 @@
 
                             this.$nextTick(()=>{
                                 this.tableData = tableData;
-                                console.log(tableData)
                             })
                         }else{
                             this.noData = false;
@@ -441,7 +437,7 @@
                 this.searchValue = '';
                 this.bindTime = '';
             },
-           
+
             blureInput(){
                 this.showSearchBox = false;
             },
@@ -449,7 +445,6 @@
                 this.searchValue = item.name;
                 this.companyInfo = item;
                 this.showCompany = true;
-                console.log(this.searchValue)
             },
             sureButton(){
                 if(!this.watchChange('companyName','submit')){

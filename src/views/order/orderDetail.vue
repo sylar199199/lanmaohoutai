@@ -276,7 +276,7 @@
     }
   }
 
-  .dialogone::after, .dialog::after {
+  .dialogone::after, .dialog::after, .editDialog::after {
     content: "";
     display: inline-block;
     height: 100%;
@@ -284,7 +284,7 @@
     vertical-align: middle;
   }
 
-  .dialogone, .dialog {
+  .dialogone, .dialog, .editDialog {
     display: none;
     position: fixed;
     top: 0;
@@ -377,6 +377,10 @@
 
   .flex1 {
     flex: 1;
+  }
+  .tip {
+    font-size: 12px;
+    color: #999999;
   }
 </style>
 <template>
@@ -476,8 +480,26 @@
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">售后状态</span>
                   <span class="colorblack font12">代发货，退款审核</span>
-                  <span class="cursor colorfff borderButton marginright10 marginLeft10" @click="agreeReturn(orderDetail.goodsType,orderDetail.status)" >同意退款</span>
-                  <span class="cursor colorfff borderButton marginright10"  @click="refuseReturn()">拒绝退款</span>
+                  <span v-if="statusTitle == '退货中'&& orderDetail.goodsType == 2 && orderDetail.status == 2"
+                        @click="agreeReturn(orderDetail.goodsType,orderDetail.status)"
+                        class="cursor colorfff borderButton marginright10">立即退款</span>
+                  <span v-if="statusTitle == '退货中'&& orderDetail.goodsType == 2 && orderDetail.status == 2"
+                    style="height: 48px"
+                    class="cursor colorfff borderButton marginright10"     @click="editMoney()">同意退款 修改金额</span>
+                  <span v-if="statusTitle == '退货中'&& orderDetail.goodsType == 2 && orderDetail.status == 2"
+                        @click="refuseMoney()"
+                        class="cursor colorfff borderButton marginright10">拒绝退款</span>
+                  <span v-if="statusTitle == '退货中'&& orderDetail.goodsType == 2 && orderDetail.status != 2"
+                        @click="agreeReturn(orderDetail.goodsType,orderDetail.status)"
+                        class="cursor colorfff borderButton marginright10">同意退货</span>
+                  <span v-if="statusTitle == '退货中'&& orderDetail.goodsType == 2 && orderDetail.status != 2"
+                        @click="refuseReturn()" class="cursor colorfff borderButton">拒绝退货</span>
+                  <span class="cursor borderButton colorfff" v-if=" statusTitle == '退款中'"
+                        @click="returnMoney()">立即退款</span>
+                  <span class="cursor borderButton colorfff" v-if=" statusTitle == '退款中'"
+                        @click="refuseMoney()">拒绝退款</span>
+                  <span class="cursor borderButton colorfff" v-if="statusTitle == '已退款' "
+                        @click="openDetail()">退款详情</span>
                 </div>
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">申请原因</span>
@@ -687,6 +709,36 @@
         </div>
       </div>
     </div>
+    <div class="editDialog">
+      <div class="messge">
+        <div class="messageHeader">
+          <div class="messagetitle">
+            <span>修改退款金额</span>
+          </div>
+        </div>
+        <div class="messageContent">
+          <div class="messagemessage">
+            <span class="lableText colorblack font12">修改退款金额</span>
+            <input type="text" @change="changeValue()" v-model="editValue"
+                   class="inputBox marginLeft10 colorblack font12" style="width: 150px" placeholder="输入金额"/>
+            <span class="tip">需要小于等于用户申的金额</span>
+          </div>
+          <div class="messagemessage">
+            <span class="lableText colorblack font12">拒绝原因</span>
+            <input type="text" @change="changeValue()" v-model="refuseMessage"
+                   class="inputBox marginLeft10 colorblack font12" placeholder="拒绝原因不超过50字"/>
+          </div>
+        </div>
+        <div class="messagebtns">
+          <div class="button borderButton copyButton" @click="closeDiologone()">
+            取消
+          </div>
+          <div class="button bacButton" @click="refuseReturnMessage()">
+            确认
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="dialogone">
       <div class="messge">
         <div class="messageHeader">
@@ -757,6 +809,7 @@
     data() {
       return {
         expressName: '',
+        editValue: '',
         expressOption: [],
         expressNo: '',
         remarkMessage: "",
@@ -868,6 +921,9 @@
         }).catch(() => {
 
         });
+      },
+      editMoney() {
+        $(".editDialog").css({'display': 'block'});
       },
       agreeReturn(type, status) {
         var str = '';
