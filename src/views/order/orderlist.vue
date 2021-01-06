@@ -584,18 +584,7 @@
                   {{timetrans(item.createDate)}}
                 </td>
                 <td v-if="item.afs">
-                  <span v-if="item.afs.status == 1 && item.status == 2">待发货，退款审核</span>
-                  <span v-if="item.afs.status == 1 && item.status != 2">已发货，退货退款审核</span>
-                  <span v-if="item.afs.status == 2 && item.status == 2">拒绝退款</span>
-                  <span v-if="item.afs.status == 2 && item.status != 2">拒绝退货</span>
-                  <span v-if="item.afs.status == 3 && item.status == 2">同意退款</span>
-                  <span v-if="item.afs.status == 3 && item.status != 2">同意退货</span>
-                  <span v-if="item.afs.status == 4 && item.status == 2">待发货,退款中</span>
-                  <span v-if="item.afs.status == 4 && item.status != 2">已发货,退款中</span>
-                  <span v-if="item.afs.status == 5 && item.status == 2">拒绝退款</span>
-                  <span v-if="item.afs.status == 5 && item.status != 2">拒绝退货</span>
-                  <span v-if="item.afs.status == 6 && item.status == 2">已退款</span>
-                  <span v-if="item.afs.status == 6 && item.status != 2">已退货</span>
+                  {{afsresetTitle(item.status,item.afs)}}
                 </td>
                 <td v-if="!item.afs">
                   <span v-if="item.status == 1">待支付</span>
@@ -1153,6 +1142,56 @@
           }
         }, err => {
         });
+      },
+      afsresetTitle(status, afs) {
+        var title = '';
+        switch (status) {
+          case 1:
+            title = '待支付';
+            break;
+          case 2:
+            if (afs) {
+              if (afs.status == 1) {
+                title = '待发货，退款审核';
+              } else if (afs.status == 2) {
+                title = '未发货，拒绝退款';
+              } else if (afs.status == 6) {
+                title = '未发货，退款成功';
+              }
+            } else {
+              title = '待发货';
+            }
+            break;
+          case 3:
+            if (afs) {
+              if (afs.status == 1) {
+                title = '已发货，退货退款审核'
+              } else if (afs.status == 2) {
+                title = '已发货，拒绝退货'
+              } else if (afs.status == 3) {
+                title = '已发货，同意退货'
+              } else if (afs.status == 4) {
+                title = '已发货，退款中'
+              } else if (afs.status == 5) {
+                title = '已发货，拒绝退款'
+              } else if (afs.status == 6) {
+                title = '已发货，退款成功'
+              }
+            } else {
+              title = '待收货';
+            }
+            break;
+          case 4:
+            title = '交易完成';
+            break;
+          case 5:
+            title = '交易关闭';
+            break;
+          default:
+            break;
+        }
+        console.log(123, title)
+        return title
       },
       getcommodityData(str) {
         if (this.statusText) {
