@@ -578,7 +578,8 @@
                   {{timetrans(item.createDate)}}
                 </td>
                 <td v-if="item.afs">
-                  <span v-if="item.afs.status == 1">退货中</span>
+                  <span v-if="item.afs.status == 1 && item.status == 2">待发货，退款审核</span>
+                  <span v-if="item.afs.status == 1 && item.status != 2">已发货，退货退款审核</span>
                   <span v-if="item.afs.status == 2">拒绝退货</span>
                   <span v-if="item.afs.status == 3">同意退货</span>
                   <span v-if="item.afs.status == 4">退款中</span>
@@ -795,7 +796,6 @@
       this.upFileAction = Global.requestUrl + "/lanmao/admin/order/ship/batch";
       var tokenVal = Util.localStorageUtil.get('access_token');
       this.headers = {token: tokenVal};
-      console.log(this.headers)
     },
     computed: {},
     watch: {

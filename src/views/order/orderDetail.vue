@@ -480,30 +480,31 @@
               <div class="infoLeft flex1 marginTop20">
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">售后状态</span>
-                  <span class="colorblack font12">{{statusTitle}}</span>
-                  <span v-if="statusTitle == '退货中' && orderDetail.status == 2"
+                  <span class="colorblack font12">{{afsTitle}}</span>
+                  <span v-if="orderDetail.afs.status == 1 && orderDetail.status == 2"
                         @click="agreeReturn(orderDetail.status)"
                         class="cursor colorfff borderButton marginright10 marginLeft10">立即退款</span>
-                  <span v-if="statusTitle == '退货中' && orderDetail.status == 2"
-                        style="height: 48px;width: 60px;"
-                        class="cursor colorfff borderButton marginright10"
-                        @click="editMoney()">同意退款 修改金额</span>
-                  <span v-if="statusTitle == '退货中' && orderDetail.status == 2"
-                        @click="refuseMoney()"
+                  <span v-if="orderDetail.afs.status == 1 && orderDetail.status == 2"
+                        @click="refuseReturn()"
                         class="cursor colorfff borderButton marginright10">拒绝退款</span>
 
 
-                  <span v-if="statusTitle == '退货中' && orderDetail.status != 2"
+                  <span v-if="orderDetail.afs.status == 1 && orderDetail.status != 2"
                         @click="agreeReturn(orderDetail.status)"
                         class="cursor colorfff borderButton marginright10">同意退货</span>
-                  <span v-if="statusTitle == '退货中' && orderDetail.status != 2"
+                  <span v-if="orderDetail.afs.status == 1 && orderDetail.status != 2"
                         @click="refuseReturn()" class="cursor colorfff borderButton">拒绝退货</span>
 
-
-                  <span class="cursor borderButton colorfff" v-if=" statusTitle == '退款中'"
+                  <span class="cursor borderButton colorfff" v-if="orderDetail.afs.status == 4"
                         @click="returnMoney()">立即退款</span>
-                  <span class="cursor borderButton colorfff" v-if=" statusTitle == '退款中'"
+                  <span v-if="orderDetail.afs.status == 4"
+                        style="height: 48px;width: 60px;"
+                        class="cursor colorfff borderButton marginright10"
+                        @click="editMoney()">同意退款 修改金额</span>
+                  <span class="cursor borderButton colorfff" v-if="orderDetail.afs.status == 4"
                         @click="refuseMoney()">拒绝退款</span>
+
+
                   <span class="cursor borderButton colorfff" v-if="statusTitle == '已退款' "
                         @click="openDetail()">退款详情</span>
                 </div>
@@ -821,6 +822,7 @@
     },
     data() {
       return {
+        afsTitle: '',
         expressName: '',
         editValue: '',
         expressOption: [],
@@ -912,6 +914,7 @@
       refuseReturn() {
         $(".dialogone").css({"display": 'block'});
       },
+      // 拒绝退款
       refuseMoney() {
         $(".dialogtwo").css({"display": 'block'});
       },
@@ -937,7 +940,7 @@
       },
       // 拒绝退款
       refuserefundMessage() {
-        if (!this.changeValue('refuseMessage','submit')) {
+        if (!this.changeValue('refuseMessage', 'submit')) {
           return;
         }
         Service.order().refuserefund({
@@ -1039,16 +1042,18 @@
       editMoney() {
         $(".editDialog").css({'display': 'block'});
       },
+      // 同意退货
       agreeReturn(status) {
         var str = '';
         if (status == 2) {
           str = '同意退款，系统将订单款项原路退还给付款账号，请确认是否退款?'
           this.showconfirm(str);
-        } else if ( status != 2) {
+        } else if (status != 2) {
           str = '请确认是否同意客户的退货申请?';
           this.isshowadress = true;
         }
       },
+
       showconfirm(str) {
         this.$confirm(str, '', {
           confirmButtonText: '确定',
@@ -1129,13 +1134,15 @@
           if (response.errorCode == 0) {
             this.orderDetail = response.data;
             this.afs = response.data.afs;
+            this.orderStatus = response.data.status
             if (this.orderDetail.consignee) {
               this.shouhuo = this.orderDetail.consignee.province + this.orderDetail.consignee.city + this.orderDetail.consignee.district + this.orderDetail.consignee.address + ',' + this.orderDetail.consignee.name + ',' + this.orderDetail.consignee.phone;
             }
             if (this.afs) {
-              this.afsresetTitle(this.afs.status)
-            } else {
-              this.resetTitle(response.data.status)
+              this.$nextTick(() => {
+                this.afsTitle = this.resetTitle(response.data.status, this.afs)
+              })
+
             }
           } else {
             this.$message.error(response.message)
@@ -1163,7 +1170,11 @@
       afsresetTitle(status) {
         switch (status) {
           case 1:
-            this.statusTitle = '退货中';
+            if (this.orderStatus == 2) {
+              this.statusTitle = '退款中';
+            } else {
+              this.statusTitle = '退货中';
+            }
             this.imageUrl = require('../../assets/images/tuihuozhong.png');
             break;
           case 2:
@@ -1191,41 +1202,56 @@
             break
         }
       },
-      resetTitle(status) {
+
+      resetTitle(status, afs) {
+        var title = '';
         switch (status) {
           case 1:
-            this.statusTitle = '待支付';
-            this.imageUrl = require('../../assets/images/daizhifu.png');
+            title = '待支付';
             break;
           case 2:
-            this.statusTitle = '待发货';
-            this.imageUrl = require('../../assets/images/daifahuo.png');
+            if (afs) {
+              if (afs.status == 1) {
+                title = '待发货，退款审核';
+              } else if (afs.status == 2) {
+                title = '未发货，拒绝退款';
+              } else if (afs.status == 6) {
+                title = '未发货，退款成功';
+              }
+            } else {
+              title = '待发货';
+            }
             break;
           case 3:
-            this.statusTitle = '待收货';
-            this.imageUrl = require('../../assets/images/daifahuo.png');
+            if (afs) {
+              if (afs.status == 1) {
+                title = '已发货，退货退款审核'
+              } else if (afs.status == 2) {
+                title = '已发货，拒绝退货'
+              } else if (afs.status == 3) {
+                title = '已发货，同意退货'
+              } else if (afs.status == 4) {
+                title = '已发货，退款中'
+              } else if (afs.status == 5) {
+                title = '已发货，拒绝退款'
+              } else if (afs.status == 6) {
+                title = '已发货，退款成功'
+              }
+            } else {
+              title = '待收货';
+            }
             break;
           case 4:
-            this.statusTitle = '待激活';
-            this.imageUrl = require('../../assets/images/daishiyong.png');
+            title = '交易完成';
             break;
           case 5:
-            this.statusTitle = '已激活';
-            this.imageUrl = require('../../assets/images/yishiyong.png');
-            break;
-
-          case 6:
-            this.statusTitle = '交易关闭';
-            this.imageUrl = require('../../assets/images/yiguanbi.png');
-            break;
-          case 7:
-            this.statusTitle = '交易成功';
-            this.imageUrl = require('../../assets/images/yishiyong.png');
+            title = '交易关闭';
             break;
           default:
-            this.statusTitle = '其他';
-            break
+            break;
         }
+        console.log(123,title)
+        return title
       },
       addremarkMessage() {
         if (!this.changeremarkValue('submit')) {

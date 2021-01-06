@@ -1015,7 +1015,7 @@ export default {
       },
       agreeAfs: function (data, key) {//同意退货
         return getResource({
-          url: `/lanmao/admin/order/afs/refund/agree`,
+          url: `/lanmao/admin/order/afs/agree`,
           method: 'post'
         }, data)
       },
