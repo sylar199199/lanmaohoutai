@@ -524,6 +524,11 @@
                   <span class="cursor borderButton colorfff" v-if="statusTitle == '已退款' "
                         @click="openDetail()">退款详情</span>
                 </div>
+                <div class="infoBox" v-if="orderDetail.afs.returnMethod">
+                  <span class="colorGrey font12 marginright10">退货方式</span>
+                  <span class="colorblack font12" v-if="orderDetail.afs.returnMethod ==1">自行寄回</span>
+                  <span class="colorblack font12" v-if="orderDetail.afs.returnMethod ==2">拒收</span>
+                </div>
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">申请原因</span>
                   <span class="colorblack font12">{{orderDetail.afs && orderDetail.afs.reason}}</span>
