@@ -590,8 +590,8 @@
                   <span v-if="item.afs.status == 2 && item.status != 2">拒绝退货</span>
                   <span v-if="item.afs.status == 3 && item.status == 2">同意退款</span>
                   <span v-if="item.afs.status == 3 && item.status != 2">同意退货</span>
-                  <span v-if="item.afs.status == 4 && item.status == 2">退款中</span>
-                  <span v-if="item.afs.status == 4 && item.status != 2">退货中</span>
+                  <span v-if="item.afs.status == 4 && item.status == 2">待发货,退款中</span>
+                  <span v-if="item.afs.status == 4 && item.status != 2">已发货,退款中</span>
                   <span v-if="item.afs.status == 5 && item.status == 2">拒绝退款</span>
                   <span v-if="item.afs.status == 5 && item.status != 2">拒绝退货</span>
                   <span v-if="item.afs.status == 6 && item.status == 2">已退款</span>
