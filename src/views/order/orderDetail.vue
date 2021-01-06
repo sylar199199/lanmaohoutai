@@ -92,7 +92,7 @@
                   border-radius: 12px;
                   display: inline-block;
                   height: 24px;
-                  width: 74px;
+                  width: 70px;
                   line-height: 24px;
                 }
 
@@ -100,7 +100,7 @@
                   border-radius: 20px;
                   display: inline-block;
                   height: 34px;
-                  width: 74px;
+                  width: 70px;
                   line-height: 18px;
                   word-wrap: break-word;
                   border: solid 1px #0d2c4b;
@@ -379,7 +379,6 @@
       }
     }
   }
-
   .spaceBetween {
     display: flex;
     justify-content: space-between;
@@ -396,6 +395,9 @@
   .tip {
     font-size: 12px;
     color: #999999;
+  }
+  .textCenter{
+    text-align: center;
   }
 </style>
 <template>
@@ -500,14 +502,14 @@
                         class="cursor colorfff borderButton marginright10 marginLeft10">立即退款</span>
                   <span v-if="orderDetail.afs.status == 1 && orderDetail.status == 2"
                         @click="refuseReturn()"
-                        class="cursor colorfff borderButton marginright10">拒绝退款</span>
+                        class="cursor colorfff borderButton marginLeft10 marginright10">拒绝退款</span>
 
 
                   <span v-if="orderDetail.afs.status == 1 && orderDetail.status != 2"
                         @click="agreeReturn(orderDetail.status)"
-                        class="cursor colorfff borderButton marginright10 marginLeft10">同意退货</span>
+                        class="cursor colorfff borderButton marginright10">同意退货</span>
                   <span v-if="orderDetail.afs.status == 1 && orderDetail.status != 2"
-                        @click="refuseReturn()" class="cursor colorfff borderButton">拒绝退货</span>
+                        @click="refuseReturn()" class="cursor colorfff borderButton marginLeft10">拒绝退货</span>
 
                   <span class="cursor borderButton colorfff marginLeft10" v-if="orderDetail.afs.status == 4"
                         @click="editMoney()">立即退款</span>
@@ -517,7 +519,7 @@
                     <div>同意退款</div>
                     <div>修改金额</div>
                   </span>-->
-                  <span class="cursor borderButton colorfff" v-if="orderDetail.afs.status == 4"
+                  <span class="cursor borderButton colorfff marginLeft10" v-if="orderDetail.afs.status == 4"
                         @click="refuseMoney()">拒绝退款</span>
 
 
@@ -542,7 +544,7 @@
                   <span class="colorblack font12">{{orderDetail.amount}}</span>
                 </div>
               </div>
-              <div class="infoLeft flex1 marginTop20">
+              <div class="infoLeft flex1 marginTop20 textCenter">
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">申请人联系方式</span>
                   <span class="colorblack font12">{{orderDetail.consignee.phone}}</span>
@@ -558,6 +560,16 @@
                 <div class="infoBox" v-if="returnAddressName">
                   <span class="colorGrey font12 marginright10">寄回收件人地址</span>
                   <span class="colorblack font12">{{returnAddressName}}</span>
+                </div>
+              </div>
+              <div class="infoLeft flex1 marginTop20 textCenter" v-if="returnexpressName">
+                <div class="infoBox" v-if="returnexpressName">
+                  <span class="colorGrey font12 marginright10">买家退货物流</span>
+                  <span class="colorblack font12">{{returnexpressName}}</span>
+                </div>
+                <div class="infoBox" v-if="returnexpressNo">
+                  <span class="colorGrey font12 marginright10">买家退货物流单号</span>
+                  <span class="colorblack font12">{{returnexpressNo}}</span>
                 </div>
               </div>
             </div>
@@ -845,6 +857,8 @@
       return {
         afsTitle: '',
         expressName: '',
+        returnexpressName: '',
+        returnexpressNo: '',
         refundAmount: '',
         expressOption: [],
         expressNo: '',
@@ -853,7 +867,6 @@
         refuseMessage: '',
         afs: null,
         returnAddressName: '',
-        refundAmount: '',
         editAmount: '',
         returnPhone: '',
         returnName: '',
@@ -1115,6 +1128,9 @@
         if (!this.changeValue('editMoney', 'submit')) {
           return;
         }
+        if(this.editAmount != this.refundAmount && !this.changeValue('editReason', 'submit')){
+          return;
+        }
         this.refundAmount = this.editAmount
         Service.order().agreerefund({
             message: this.refuseMessage,
@@ -1175,8 +1191,16 @@
             if (this.orderDetail.consignee) {
               this.shouhuo = this.orderDetail.consignee.province + this.orderDetail.consignee.city + this.orderDetail.consignee.district + this.orderDetail.consignee.address + ',' + this.orderDetail.consignee.name + ',' + this.orderDetail.consignee.phone;
             }
+            let returnAddress = response.data.returnAddress
+            if (returnAddress){
+              this.returnName = returnAddress.contactName
+              this.returnPhone = returnAddress.contactTel
+              this.returnAddressName = returnAddress.addressDesc
+            }
             if (this.afs) {
               this.refundAmount = response.data.afs.refundAmount;
+              this.returnexpressNo = response.data.afs.expressNo;
+              this.returnexpressName = response.data.afs.expressName;
               this.$nextTick(() => {
                 this.afsTitle = this.resetTitle(response.data.status, this.afs)
               })
@@ -1199,8 +1223,6 @@
           $(".dialog").css({'display': 'none'})
         });
         clipboard.on('error', e => {
-          // 不支持复制
-          console.log('该浏览器不支持自动复制');
           // 释放内存
           clipboard.destroy()
         })

@@ -338,9 +338,11 @@
             display: flex;
             flex-direction: column;
             margin-left: 20px;
+
             .goodsName {
               flex: 1;
             }
+
             .goodsSpec {
               color: #999999;
               font-size: 12px;
@@ -348,10 +350,12 @@
             }
           }
         }
-        .expressOrder{
+
+        .expressOrder {
           margin: 30px 0;
           margin-bottom: 50px;
-          .orderDiv{
+
+          .orderDiv {
             display: flex;
             justify-content: space-between;
           }
@@ -447,7 +451,8 @@
       color: rgba(13, 13, 13, 0.8);
     }
   }
-  .marginTop10{
+
+  .marginTop10 {
     margin-top: 10px;
   }
 </style>
@@ -466,12 +471,12 @@
               </div>
               <div class="searchBox flex">
                 <span class="searchLable searchName colorGrey font12">订单状态</span>
-                <el-select v-model="status" placeholder="">
+                <el-select v-model="statusText" placeholder="">
                   <el-option
                     v-for="item in statusOption"
                     :key="item.id"
                     :label="item.name"
-                    :value="item.id">
+                    :value="item.name">
                   </el-option>
                 </el-select>
               </div>
@@ -581,11 +586,16 @@
                 <td v-if="item.afs">
                   <span v-if="item.afs.status == 1 && item.status == 2">待发货，退款审核</span>
                   <span v-if="item.afs.status == 1 && item.status != 2">已发货，退货退款审核</span>
-                  <span v-if="item.afs.status == 2">拒绝退货</span>
-                  <span v-if="item.afs.status == 3">同意退货</span>
-                  <span v-if="item.afs.status == 4">退款中</span>
-                  <span v-if="item.afs.status == 5">拒绝退款</span>
-                  <span v-if="item.afs.status == 6">已退款</span>
+                  <span v-if="item.afs.status == 2 && item.status == 2">拒绝退款</span>
+                  <span v-if="item.afs.status == 2 && item.status != 2">拒绝退货</span>
+                  <span v-if="item.afs.status == 3 && item.status == 2">同意退款</span>
+                  <span v-if="item.afs.status == 3 && item.status != 2">同意退货</span>
+                  <span v-if="item.afs.status == 4 && item.status == 2">退款中</span>
+                  <span v-if="item.afs.status == 4 && item.status != 2">退货中</span>
+                  <span v-if="item.afs.status == 5 && item.status == 2">拒绝退款</span>
+                  <span v-if="item.afs.status == 5 && item.status != 2">拒绝退货</span>
+                  <span v-if="item.afs.status == 6 && item.status == 2">已退款</span>
+                  <span v-if="item.afs.status == 6 && item.status != 2">已退货</span>
                 </td>
                 <td v-if="!item.afs">
                   <span v-if="item.status == 1">待支付</span>
@@ -597,8 +607,8 @@
                 <td>
                   <span class="color2087 font12 fontWeight cursor" v-if="item.status == 2" @click="ship(item)">发货</span>
                   <span class="line" v-if="item.status == 2"></span>
-                 <!-- <span class="color2087 font12 fontWeight cursor" @click="goExpress(item.id)">物流</span>
-                  <span class="line"></span>-->
+                  <!-- <span class="color2087 font12 fontWeight cursor" @click="goExpress(item.id)">物流</span>
+                   <span class="line"></span>-->
                   <span class="color2087 font12 fontWeight cursor" @click="goDetail(item.id)">详情</span>
 
                 </td>
@@ -680,11 +690,13 @@
           </div>
           <div class="expressOrder">
             <div class="flex orderDiv">
-              <span class="colorGrey font12 marginright10">运单号 <span class="colorGrey font12">123121321321231</span></span>
+              <span class="colorGrey font12 marginright10">运单号 <span
+                class="colorGrey font12">123121321321231</span></span>
               <span class="copyfahuo marginLeft10 font12 cursor color2087" @click="copyAdress('copyfahuo')"
                     :data-clipboard-text="123"> 复制</span>
             </div>
-            <span class="colorGrey fontWeight font12 marginright10 marginTop10">物流公司 <span class="colorGrey font12">圆通快递</span></span>
+            <span class="colorGrey fontWeight font12 marginright10 marginTop10">物流公司 <span
+              class="colorGrey font12">圆通快递</span></span>
           </div>
           <div class="marginTop10">
             <el-timeline>
@@ -696,7 +708,7 @@
                 :color="activity.color"
                 :size="activity.size"
                 :timestamp="activity.timestamp">
-                <span  :class="index == 0 ?'colorblack fontWeight' :'colorGrey'" class="font12">
+                <span :class="index == 0 ?'colorblack fontWeight' :'colorGrey'" class="font12">
                   {{activity.content}}
                 </span>
               </el-timeline-item>
@@ -731,7 +743,6 @@
         headers: {},
         shiporderNo: '',
         consigneename: '',
-        userName: '',
         userId: '',
         download: '',
         href: '',
@@ -740,11 +751,12 @@
           expressName: "",
           expressNo: ''
         },
+        statusText: '',
         statusOption: [
           {name: '全部', id: ''}, {name: '待支付', id: '1'}, {name: '待发货', id: '2'}, {name: '待收货', id: '3'}, {
             name: '交易成功',
             id: '4'
-          }, {name: '交易关闭', id: '5'},{name: '带退款订单', id: '6'},{name: '带退货退款订单', id: '7'}
+          }, {name: '交易关闭', id: '5'}, {name: '退款中', id: '6'}, {name: '退货中', id: '7'}
         ],
         status: '',
         userValue: '',
@@ -781,16 +793,16 @@
         shipId: '',
         activities: [
           {
-          content: '您的订单已打印',
-          timestamp: '2018-04-03 20:46',
-          color: '#0d2c4b'
-        }, {
-          content: '订单进入仓库',
-          timestamp: '2018-04-03 20:46',
-        }, {
-          content: '提交了订单',
-          timestamp: '2018-04-03 20:46'
-        }]
+            content: '您的订单已打印',
+            timestamp: '2018-04-03 20:46',
+            color: '#0d2c4b'
+          }, {
+            content: '订单进入仓库',
+            timestamp: '2018-04-03 20:46',
+          }, {
+            content: '提交了订单',
+            timestamp: '2018-04-03 20:46'
+          }]
       };
     },
     created() {
@@ -824,6 +836,15 @@
     mounted() {
       if (this.$route.query.status) {
         this.status = (this.$route.query.status).toString();
+        if(this.$route.query.status == 2){
+          this.statusText = '待发货'
+        }
+        if(this.$route.query.status == 6){
+          this.statusText = '退货中'
+        }
+        if(this.$route.query.status == 7){
+          this.statusText = '退款中'
+        }
       }
       this.getcommodityData('');//获取订单列表
     },
@@ -939,65 +960,6 @@
         if (type == 'submit') {
           return on;
         }
-      },
-      afsresetTitle(status) {
-        switch (status) {
-          case 1:
-            this.statusTitle = '待付款';
-            break;
-          case 2:
-            this.statusTitle = '待发货';
-            break;
-          case 3:
-            this.statusTitle = '待收货';
-            break;
-          case 4:
-            this.statusTitle = '交易成功';
-            break;
-          case 5:
-            this.statusTitle = '交易关闭';
-            break;
-          case 6:
-            this.statusTitle = '待退款订单';
-            break;
-          case 7:
-            this.statusTitle = '待退货退款订单';
-            break;
-          default:
-            this.statusTitle = '其他';
-            break
-        }
-        return this.statusTitle;
-      },
-      resetTitleone(status) {
-        switch (status) {
-          case 1:
-            this.statusTitle = '待支付';
-            break;
-          case 2:
-            this.statusTitle = '待发货';
-            break;
-          case 3:
-            this.statusTitle = '待收货';
-            break;
-          case 4:
-            this.statusTitle = '待激活';
-            break;
-          case 5:
-            this.statusTitle = '已激活';
-            break;
-
-          case 6:
-            this.statusTitle = '交易关闭';
-            break;
-          case 7:
-            this.statusTitle = '交易成功';
-            break;
-          default:
-            this.statusTitle = '其他';
-            break
-        }
-        return this.statusTitle;
       },
       resetTitle(title) {
         switch (title) {
@@ -1237,6 +1199,7 @@
           expressNo: this.expressNo,
           goodsName: this.goodsName,
           "status": this.status,
+          "afsStatus": this.afsStatus,
           "orderNo": this.orderNo,
         }).then(response => {
           if (response.errorCode == 0) {

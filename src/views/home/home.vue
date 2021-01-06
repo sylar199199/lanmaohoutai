@@ -257,12 +257,14 @@
                                     <p class="countNumber fontWeight colorblack font28" v-if="!getoverviewCount.unshippedOrderCount">0</p>
                                 </div>
                                 <div class="waitBox cursor">
-                                    <div class="waitTitle back89 font12" @click="goList(6)">待退款订单</div>
-                                    <p class="countNumber fontWeight colorblack font28">00</p>
+                                    <div class="waitTitle back89 font12" @click="goList(6)">待退货订单</div>
+                                    <p class="countNumber fontWeight colorblack font28" v-if="getoverviewCount.returnOrderCount">{{getoverviewCount.returnOrderCount}}</p>
+                                    <p class="countNumber fontWeight colorblack font28" v-if="!getoverviewCount.returnOrderCount">0</p>
                                 </div>
                                 <div class="waitBox cursor">
-                                    <div class="waitTitle backfb font12" @click="goList(7)">待退货退款订单</div>
-                                    <p class="countNumber fontWeight colorblack font28">00</p>
+                                    <div class="waitTitle backfb font12" @click="goList(7)">待退款订单</div>
+                                  <p class="countNumber fontWeight colorblack font28" v-if="getoverviewCount.refundOrderCount">{{getoverviewCount.refundOrderCount}}</p>
+                                  <p class="countNumber fontWeight colorblack font28" v-if="!getoverviewCount.refundOrderCount">0</p>
                                 </div>
                             </div>
                         </div>
