@@ -85,6 +85,8 @@
 
               .infoBox {
                 margin-bottom: 27px;
+                display: flex;
+                align-items: center;
 
                 .borderButton {
                   border-radius: 12px;
@@ -92,6 +94,18 @@
                   height: 24px;
                   width: 74px;
                   line-height: 24px;
+                }
+
+                .editButton {
+                  border-radius: 20px;
+                  display: inline-block;
+                  height: 34px;
+                  width: 74px;
+                  line-height: 18px;
+                  word-wrap: break-word;
+                  border: solid 1px #0d2c4b;
+                  color: #0d2c4b;
+                  text-align: center;
                 }
 
                 .number {
@@ -491,16 +505,18 @@
 
                   <span v-if="orderDetail.afs.status == 1 && orderDetail.status != 2"
                         @click="agreeReturn(orderDetail.status)"
-                        class="cursor colorfff borderButton marginright10">同意退货</span>
+                        class="cursor colorfff borderButton marginright10 marginLeft10">同意退货</span>
                   <span v-if="orderDetail.afs.status == 1 && orderDetail.status != 2"
                         @click="refuseReturn()" class="cursor colorfff borderButton">拒绝退货</span>
 
-                  <span class="cursor borderButton colorfff" v-if="orderDetail.afs.status == 4"
-                        @click="returnMoney()">立即退款</span>
-                  <span v-if="orderDetail.afs.status == 4"
-                        style="height: 48px;width: 60px;"
-                        class="cursor colorfff borderButton marginright10"
-                        @click="editMoney()">同意退款 修改金额</span>
+                  <span class="cursor borderButton colorfff marginLeft10" v-if="orderDetail.afs.status == 4"
+                        @click="editMoney()">立即退款</span>
+                  <!--<span v-if="orderDetail.afs.status == 4"
+                        class="cursor colorfff  editButton marginright10 marginLeft10"
+                        @click="editMoney()">
+                    <div>同意退款</div>
+                    <div>修改金额</div>
+                  </span>-->
                   <span class="cursor borderButton colorfff" v-if="orderDetail.afs.status == 4"
                         @click="refuseMoney()">拒绝退款</span>
 
@@ -514,7 +530,7 @@
                 </div>
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">申请时间</span>
-                  <span class="colorblack font12">{{timetrans(orderDetail.amount)}}</span>
+                  <span class="colorblack font12">{{timetrans(orderDetail.afs.createDate)}}</span>
                 </div>
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">退款金额</span>
@@ -706,7 +722,7 @@
         <div class="messageContent">
           <div class="messagemessage">
             <span class="lableText colorblack font12">修改退款金额</span>
-            <input type="text" @change="changeValue('editMoney')" v-model="editValue"
+            <input type="text" @change="changeValue('editMoney')" v-model="editAmount"
                    class="inputBox marginLeft10 colorblack font12" style="width: 150px" placeholder="输入金额"/>
             <span class="tip">需要小于等于用户申的金额</span>
           </div>
@@ -824,7 +840,7 @@
       return {
         afsTitle: '',
         expressName: '',
-        editValue: '',
+        refundAmount: '',
         expressOption: [],
         expressNo: '',
         remarkMessage: "",
@@ -832,6 +848,8 @@
         refuseMessage: '',
         afs: null,
         returnAddressName: '',
+        refundAmount: '',
+        editAmount: '',
         returnPhone: '',
         returnName: '',
         orderDetail: {
@@ -897,7 +915,8 @@
         Service.order().agreeAfs({
             message: '',
             orderId: this.orderId,
-            addressId: addressId
+            addressId: addressId,
+            refundAmount: this.refundAmount
           },
         ).then(response => {
           if (response.errorCode == 0) {
@@ -925,7 +944,8 @@
         }
         Service.order().refuseafs({
             message: this.refuseMessage,
-            orderId: this.orderId
+            orderId: this.orderId,
+            refundAmount: this.refundAmount
           },
         ).then(response => {
           if (response.errorCode == 0) {
@@ -945,7 +965,8 @@
         }
         Service.order().refuserefund({
             message: this.refuseMessage,
-            orderId: this.orderId
+            orderId: this.orderId,
+            refundAmount: this.refundAmount
           },
         ).then(response => {
           if (response.errorCode == 0) {
@@ -1001,9 +1022,15 @@
           }
         }
         if (name == 'editMoney') {
-          if (this.editValue.length != 0) {
-            if (this.editValue > this.orderDetail.amount) {
-              this.$message.error('修改金额不能大于申请金额');
+          var reg = /((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/;
+          if (!reg.test(this.editAmount)) {
+            this.$message.error('请输入正确合理的退款金额');
+            on = false;
+            return
+          }
+          if (this.editAmount.length != 0) {
+            if (this.editAmount > this.refundAmount) {
+              this.$message.error('修改金额不能大于退款总金额');
               on = false;
               return;
             }
@@ -1025,7 +1052,8 @@
         }).then(() => {
           Service.order().agreerefund({
               message: '',
-              orderId: this.orderId
+              orderId: this.orderId,
+              refundAmount: this.refundAmount
             },
           ).then(response => {
             if (response.errorCode == 0) {
@@ -1040,6 +1068,7 @@
         });
       },
       editMoney() {
+        this.editAmount = this.refundAmount
         $(".editDialog").css({'display': 'block'});
       },
       // 同意退货
@@ -1062,7 +1091,8 @@
         }).then(() => {
           Service.order().agreeAfs({
               message: '',
-              orderId: this.orderId
+              orderId: this.orderId,
+              refundAmount: this.refundAmount
             },
           ).then(response => {
             if (response.errorCode == 0) {
@@ -1080,9 +1110,11 @@
         if (!this.changeValue('editMoney', 'submit')) {
           return;
         }
-        Service.order().refuseafs({
+        this.refundAmount = this.editAmount
+        Service.order().agreerefund({
             message: this.refuseMessage,
-            orderId: this.orderId
+            orderId: this.orderId,
+            refundAmount: this.refundAmount,
           },
         ).then(response => {
           if (response.errorCode == 0) {
@@ -1134,11 +1166,12 @@
           if (response.errorCode == 0) {
             this.orderDetail = response.data;
             this.afs = response.data.afs;
-            this.orderStatus = response.data.status
+            this.orderStatus = response.data.status;
             if (this.orderDetail.consignee) {
               this.shouhuo = this.orderDetail.consignee.province + this.orderDetail.consignee.city + this.orderDetail.consignee.district + this.orderDetail.consignee.address + ',' + this.orderDetail.consignee.name + ',' + this.orderDetail.consignee.phone;
             }
             if (this.afs) {
+              this.refundAmount = response.data.afs.refundAmount;
               this.$nextTick(() => {
                 this.afsTitle = this.resetTitle(response.data.status, this.afs)
               })
@@ -1250,14 +1283,13 @@
           default:
             break;
         }
-        console.log(123,title)
+        console.log(123, title)
         return title
       },
       addremarkMessage() {
         if (!this.changeremarkValue('submit')) {
           return;
         }
-        console.log(this.remarkMessage)
         Service.order().addremark({
           content: this.remarkMessage
         }, this.orderId).then(response => {
