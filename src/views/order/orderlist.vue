@@ -176,6 +176,7 @@
               }
 
               td:nth-of-type(5) {
+                width: 50px;
                 position: relative;
 
                 .warmtext {
@@ -569,7 +570,7 @@
                 </td>
 
                 <td>
-                  {{item.goodsPrice}}
+                  {{item.amount}}
                 </td>
                 <td>
                   {{item.points}}

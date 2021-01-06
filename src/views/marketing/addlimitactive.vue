@@ -678,12 +678,12 @@
       changeValue(name, type, item, index) {
         var on = true;
         if (name == 'perReduceNums') {
-          if (item.maxReduceNums && item.perReduceNums > item.maxReduceNums) {
+          if (item.maxReduceNums && parseInt(item.perReduceNums) > parseInt(item.maxReduceNums)) {
             this.$message.error('每秒扣减不能大于最大于扣减');
             this.goodsdata[index].perReduceNums = ''
             on = false;
             return;
-          } else if (item.perReduceNums > item.stock) {
+          } else if (parseInt(item.perReduceNums) >parseInt(item.stock) ) {
             this.$message.error(`每秒扣减不能大于最大于库存${item.stock}件`);
             this.goodsdata[index].perReduceNums = ''
             on = false;
@@ -691,7 +691,7 @@
           }
         }
         if (name == 'maxReduceNums') {
-          if (item.maxReduceNums > item.stock) {
+          if (parseInt(item.maxReduceNums)  > parseInt(item.stock)) {
             this.goodsdata[index].maxReduceNums = ''
             this.$message.error(`最大扣减不能大于最大于库存${item.stock}件`);
             on = false;
@@ -788,12 +788,13 @@
             this.$message.error('请输入最大扣减')
             return;
           }
-          if (item.maxReduceNums > item.stock) {
+          if (parseInt(item.maxReduceNums) > parseInt(item.stock)) {
             this.$message.error('最大扣减不能大于库存')
             return;
           }
-          if (item.perReduceNums > item.maxReduceNums) {
-            this.$message.error('最大扣减不能大于最大扣减')
+          if (parseInt(item.perReduceNums) > parseInt(item.maxReduceNums)) {
+            debugger
+            this.$message.error('每秒扣减不能大于最大扣减')
             return;
           }
         }

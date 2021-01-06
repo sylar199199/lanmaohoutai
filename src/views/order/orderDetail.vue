@@ -656,7 +656,7 @@
                     </div>
                   </td>
                   <td>{{orderDetail.goodsPrice}}</td>
-                  <td>{{orderDetail.goodsPrice}}</td>
+                  <td>{{orderDetail.amount}}</td>
                   <td>{{orderDetail.points}}</td>
                   <td>
                     <span v-if="orderDetail.status == 1">待付款</span>
@@ -673,7 +673,7 @@
                   <td>
                   </td>
                   <td></td>
-                  <td>商品总价：{{orderDetail.goodsPrice}}</td>
+                  <td>商品总价：{{orderDetail.amount}}</td>
                 </tr>
                 <tr>
                   <td></td>
