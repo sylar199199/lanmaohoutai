@@ -483,7 +483,7 @@
                   <span class="colorblack font12">{{statusTitle}}</span>
                   <span v-if="statusTitle == '退货中' && orderDetail.status == 2"
                         @click="agreeReturn(orderDetail.status)"
-                        class="cursor colorfff borderButton marginright10">立即退款</span>
+                        class="cursor colorfff borderButton marginright10 marginLeft10">立即退款</span>
                   <span v-if="statusTitle == '退货中' && orderDetail.status == 2"
                         style="height: 48px;width: 60px;"
                         class="cursor colorfff borderButton marginright10"
@@ -491,11 +491,15 @@
                   <span v-if="statusTitle == '退货中' && orderDetail.status == 2"
                         @click="refuseMoney()"
                         class="cursor colorfff borderButton marginright10">拒绝退款</span>
+
+
                   <span v-if="statusTitle == '退货中' && orderDetail.status != 2"
                         @click="agreeReturn(orderDetail.status)"
                         class="cursor colorfff borderButton marginright10">同意退货</span>
                   <span v-if="statusTitle == '退货中' && orderDetail.status != 2"
                         @click="refuseReturn()" class="cursor colorfff borderButton">拒绝退货</span>
+
+
                   <span class="cursor borderButton colorfff" v-if=" statusTitle == '退款中'"
                         @click="returnMoney()">立即退款</span>
                   <span class="cursor borderButton colorfff" v-if=" statusTitle == '退款中'"
@@ -579,26 +583,6 @@
                   <span class="colorblack font12">{{timetrans(orderDetail.payTime)}}</span>
                 </div>
               </div>
-              <!--<div class="infoRight" style="margin-bottom: 25px;">-->
-              <!--<div class="infoBox">-->
-              <!--<span class="colorGrey font12 timeSpan">物流状态</span>-->
-              <!--<span class="colorblack font12">yifajj</span>-->
-              <!--</div>-->
-              <!--<div class="logisticsBox flex" >-->
-              <!--<div class="logisticsIcon"></div>-->
-              <!--<div class="logisticsInfo">-->
-              <!--<p class="colorGrey font12">2019-02-24 19:23:45</p>-->
-              <!--<p class="colorGrey font12">到达附加费斤斤计较</p>-->
-              <!--</div>-->
-              <!--</div>-->
-              <!--<div class="logisticsBox flex">-->
-              <!--<div class="logisticsIcon"></div>-->
-              <!--<div>-->
-              <!--<p class="colorGrey font12">2019-02-24 19:23:45</p>-->
-              <!--<p class="colorGrey font12">到达附加费斤斤计较</p>-->
-              <!--</div>-->
-              <!--</div>-->
-              <!--</div>-->
             </div>
           </div>
           <div class="dataGeneral backWhite" v-if="orderDetail.remark">

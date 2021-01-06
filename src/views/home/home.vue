@@ -251,17 +251,17 @@
                                 <span class="colorblack font16 fontWeight">全部事项</span>
                             </div>
                             <div class="flex" >
-                                <div class="waitBox cursor" @click="goList()">
+                                <div class="waitBox cursor" @click="goList(2)">
                                     <div class="waitTitle backf7 font12">待发货订单</div>
                                     <p class="countNumber fontWeight colorblack font28" v-if="getoverviewCount.unshippedOrderCount">{{getoverviewCount.unshippedOrderCount}}</p>
                                     <p class="countNumber fontWeight colorblack font28" v-if="!getoverviewCount.unshippedOrderCount">0</p>
                                 </div>
                                 <div class="waitBox cursor">
-                                    <div class="waitTitle back89 font12" @click="goList()">带退款订单</div>
+                                    <div class="waitTitle back89 font12" @click="goList(6)">待退款订单</div>
                                     <p class="countNumber fontWeight colorblack font28">00</p>
                                 </div>
                                 <div class="waitBox cursor">
-                                    <div class="waitTitle backfb font12" @click="goList()">待退货退款订单</div>
+                                    <div class="waitTitle backfb font12" @click="goList(7)">待退货退款订单</div>
                                     <p class="countNumber fontWeight colorblack font28">00</p>
                                 </div>
                             </div>
@@ -485,8 +485,8 @@
             goDetail(){
                 this.$router.push({'name': 'integraldetail'});
             },
-            goList(){
-                this.$router.push({'name': 'orderlist',query:{status: 2}});
+            goList(status){
+                this.$router.push({'name': 'orderlist',query:{status}});
             },
             getRank(){
                 var myChart = this.echarts.init(document.getElementById('rankbox'));

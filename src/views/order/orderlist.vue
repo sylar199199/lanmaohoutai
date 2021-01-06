@@ -742,7 +742,7 @@
           {name: '全部', id: ''}, {name: '待支付', id: '1'}, {name: '待发货', id: '2'}, {name: '待收货', id: '3'}, {
             name: '交易成功',
             id: '4'
-          }, {name: '交易关闭', id: '5'}
+          }, {name: '交易关闭', id: '5'},{name: '带退款订单', id: '6'},{name: '带退货退款订单', id: '7'}
         ],
         status: '',
         userValue: '',
@@ -955,6 +955,12 @@
             break;
           case 5:
             this.statusTitle = '交易关闭';
+            break;
+          case 6:
+            this.statusTitle = '待退款订单';
+            break;
+          case 7:
+            this.statusTitle = '待退货退款订单';
             break;
           default:
             this.statusTitle = '其他';
