@@ -222,10 +222,18 @@
                 text-align: left;
                 padding-left: 10px
               }
+              th:nth-child(2) {
+                text-align: left;
+                padding-right: 5px
+              }
+              th:nth-child(3) {
+                text-align: left;
+                padding-right: 5px
+              }
 
               th:nth-child(4) {
                 text-align: center;
-                padding-right: 10px
+                padding-right: 5px
               }
 
               td {
@@ -498,6 +506,11 @@
                                placeholder=""/>
                       </td>
                       <td>
+                        <input v-if="item.isVirtualReduce" type="text" v-model="item.perReduceSecondes"
+                               class="font12 colorblack width30" @change="changeValue('perReduceSecondes','',item, index)"
+                               placeholder=""/>
+                      </td>
+                      <td>
                         <input v-if="item.isVirtualReduce" type="text" v-model="item.maxReduceNums"
                                class="font12 colorblack width30" @change="changeValue('maxReduceNums','',item, index)"
                                placeholder=""/>
@@ -562,6 +575,7 @@
         isShowTime: false,
         newproduct: 0,
         perReduceNums: '',
+        perReduceSecondes: '',
         maxReduceNums: '',
         pretime: '',
         previewTime: null,
@@ -581,6 +595,7 @@
           {orderType: '', name: '商品', showBlue: false, orderField: ''},
           {orderType: '', name: '是否造势', showBlue: false, orderField: ''},
           {orderType: '', name: '每秒扣减', showBlue: false, orderField: ''},
+          {orderType: '', name: '扣减间隔（秒）', showBlue: false, orderField: ''},
           {orderType: '', name: '扣减总数', showBlue: false, orderField: ''},
           {orderType: '', name: '排序', showBlue: false, orderField: ''},
           {orderType: '', name: '剩余库存', showBlue: false, orderField: ''},
@@ -686,6 +701,7 @@
           } else if (parseInt(item.perReduceNums) >parseInt(item.stock) ) {
             this.$message.error(`每秒扣减不能大于最大于库存${item.stock}件`);
             this.goodsdata[index].perReduceNums = ''
+            this.$forceUpdate();
             on = false;
             return;
           }
@@ -693,7 +709,8 @@
         if (name == 'maxReduceNums') {
           if (parseInt(item.maxReduceNums)  > parseInt(item.stock)) {
             this.goodsdata[index].maxReduceNums = ''
-            this.$message.error(`最大扣减不能大于最大于库存${item.stock}件`);
+            this.$message.error(`扣减总数不能大于最大于库存${item.stock}件`);
+            this.$forceUpdate();
             on = false;
             return;
           }
@@ -781,20 +798,27 @@
         }
         for (let item of this.goodsdata) {
           if(item.isVirtualReduce && !item.perReduceNums){
-            this.$message.error('请输入每日扣减')
+            this.$message.error('请输入每秒扣减')
             return;
           }
+
+          if(item.isVirtualReduce && !item.perReduceSecondes){
+            this.$message.error('请输入扣减间隔')
+            return;
+          }
+
           if(item.isVirtualReduce && !item.maxReduceNums){
-            this.$message.error('请输入最大扣减')
+            this.$message.error('请输入扣减总数')
             return;
           }
+
           if (parseInt(item.maxReduceNums) > parseInt(item.stock)) {
-            this.$message.error('最大扣减不能大于库存')
+            this.$message.error('扣减总数不能大于库存')
             return;
           }
           if (parseInt(item.perReduceNums) > parseInt(item.maxReduceNums)) {
             debugger
-            this.$message.error('每秒扣减不能大于最大扣减')
+            this.$message.error('每秒扣减不能大于扣减总数')
             return;
           }
         }
@@ -803,7 +827,8 @@
             goodsId: item.id,
             isVirtualReduce: item.isVirtualReduce,
             maxReduceNums: item.maxReduceNums,
-            perReduceNums: item.perReduceNums
+            perReduceNums: item.perReduceNums,
+            perReduceSecondes: item.perReduceSecondes,
           }
         })
         var goodsIds = [];
@@ -869,6 +894,7 @@
           obj[i].isVirtualReduce = 0
           obj[i].maxReduceNums = ''
           obj[i].perReduceNums = ''
+          obj[i].perReduceSecondes = ''
         }
         this.goodsdata = obj;
         if (this.goodsdata.length != 0) {
