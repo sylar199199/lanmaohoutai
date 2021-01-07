@@ -257,30 +257,56 @@
             }
 
             .orderDetailTableone {
+                tr {
+                  border-bottom: 1px solid #f6f6f6;
+
+                  th {
+                    color: #929292;
+                  }
+
+                  td {
+                    text-align: center;
+                    padding: 20px 0;
+                  }
+
+                  td:nth-of-type(1) {
+                    min-width: 100px;
+                    max-width: 100px;
+                    text-align: left;
+                    padding-left: 15px;
+                  }
+
+                  td:nth-of-type(2) {
+                    min-width: 300px;
+                    max-width: 300px;
+                    text-align: center;
+                    padding-left: 15px;
+                  }
+                }
+              }
+            .afsTable {
+              width: 100%;
               tr {
                 border-bottom: 1px solid #f6f6f6;
 
                 th {
+                  width: 100px;
                   color: #929292;
+                  background: #F6F6F6;
                 }
 
                 td {
+                  width: 100px;
                   text-align: center;
                   padding: 20px 0;
                 }
 
                 td:nth-of-type(1) {
-                  min-width: 100px;
-                  max-width: 100px;
-                  text-align: left;
-                  padding-left: 15px;
+                  text-align: center;
                 }
 
                 td:nth-of-type(2) {
-                  min-width: 300px;
-                  max-width: 300px;
                   text-align: center;
-                  padding-left: 15px;
                 }
               }
             }
@@ -574,6 +600,20 @@
                   <span class="colorblack font12">{{returnexpressNo}}</span>
                 </div>
               </div>
+            </div>
+            <div class="orderInfo" v-if="orderDetail.afsLogList && orderDetail.afsLogList.length">
+              <table class="afsTable">
+                <tr>
+                  <th>申请时间</th>
+                  <th>操作</th>
+                  <th>操作时间</th>
+                </tr>
+                <tr v-for="(item,index) in orderDetail.afsLogList" :key="item.id">
+                  <td>{{timetrans(item.createDate)}}</td>
+                  <td>{{item.content}}</td>
+                  <td>{{timetrans(item.updateDate)}}</td>
+                </tr>
+              </table>
             </div>
           </div>
           <div class="dataGeneral backWhite" v-if="orderDetail.status == 2">
@@ -1279,6 +1319,8 @@
                 title = '待发货，退款审核';
               } else if (afs.status == 2) {
                 title = '未发货，拒绝退款';
+              }else if (afs.status == 4) {
+                title = '未发货，退款中';
               }else if (afs.status == 5) {
                 title = '未发货，拒绝退款';
               } else if (afs.status == 6) {

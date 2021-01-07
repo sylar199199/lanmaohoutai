@@ -1155,6 +1155,8 @@
                 title = '未发货，退款成功';
               } else if (afs.status == 4){
                 title = '未发货，退款审核';
+              }else if (afs.status == 5) {
+                title = '未发货，拒绝退款';
               }
             } else {
               title = '待发货';
