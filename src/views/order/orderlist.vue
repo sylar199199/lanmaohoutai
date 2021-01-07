@@ -962,20 +962,12 @@
             this.status = '3';
             this.afsStatus = '';
             break;
-          case '待激活':
+          case '交易成功':
             this.status = '4';
             this.afsStatus = '';
             break;
-          case '已激活':
-            this.status = '5';
-            this.afsStatus = '';
-            break;
           case '交易关闭':
-            this.status = '6';
-            this.afsStatus = '';
-            break;
-          case '交易成功':
-            this.status = '7';
+            this.status = '5';
             this.afsStatus = '';
             break;
           case '退货中':
