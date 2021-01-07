@@ -776,7 +776,7 @@
             <span class="lableText colorblack font12">修改退款金额</span>
             <input type="text" @change="changeValue('editMoney')" v-model="editAmount"
                    class="inputBox marginLeft10 colorblack font12" style="width: 150px" placeholder="输入金额"/>
-            <span class="tip">需要小于等于用户申的金额</span>
+            <span class="tip">需要小于等于用户申请的金额</span>
           </div>
           <div class="messagemessage">
             <span class="lableText colorblack font12">修改原因</span>
