@@ -886,14 +886,11 @@
 
       },
       getgoodsdata(obj) {
+        console.log('obj', obj)
         for (let i in obj) {
           if (obj[i].name.length > 15) {
             obj[i].name = obj[i].name.substring(0, 15) + '...'
           }
-          obj[i].isVirtualReduce = 0
-          obj[i].maxReduceNums = ''
-          obj[i].perReduceNums = ''
-          obj[i].perReduceSeconds = ''
         }
         this.goodsdata = obj;
         if (this.goodsdata.length != 0) {
