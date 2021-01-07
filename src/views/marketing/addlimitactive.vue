@@ -593,7 +593,7 @@
         sortDatas: [
           {orderType: '', name: '商品', showBlue: false, orderField: ''},
           {orderType: '', name: '是否造势', showBlue: false, orderField: ''},
-          {orderType: '', name: '每秒扣减', showBlue: false, orderField: ''},
+          {orderType: '', name: '每次扣减（个）', showBlue: false, orderField: ''},
           {orderType: '', name: '扣减间隔（秒）', showBlue: false, orderField: ''},
           {orderType: '', name: '扣减总数', showBlue: false, orderField: ''},
           {orderType: '', name: '排序', showBlue: false, orderField: ''},
@@ -693,12 +693,12 @@
         var on = true;
         if (name == 'perReduceNums') {
           if (item.maxReduceNums && parseInt(item.perReduceNums) > parseInt(item.maxReduceNums)) {
-            this.$message.error('每秒扣减不能大于最大于扣减');
+            this.$message.error('每次扣减不能大于最大于扣减');
             this.goodsdata[index].perReduceNums = ''
             on = false;
             return;
           } else if (parseInt(item.perReduceNums) >parseInt(item.stock) ) {
-            this.$message.error(`每秒扣减不能大于最大于库存${item.stock}件`);
+            this.$message.error(`每次扣减不能大于最大于库存${item.stock}件`);
             this.goodsdata[index].perReduceNums = ''
             this.$forceUpdate();
             on = false;
@@ -797,7 +797,7 @@
         }
         for (let item of this.goodsdata) {
           if(item.isVirtualReduce && !item.perReduceNums){
-            this.$message.error('请输入每秒扣减')
+            this.$message.error('请输入每次扣减')
             return;
           }
 
@@ -817,7 +817,7 @@
           }
           if (parseInt(item.perReduceNums) > parseInt(item.maxReduceNums)) {
             debugger
-            this.$message.error('每秒扣减不能大于扣减总数')
+            this.$message.error('每次扣减不能大于扣减总数')
             return;
           }
         }
