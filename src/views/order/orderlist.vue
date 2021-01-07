@@ -583,10 +583,10 @@
                 <td>
                   {{timetrans(item.createDate)}}
                 </td>
-                <td v-if="item.afs">
-                  {{afsresetTitle(item.status,item.afs)}}
+                <td v-if="item.afsList.length">
+                  {{afsresetTitle(item.status,item.afsList[(item.afsList.length-1)])}}
                 </td>
-                <td v-if="!item.afs">
+                <td v-if="!item.afsList.length">
                   <span v-if="item.status == 1">待支付</span>
                   <span v-if="item.status == 2">待发货</span>
                   <span v-if="item.status == 3">待收货</span>
@@ -1157,6 +1157,8 @@
                 title = '未发货，拒绝退款';
               } else if (afs.status == 6) {
                 title = '未发货，退款成功';
+              } else if (afs.status == 4){
+                title = '未发货，退款审核';
               }
             } else {
               title = '待发货';

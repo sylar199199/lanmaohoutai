@@ -379,6 +379,7 @@
       }
     }
   }
+
   .spaceBetween {
     display: flex;
     justify-content: space-between;
@@ -396,7 +397,8 @@
     font-size: 12px;
     color: #999999;
   }
-  .textCenter{
+
+  .textCenter {
     text-align: center;
   }
 </style>
@@ -488,7 +490,7 @@
               </div>
             </div>
           </div>
-          <div class="dataGeneral backWhite" v-if="orderDetail.afs">
+          <div class="dataGeneral backWhite" v-if="orderDetail.afsList && orderDetail.afsList.length">
             <div class="infoBox">
               <span class="colorblack font16 fontWeight marginright10">售后信息</span>
             </div>
@@ -497,21 +499,21 @@
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">售后状态</span>
                   <span class="colorblack font12">{{afsTitle}}</span>
-                  <span v-if="orderDetail.afs.status == 1 && orderDetail.status == 2"
+                  <span v-if="orderDetail.afsList[afsIndex].status == 1 && orderDetail.status == 2"
                         @click="agreeReturn(orderDetail.status)"
                         class="cursor colorfff borderButton marginright10 marginLeft10">立即退款</span>
-                  <span v-if="orderDetail.afs.status == 1 && orderDetail.status == 2"
+                  <span v-if="orderDetail.afsList[afsIndex].status == 1 && orderDetail.status == 2"
                         @click="refuseReturn()"
                         class="cursor colorfff borderButton marginLeft10 marginright10">拒绝退款</span>
 
 
-                  <span v-if="orderDetail.afs.status == 1 && orderDetail.status != 2"
+                  <span v-if="orderDetail.afsList[afsIndex].status == 1 && orderDetail.status != 2"
                         @click="agreeReturn(orderDetail.status)"
                         class="cursor colorfff borderButton marginright10">同意退货</span>
-                  <span v-if="orderDetail.afs.status == 1 && orderDetail.status != 2"
+                  <span v-if="orderDetail.afsList[afsIndex].status == 1 && orderDetail.status != 2"
                         @click="refuseReturn()" class="cursor colorfff borderButton marginLeft10">拒绝退货</span>
 
-                  <span class="cursor borderButton colorfff marginLeft10" v-if="orderDetail.afs.status == 4"
+                  <span class="cursor borderButton colorfff marginLeft10" v-if="orderDetail.afsList[afsIndex].status == 4"
                         @click="editMoney()">立即退款</span>
                   <!--<span v-if="orderDetail.afs.status == 4"
                         class="cursor colorfff  editButton marginright10 marginLeft10"
@@ -519,25 +521,25 @@
                     <div>同意退款</div>
                     <div>修改金额</div>
                   </span>-->
-                  <span class="cursor borderButton colorfff marginLeft10" v-if="orderDetail.afs.status == 4"
+                  <span class="cursor borderButton colorfff marginLeft10" v-if="orderDetail.afsList[afsIndex].status == 4"
                         @click="refuseMoney()">拒绝退款</span>
 
 
                   <span class="cursor borderButton colorfff" v-if="statusTitle == '已退款' "
                         @click="openDetail()">退款详情</span>
                 </div>
-                <div class="infoBox" v-if="orderDetail.afs.returnMethod && orderDetail.status != 2">
+                <div class="infoBox" v-if="orderDetail.afsList[afsIndex].returnMethod && orderDetail.status != 2">
                   <span class="colorGrey font12 marginright10">退货方式</span>
-                  <span class="colorblack font12" v-if="orderDetail.afs.returnMethod ==1">自行寄回</span>
-                  <span class="colorblack font12" v-if="orderDetail.afs.returnMethod ==2">拒收</span>
+                  <span class="colorblack font12" v-if="orderDetail.afsList[afsIndex].returnMethod ==1">自行寄回</span>
+                  <span class="colorblack font12" v-if="orderDetail.afsList[afsIndex].returnMethod ==2">拒收</span>
                 </div>
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">申请原因</span>
-                  <span class="colorblack font12">{{orderDetail.afs && orderDetail.afs.reason}}</span>
+                  <span class="colorblack font12">{{orderDetail.afsList[afsIndex] && orderDetail.afsList[afsIndex].reason}}</span>
                 </div>
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">申请时间</span>
-                  <span class="colorblack font12">{{timetrans(orderDetail.afs.createDate)}}</span>
+                  <span class="colorblack font12">{{timetrans(orderDetail.afsList[afsIndex].createDate)}}</span>
                 </div>
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10">退款金额</span>
@@ -865,7 +867,7 @@
         remarkMessage: "",
         remarkList: '',
         refuseMessage: '',
-        afs: null,
+        afsList: [],
         returnAddressName: '',
         editAmount: '',
         returnPhone: '',
@@ -877,7 +879,9 @@
         shouhuo: '',
         statusTitle: '',
         imageUrl: '',
-        isshowadress: false
+        isshowadress: false,
+        afsId: '',
+        afsIndex: '',
       };
     },
     created() {
@@ -932,8 +936,8 @@
         this.returnName = str.contactTel
         Service.order().agreeAfs({
             message: '',
-            orderId: this.orderId,
             addressId: addressId,
+            afsId: this.afsId,
             refundAmount: this.refundAmount
           },
         ).then(response => {
@@ -962,7 +966,7 @@
         }
         Service.order().refuseafs({
             message: this.refuseMessage,
-            orderId: this.orderId,
+            afsId: this.afsId,
             refundAmount: this.refundAmount
           },
         ).then(response => {
@@ -976,6 +980,54 @@
         }, err => {
         });
       },
+      // 同意退货
+      showconfirm(str) {
+        this.$confirm(str, '', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          Service.order().agreeAfs({
+              message: '',
+              afsId: this.afsId,
+              refundAmount: this.refundAmount
+            },
+          ).then(response => {
+            if (response.errorCode == 0) {
+              this.getorderDetail();
+            } else {
+              this.$message.error(response.message)
+            }
+          }, err => {
+          });
+        }).catch(() => {
+
+        });
+      },
+      //立即退款
+      returnMoney() {
+        this.$confirm('同意退款，系统将订单款项原路退还给付款账号，请确认是否退款?', '', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          Service.order().agreerefund({
+              message: '',
+              afsId: this.afsId,
+              refundAmount: this.refundAmount
+            },
+          ).then(response => {
+            if (response.errorCode == 0) {
+              this.getorderDetail();
+            } else {
+              this.$message.error(response.message)
+            }
+          }, err => {
+          });
+        }).catch(() => {
+
+        });
+      },
       // 拒绝退款
       refuserefundMessage() {
         if (!this.changeValue('refuseMessage', 'submit')) {
@@ -983,7 +1035,7 @@
         }
         Service.order().refuserefund({
             message: this.refuseMessage,
-            orderId: this.orderId,
+            afsId: this.afsId,
             refundAmount: this.refundAmount
           },
         ).then(response => {
@@ -1062,29 +1114,7 @@
           return on;
         }
       },
-      returnMoney() {
-        this.$confirm('同意退款，系统将订单款项原路退还给付款账号，请确认是否退款?', '', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          Service.order().agreerefund({
-              message: '',
-              orderId: this.orderId,
-              refundAmount: this.refundAmount
-            },
-          ).then(response => {
-            if (response.errorCode == 0) {
-              this.getorderDetail();
-            } else {
-              this.$message.error(response.message)
-            }
-          }, err => {
-          });
-        }).catch(() => {
 
-        });
-      },
       editMoney() {
         this.editAmount = this.refundAmount
         $(".editDialog").css({'display': 'block'});
@@ -1101,40 +1131,18 @@
         }
       },
 
-      showconfirm(str) {
-        this.$confirm(str, '', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          Service.order().agreeAfs({
-              message: '',
-              orderId: this.orderId,
-              refundAmount: this.refundAmount
-            },
-          ).then(response => {
-            if (response.errorCode == 0) {
-              this.getorderDetail();
-            } else {
-              this.$message.error(response.message)
-            }
-          }, err => {
-          });
-        }).catch(() => {
 
-        });
-      },
       editReturnMessage() {
         if (!this.changeValue('editMoney', 'submit')) {
           return;
         }
-        if(this.editAmount != this.refundAmount && !this.changeValue('editReason', 'submit')){
+        if (this.editAmount != this.refundAmount && !this.changeValue('editReason', 'submit')) {
           return;
         }
         this.refundAmount = this.editAmount
         Service.order().agreerefund({
             message: this.refuseMessage,
-            orderId: this.orderId,
+            afsId: this.afsId,
             refundAmount: this.refundAmount,
           },
         ).then(response => {
@@ -1186,23 +1194,26 @@
         ).then(response => {
           if (response.errorCode == 0) {
             this.orderDetail = response.data;
-            this.afs = response.data.afs;
+            this.afsList = response.data.afsList;
             this.orderStatus = response.data.status;
             if (this.orderDetail.consignee) {
               this.shouhuo = this.orderDetail.consignee.province + this.orderDetail.consignee.city + this.orderDetail.consignee.district + this.orderDetail.consignee.address + ',' + this.orderDetail.consignee.name + ',' + this.orderDetail.consignee.phone;
             }
             let returnAddress = response.data.returnAddress
-            if (returnAddress){
+            if (returnAddress) {
               this.returnName = returnAddress.contactName
               this.returnPhone = returnAddress.contactTel
               this.returnAddressName = returnAddress.addressDesc
             }
-            if (this.afs) {
-              this.refundAmount = response.data.afs.refundAmount;
-              this.returnexpressNo = response.data.afs.expressNo;
-              this.returnexpressName = response.data.afs.expressName;
+
+            if (this.afsList) {
+              this.afsIndex = this.afsList.length - 1
+              this.refundAmount = this.afsList[this.afsIndex].refundAmount;
+              this.returnexpressNo = this.afsList[this.afsIndex].expressNo;
+              this.returnexpressName = this.afsList[this.afsIndex].expressName;
+              this.afsId = this.afsList[this.afsIndex].id;
               this.$nextTick(() => {
-                this.afsTitle = this.resetTitle(response.data.status, this.afs)
+                this.afsTitle = this.resetTitle(response.data.status, this.afsList[this.afsIndex])
               })
 
             }
@@ -1274,6 +1285,8 @@
               if (afs.status == 1) {
                 title = '待发货，退款审核';
               } else if (afs.status == 2) {
+                title = '未发货，拒绝退款';
+              }else if (afs.status == 5) {
                 title = '未发货，拒绝退款';
               } else if (afs.status == 6) {
                 title = '未发货，退款成功';
