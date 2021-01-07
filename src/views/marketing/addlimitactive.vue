@@ -271,7 +271,7 @@
               }
 
               td:nth-of-type(1) {
-                width: 180px;
+                width: 150px;
                 text-align: left;
                 padding-left: 10px
               }

@@ -584,14 +584,7 @@
               <div class="infoLeft">
                 <div class="infoBox">
                   <span class="colorGrey font12 marginright10" style="display: inline-block;width: 50px;">快递公司</span>
-                  <el-select v-model="expressName">
-                    <el-option
-                      v-for="item in expressOption"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id">
-                    </el-option>
-                  </el-select>
+                  <input class="colorblack  font12 inputText" v-model="expressName"/>
                 </div>
                 <div class="infoBox">
                   <span style="display: inline-block;width: 50px;" class="colorGrey font12 marginright10">运单号</span>

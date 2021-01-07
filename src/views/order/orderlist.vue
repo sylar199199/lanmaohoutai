@@ -873,7 +873,6 @@
       },
       copyAdress(classname) {
         var clipboard = new this.Clipboard('.' + classname);
-        console.log(clipboard);
         clipboard.on('success', e => {
           this.$message.success('复制成功');
           // 释放内存
@@ -882,7 +881,6 @@
         });
         clipboard.on('error', e => {
           // 不支持复制
-          console.log('该浏览器不支持自动复制');
           // 释放内存
           clipboard.destroy()
         })
@@ -1101,7 +1099,6 @@
         //     this.page = 1;
         // }
         var endDate = '', startDate = '';
-        console.log(this.endDate)
         if (this.endDate || this.startDate) {
           endDate = Date.parse(new Date(this.endDate.replace(/-/g, "/")));
           startDate = Date.parse(new Date(this.startDate.replace(/-/g, "/")));
@@ -1129,7 +1126,6 @@
         }).then(response => {
           if (response.errorCode == 0) {
             var blob = this.Decode(response.data);
-            console.log(window.URL.createObjectURL(blob).indexOf(location.host))
             if (window.URL.createObjectURL(blob).indexOf(location.host) < 0) {//ie不支持
               this.href = window.navigator.msSaveOrOpenBlob(blob, '线索列表.xlsx');
             } else {
@@ -1192,7 +1188,6 @@
           default:
             break;
         }
-        console.log(123, title)
         return title
       },
       getcommodityData(str) {
