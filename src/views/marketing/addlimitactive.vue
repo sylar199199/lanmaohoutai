@@ -271,8 +271,7 @@
               }
 
               td:nth-of-type(1) {
-                min-width: 180px;
-                max-width: 300px;
+                width: 180px;
                 text-align: left;
                 padding-left: 10px
               }
@@ -506,8 +505,8 @@
                                placeholder=""/>
                       </td>
                       <td>
-                        <input v-if="item.isVirtualReduce" type="text" v-model="item.perReduceSecondes"
-                               class="font12 colorblack width30" @change="changeValue('perReduceSecondes','',item, index)"
+                        <input v-if="item.isVirtualReduce" type="text" v-model="item.perReduceSeconds"
+                               class="font12 colorblack width30" @change="changeValue('perReduceSeconds','',item, index)"
                                placeholder=""/>
                       </td>
                       <td>
@@ -575,7 +574,7 @@
         isShowTime: false,
         newproduct: 0,
         perReduceNums: '',
-        perReduceSecondes: '',
+        perReduceSeconds: '',
         maxReduceNums: '',
         pretime: '',
         previewTime: null,
@@ -802,7 +801,7 @@
             return;
           }
 
-          if(item.isVirtualReduce && !item.perReduceSecondes){
+          if(item.isVirtualReduce && !item.perReduceSeconds){
             this.$message.error('请输入扣减间隔')
             return;
           }
@@ -828,7 +827,7 @@
             isVirtualReduce: item.isVirtualReduce,
             maxReduceNums: item.maxReduceNums,
             perReduceNums: item.perReduceNums,
-            perReduceSecondes: item.perReduceSecondes,
+            perReduceSeconds: item.perReduceSeconds,
           }
         })
         var goodsIds = [];
@@ -894,7 +893,7 @@
           obj[i].isVirtualReduce = 0
           obj[i].maxReduceNums = ''
           obj[i].perReduceNums = ''
-          obj[i].perReduceSecondes = ''
+          obj[i].perReduceSeconds = ''
         }
         this.goodsdata = obj;
         if (this.goodsdata.length != 0) {
